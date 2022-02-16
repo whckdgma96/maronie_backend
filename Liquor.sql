@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema team11
+-- Schema Liquor
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema team11
+-- Schema Liquor
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `team11` DEFAULT CHARACTER SET utf8 ;
-USE `team11` ;
+CREATE SCHEMA IF NOT EXISTS `Liquor` DEFAULT CHARACTER SET utf8 ;
+USE `Liquor` ;
 
 -- -----------------------------------------------------
--- Table `team11`.`user`
+-- Table `Liquor`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`user` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`user` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -28,9 +28,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`liquor`
+-- Table `Liquor`.`liquor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`liquor` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   `id_liquor` INT NOT NULL AUTO_INCREMENT,
   `liquor_name` VARCHAR(100) NOT NULL,
   `alcohol` FLOAT NULL,
@@ -43,9 +43,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`cocktail`
+-- Table `Liquor`.`cocktail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`cocktail` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`cocktail` (
   `id_cocktail` INT NOT NULL AUTO_INCREMENT,
   `cocktail_name` VARCHAR(100) NOT NULL,
   `alcohol` FLOAT NULL,
@@ -60,9 +60,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`review`
+-- Table `Liquor`.`review`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`review` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`review` (
   `id_review` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `liquor_id` INT NOT NULL,
@@ -74,21 +74,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`review` (
   INDEX `fk_review_liquor_idx` (`liquor_id` ASC),
   CONSTRAINT `fk_review_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `team11`.`user` (`id_user`)
+    REFERENCES `Liquor`.`user` (`id_user`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_review_liquor`
     FOREIGN KEY (`liquor_id`)
-    REFERENCES `team11`.`liquor` (`id_liquor`)
+    REFERENCES `Liquor`.`liquor` (`id_liquor`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`by_liquor`
+-- Table `Liquor`.`by_liquor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`by_liquor` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
   `cocktail_id` INT NOT NULL AUTO_INCREMENT,
   `liquor_id` INT NOT NULL,
   PRIMARY KEY (`cocktail_id`, `liquor_id`),
@@ -96,21 +96,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`by_liquor` (
   INDEX `fk_by_liquor_liquor_idx` (`liquor_id` ASC),
   CONSTRAINT `fk_by_liquor_liquor`
     FOREIGN KEY (`liquor_id`)
-    REFERENCES `team11`.`liquor` (`id_liquor`)
+    REFERENCES `Liquor`.`liquor` (`id_liquor`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_by_liquor_cocktail`
     FOREIGN KEY (`cocktail_id`)
-    REFERENCES `team11`.`cocktail` (`id_cocktail`)
+    REFERENCES `Liquor`.`cocktail` (`id_cocktail`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`menu`
+-- Table `Liquor`.`menu`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`menu` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`menu` (
   `id_menu` INT NOT NULL AUTO_INCREMENT,
   `menu_name` VARCHAR(50) NOT NULL,
   `image_path` VARCHAR(100) NULL,
@@ -119,9 +119,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`paring`
+-- Table `Liquor`.`paring`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`paring` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`paring` (
   `liquor_id` INT NOT NULL,
   `menu_id` INT NOT NULL,
   PRIMARY KEY (`liquor_id`, `menu_id`),
@@ -129,21 +129,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`paring` (
   INDEX `fk_paring_liquor_idx` (`liquor_id` ASC),
   CONSTRAINT `fk_paring_liquor`
     FOREIGN KEY (`liquor_id`)
-    REFERENCES `team11`.`liquor` (`id_liquor`)
+    REFERENCES `Liquor`.`liquor` (`id_liquor`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_paring_menu`
     FOREIGN KEY (`menu_id`)
-    REFERENCES `team11`.`menu` (`id_menu`)
+    REFERENCES `Liquor`.`menu` (`id_menu`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`wishlist_liquor`
+-- Table `Liquor`.`wishlist_liquor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`wishlist_liquor` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_liquor` (
   `id_wishlist` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `liquor_id` INT NOT NULL,
@@ -152,21 +152,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`wishlist_liquor` (
   INDEX `fk_wishlist_liquor_liquor_idx` (`liquor_id` ASC),
   CONSTRAINT `fk_wishlist_l_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `team11`.`user` (`id_user`)
+    REFERENCES `Liquor`.`user` (`id_user`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_wishlist_l_liquor`
     FOREIGN KEY (`liquor_id`)
-    REFERENCES `team11`.`liquor` (`id_liquor`)
+    REFERENCES `Liquor`.`liquor` (`id_liquor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`done_liquor`
+-- Table `Liquor`.`done_liquor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`done_liquor` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`done_liquor` (
   `id_done` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `liquor_id` INT NOT NULL,
@@ -175,21 +175,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`done_liquor` (
   INDEX `fk_doen_liquor_liquor_idx` (`liquor_id` ASC),
   CONSTRAINT `fk_done_l_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `team11`.`user` (`id_user`)
+    REFERENCES `Liquor`.`user` (`id_user`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_done_l_liquor`
     FOREIGN KEY (`liquor_id`)
-    REFERENCES `team11`.`liquor` (`id_liquor`)
+    REFERENCES `Liquor`.`liquor` (`id_liquor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`wishlist_cocktail`
+-- Table `Liquor`.`wishlist_cocktail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`wishlist_cocktail` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_cocktail` (
   `id_wishlist` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `cocktail_id` INT NOT NULL,
@@ -198,21 +198,21 @@ CREATE TABLE IF NOT EXISTS `team11`.`wishlist_cocktail` (
   INDEX `fk_wishlist_cocktail_cocktail_idx` (`cocktail_id` ASC),
   CONSTRAINT `fk_wishlist_c_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `team11`.`user` (`id_user`)
+    REFERENCES `Liquor`.`user` (`id_user`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_wishlist_c_liquor`
     FOREIGN KEY (`cocktail_id`)
-    REFERENCES `team11`.`cocktail` (`id_cocktail`)
+    REFERENCES `Liquor`.`cocktail` (`id_cocktail`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `team11`.`done_cocktail`
+-- Table `Liquor`.`done_cocktail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `team11`.`done_cocktail` (
+CREATE TABLE IF NOT EXISTS `Liquor`.`done_cocktail` (
   `id_done` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `cocktail_id` INT NOT NULL,
@@ -221,12 +221,12 @@ CREATE TABLE IF NOT EXISTS `team11`.`done_cocktail` (
   INDEX `fk_done_cocktail_cocktail_idx` (`cocktail_id` ASC),
   CONSTRAINT `fk_done_c_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `team11`.`user` (`id_user`)
+    REFERENCES `Liquor`.`user` (`id_user`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_done_c_liquor`
     FOREIGN KEY (`cocktail_id`)
-    REFERENCES `team11`.`cocktail` (`id_cocktail`)
+    REFERENCES `Liquor`.`cocktail` (`id_cocktail`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
