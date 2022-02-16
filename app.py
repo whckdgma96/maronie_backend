@@ -8,11 +8,9 @@ from db_connect import db
 
 import config
     
- 
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    
     
     from apis.auth.authResolver import Auth
     
