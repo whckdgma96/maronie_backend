@@ -14,7 +14,7 @@ def create_app():
     CORS(app)
     
     
-    # from apis.auth.authResolver import Auth
+    from apis.auth.authResolver import Auth
     
     app.config.from_object(config)  # config 에서 가져온 파일을 사용합니다.
 
