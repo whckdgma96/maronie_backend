@@ -2,6 +2,7 @@ from flask import request,session
 from models.user import user
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
+import pymysql
 db = SQLAlchemy()
 
 
@@ -16,7 +17,7 @@ def idckeck(email:str):
 
 def userRegister(email:str,nickname:str, password:str):
     
-    encrypted_pw = bcrypt.hashpw(password.encode('utf8'),bcrypt.gensalt())
+    encrypted_pw = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
     new_user = user(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
     db.session.add(new_user)
     db.session.commit()
@@ -26,12 +27,13 @@ def userRegister(email:str,nickname:str, password:str):
 
 def userLogin(email: str, password:str):
     saved_user = user.query.filter_by(email=email).first()
+    
     #유효하지 않은 ID
     if not saved_user: return{
             "message": "User Not Found"
         }, 404
     # 비밀번호 미일치
-    elif not bcrypt.checkpw(password.encode("utf-8"),saved_user.password ):
+    elif not bcrypt.checkpw(password.encode("utf-8"),saved_user.password.encode("utf-8") ):
         return {
             "message": "Auth Failed"
         }, 500
@@ -40,18 +42,18 @@ def userLogin(email: str, password:str):
         session['login'] = saved_user.email
         return {
             # "message": "login Success ",
-            "name":saved_user.name,
+            "name":saved_user.nickname,
             "email":saved_user.email
         },200
 
 #비밀번호 변경
 
 def changepw(email,nickname,new_password):
-    # conn = sqlite3.connect('NaplessRabbit.db')
-    # cur = conn.cursor()
+    conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8')
+    cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = user.query.filter_by(email=email).first()
-    sql = "UPDATE user SET password =? WHERE nickname =?"
+    sql = """UPDATE user SET password =%s WHERE nickname =%s"""
     encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
     if not saved_user: 
         return{
@@ -62,8 +64,8 @@ def changepw(email,nickname,new_password):
             "message":"User nickname isn't correct"
         },500
     else: 
-        # cur.execute(sql, (encrypted_pw, saved_user.nickname))
-        # conn.commit()
+        cur.execute(sql, (encrypted_pw, saved_user.nickname))
+        conn.commit()
         return {
             "message":"password changed"
         },200
