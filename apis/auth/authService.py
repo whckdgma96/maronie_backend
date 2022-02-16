@@ -2,7 +2,6 @@ from flask import request,session
 from models.user import user
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
-import sqlite3
 db = SQLAlchemy()
 
 

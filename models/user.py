@@ -7,7 +7,7 @@ class user(db.Model):
     password = db.Column(db.String(255), nullable=False)
     nickname = db.Column(db.String(45), nullable=False)
 
-def init_db():
+def init_db(): #to-do) 따로 파일로 빼기
     db.create_all()
     
 if __name__ == '__main__':
