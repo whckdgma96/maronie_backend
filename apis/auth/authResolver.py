@@ -5,7 +5,7 @@ from . import authService
 
 Auth = Namespace(name="auth", description="사용자 인증")
 user_fields = Auth.model('User', {
-    'id_user': fields.String(description='User Id', required=True, example="1234"),
+    'id': fields.String(description='User Id', required=True, example="1234"),
     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
     'password': fields.String(description='User Password', required=True, example="password"),
     'nickname': fields.String(description='User Nickname', required=True, example="CCH")

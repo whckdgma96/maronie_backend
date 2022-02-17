@@ -28,17 +28,34 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Liquor`.`classification`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Liquor`.`classification` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `classification` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Liquor`.`liquor`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `liquor_name` VARCHAR(100) NOT NULL,
+  `classification_id` INT NOT NULL,
   `alcohol` FLOAT NULL,
   `price` INT NULL,
   `image_path` VARCHAR(100) NULL,
   `description` VARCHAR(500) NOT NULL,
   `vendor` VARCHAR(100) NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  INDEX `fk_classification_idx` (`classification_id` ASC),
+  CONSTRAINT `fk_liquor_classification`
+    FOREIGN KEY (`classification_id`)
+    REFERENCES `Liquor`.`classification` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -86,28 +103,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Liquor`.`by_liquor`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
-  `cocktail_id` INT NOT NULL AUTO_INCREMENT,
-  `liquor_id` INT NOT NULL,
-  PRIMARY KEY (`cocktail_id`, `liquor_id`),
-  INDEX `fk_by_liquor_cocktail_idx` (`cocktail_id` ASC),
-  INDEX `fk_by_liquor_liquor_idx` (`liquor_id` ASC),
-  CONSTRAINT `fk_by_liquor_liquor`
-    FOREIGN KEY (`liquor_id`)
-    REFERENCES `Liquor`.`liquor` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_by_liquor_cocktail`
-    FOREIGN KEY (`cocktail_id`)
-    REFERENCES `Liquor`.`cocktail` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Liquor`.`menu`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Liquor`.`menu` (
@@ -119,45 +114,66 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Liquor`.`paring`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Liquor`.`paring` (
-  `liquor_id` INT NOT NULL,
-  `menu_id` INT NOT NULL,
-  PRIMARY KEY (`liquor_id`, `menu_id`),
-  INDEX `fk_paring_menu_idx` (`menu_id` ASC),
-  INDEX `fk_paring_liquor_idx` (`liquor_id` ASC),
-  CONSTRAINT `fk_paring_liquor`
-    FOREIGN KEY (`liquor_id`)
-    REFERENCES `Liquor`.`liquor` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_paring_menu`
-    FOREIGN KEY (`menu_id`)
-    REFERENCES `Liquor`.`menu` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Liquor`.`wishlist_liquor`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_liquor` (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `liquor_id` INT NOT NULL,
-  INDEX `fk_wishlist_liquor_user_idx` (`user_id` ASC),
-  PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_liquor_liquor_idx` (`liquor_id` ASC),
+  PRIMARY KEY (`user_id`, `liquor_id`),
+  INDEX `fk_wishlist_l_liquor_idx` (`liquor_id` ASC),
+  INDEX `fk_wishlist_l_user_idx` (`user_id` ASC),
   CONSTRAINT `fk_wishlist_l_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_wishlist_l_liquor`
+  CONSTRAINT `fk_wishlist_l_cocktail`
     FOREIGN KEY (`liquor_id`)
     REFERENCES `Liquor`.`liquor` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Liquor`.`wishlist_cocktail`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_cocktail` (
+  `user_id` INT NOT NULL,
+  `cocktail_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `cocktail_id`),
+  INDEX `fk_wishlist_c_cocktail_idx` (`cocktail_id` ASC),
+  INDEX `fk_wishlist_c_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_wishlist_c_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Liquor`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_wishlist_c_cocktail`
+    FOREIGN KEY (`cocktail_id`)
+    REFERENCES `Liquor`.`cocktail` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Liquor`.`by_liquor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
+  `classification_id` INT NOT NULL,
+  `cocktail_id` INT NOT NULL,
+  PRIMARY KEY (`classification_id`, `cocktail_id`),
+  INDEX `fk_by_l_classification_idx` (`classification_id` ASC),
+  INDEX `fk_by_l_cocktail_idx` (`cocktail_id` ASC),
+  CONSTRAINT `fk_by_l_cocktail`
+    FOREIGN KEY (`cocktail_id`)
+    REFERENCES `Liquor`.`cocktail` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_by_l_classification`
+    FOREIGN KEY (`classification_id`)
+    REFERENCES `Liquor`.`classification` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -167,12 +183,11 @@ ENGINE = InnoDB;
 -- Table `Liquor`.`done_liquor`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Liquor`.`done_liquor` (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `liquor_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_done_liquor_user_idx` (`user_id` ASC),
-  INDEX `fk_doen_liquor_liquor_idx` (`liquor_id` ASC),
+  PRIMARY KEY (`user_id`, `liquor_id`),
+  INDEX `fk_done_l_liquor_idx` (`liquor_id` ASC),
+  INDEX `fk_done_l_user_idx` (`user_id` ASC),
   CONSTRAINT `fk_done_l_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
@@ -187,21 +202,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Liquor`.`wishlist_cocktail`
+-- Table `Liquor`.`done_cocktail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_cocktail` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `Liquor`.`done_cocktail` (
   `user_id` INT NOT NULL,
   `cocktail_id` INT NOT NULL,
-  INDEX `fk_wishlist_cocktail_user_idx` (`user_id` ASC),
-  PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_cocktail_cocktail_idx` (`cocktail_id` ASC),
-  CONSTRAINT `fk_wishlist_c_user`
+  PRIMARY KEY (`user_id`, `cocktail_id`),
+  INDEX `fk_done_c_cocktail_idx` (`cocktail_id` ASC),
+  INDEX `fk_done_c_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_done_c_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_wishlist_c_liquor`
+  CONSTRAINT `fk_done_c_cocktail`
     FOREIGN KEY (`cocktail_id`)
     REFERENCES `Liquor`.`cocktail` (`id`)
     ON DELETE CASCADE
@@ -210,23 +224,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Liquor`.`done_cocktail`
+-- Table `Liquor`.`paring`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Liquor`.`done_cocktail` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `cocktail_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_done_cocktail_user_idx` (`user_id` ASC),
-  INDEX `fk_done_cocktail_cocktail_idx` (`cocktail_id` ASC),
-  CONSTRAINT `fk_done_c_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `Liquor`.`user` (`id`)
+CREATE TABLE IF NOT EXISTS `Liquor`.`paring` (
+  `menu_id` INT NOT NULL,
+  `classification_id` INT NOT NULL,
+  PRIMARY KEY (`menu_id`, `classification_id`),
+  INDEX `fk_paring_classification_idx` (`classification_id` ASC),
+  INDEX `fk_paring_menu_idx` (`menu_id` ASC),
+  CONSTRAINT `fk_paring_menu`
+    FOREIGN KEY (`menu_id`)
+    REFERENCES `Liquor`.`menu` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_done_c_liquor`
-    FOREIGN KEY (`cocktail_id`)
-    REFERENCES `Liquor`.`cocktail` (`id`)
+  CONSTRAINT `fk_paring_classification`
+    FOREIGN KEY (`classification_id`)
+    REFERENCES `Liquor`.`classification` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
