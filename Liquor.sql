@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   CONSTRAINT `fk_liquor_classification`
     FOREIGN KEY (`classification_id`)
     REFERENCES `Liquor`.`classification` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -130,8 +130,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_liquor` (
   CONSTRAINT `fk_wishlist_l_cocktail`
     FOREIGN KEY (`liquor_id`)
     REFERENCES `Liquor`.`liquor` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -152,8 +152,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_cocktail` (
   CONSTRAINT `fk_wishlist_c_cocktail`
     FOREIGN KEY (`cocktail_id`)
     REFERENCES `Liquor`.`cocktail` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -174,8 +174,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
   CONSTRAINT `fk_by_l_classification`
     FOREIGN KEY (`classification_id`)
     REFERENCES `Liquor`.`classification` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -191,13 +191,13 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`done_liquor` (
   CONSTRAINT `fk_done_l_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_done_l_liquor`
     FOREIGN KEY (`liquor_id`)
     REFERENCES `Liquor`.`liquor` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
