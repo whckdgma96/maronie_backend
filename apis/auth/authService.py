@@ -1,5 +1,5 @@
 from flask import request,session
-from models.user import user
+from models.user import User
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
 import pymysql
@@ -9,7 +9,7 @@ db = SQLAlchemy()
 # 회원가입 유효성
 
 def idckeck(email:str):
-    new_user = user.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
+    new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
     if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
     else: return {"message":"Available email"},200
     
@@ -18,7 +18,7 @@ def idckeck(email:str):
 def userRegister(email:str,nickname:str, password:str):
     
     encrypted_pw = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
-    new_user = user(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
+    new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
     db.session.add(new_user)
     db.session.commit()
     return {"message":"User Information saved"},200 #성공
@@ -26,7 +26,7 @@ def userRegister(email:str,nickname:str, password:str):
 # 로그인
 
 def userLogin(email: str, password:str):
-    saved_user = user.query.filter_by(email=email).first()
+    saved_user = User.query.filter_by(email=email).first()
     
     #유효하지 않은 ID
     if not saved_user: return{
@@ -52,7 +52,7 @@ def changepw(email,nickname,new_password):
     conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8')
     cur = conn.cursor()
     #DB연결 후 메서드 호출
-    saved_user = user.query.filter_by(email=email).first()
+    saved_user = User.query.filter_by(email=email).first()
     sql = """UPDATE user SET password =%s WHERE nickname =%s"""
     encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
     if not saved_user: 

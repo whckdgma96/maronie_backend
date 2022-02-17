@@ -1,6 +1,6 @@
 from db_connect import db
 
-class user(db.Model):
+class User(db.Model):
     __tablename__ = "user"
     id_user = db.Column(db.Integer, primary_key=True, nullable=False, auto_increment=True)
     email = db.Column(db.String(100),nullable=False)
