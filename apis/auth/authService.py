@@ -12,7 +12,7 @@ def idckeck(email:str):
     new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
     if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
     else: return {"message":"Available email"},200
-    
+
 # 회원가입 요청
 
 def userRegister(email:str,nickname:str, password:str):
