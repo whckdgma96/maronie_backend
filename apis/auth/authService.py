@@ -48,7 +48,7 @@ def userLogin(email: str, password:str):
 #비밀번호 변경
 
 def changepw(email,nickname,new_password):
-    conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8')
+    conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8') #숨기기
     cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = User.query.filter_by(email=email).first()

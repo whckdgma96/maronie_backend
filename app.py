@@ -13,7 +13,8 @@ def create_app():
     CORS(app)
     
     from apis.auth.authResolver import Auth
-    
+    from apis.liquor.liquorResolver import Liquor
+
     app.config.from_object(config)  # config 에서 가져온 파일을 사용합니다.
 
     db.init_app(app)  # SQLAlchemy 객체를 app 객체와 이어줍니다.
@@ -27,7 +28,7 @@ def create_app():
     # from . import models
     api = Api(app)
     api.add_namespace(Auth, '/auth')
-
+    api.add_namespace(Liquor, '/liquor')
     return app
 
 
