@@ -12,7 +12,7 @@ liquor_fields = Liquor.model('Liquor', {
 })
 
 # 술 상세페이지
-@Liquor.route('/liquor/detail_page/<int:liquor_id>')
+@Liquor.route('/detail_page/<int:liquor_id>')
 class liquor_detailPage(Resource):
     @Liquor.response(200, "Available liquor_id")
     @Liquor.response(404, "Not found")
