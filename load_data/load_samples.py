@@ -1,6 +1,8 @@
+import os
 import pymysql
-# from app import db, create_app
-# from models.liquor import Liquor, Classification
+import dotenv 
+
+dotenv.load_dotenv()
 
 '''
 진: 고든스 진, 봄베이 사파이어
@@ -9,8 +11,15 @@ import pymysql
 보드카: 앱솔루트, 스미노프
 데킬라: 호세쿠엘보
 '''
+#타입 확인
+# print(type(int(os.environ.get('MYSQL_PORT'))))
 
-conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='Liquor', charset='utf8') #숨기기
+conn = pymysql.connect(host='127.0.0.1',
+					   port=int(os.getenv('MYSQL_PORT')), 
+					   user=os.getenv('MYSQL_USER'),
+ 					   password=os.getenv('MYSQL_PASSWORD'), 
+					   db=os.getenv('MYSQL_DATABASE'), 
+					   charset='utf8') 
 cur = conn.cursor()
 
 #기존 데이터를 모두 지우고 AUTO_INCREMENT도 초기화 한다.
@@ -32,20 +41,3 @@ conn.commit()
 #closing the database con
 conn.close()
 
-
-# classfication_sample = Classification(
-#   classification="Liqueur"
-# )
-# db.session.add(classfication_sample)
-# db.session.commit()
-
-# liquor_sample = Liquor(
-#     liquor_name = "X-Rated",
-#     image_path = "https://file.mk.co.kr/meet/neds/2020/08/image_readtop_2020_812159_15967844304309365.jpg",
-#     rating = 4.5,
-#     description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum tempora architecto veritatis aliquid ea magni cum libero molestiae facilis maxime dolore odio ipsum natus dignissimos non veniam, quisquam beatae nihil!",
-#     classification_id = 1
-# )
-
-# db.session.add(liquor_sample)
-# db.session.commit()

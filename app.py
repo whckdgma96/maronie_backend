@@ -5,7 +5,6 @@ from flask_restx import Api
 from flask_cors import CORS
 
 from db_connect import db
-
 import config
     
 def create_app():
@@ -19,18 +18,16 @@ def create_app():
 
     db.init_app(app)  # SQLAlchemy 객체를 app 객체와 이어줍니다.
     Migrate().init_app(app, db)
-
-    app.secret_key = "secret"
-    app.config['SESSION_TYPE'] = 'filesystem'
-
     
+    app.secret_key = config.SECRET_KEY #.env 사용
+    app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
 
     # from . import models
     api = Api(app)
     api.add_namespace(Auth, '/auth')
     api.add_namespace(Liquor, '/liquor')
+    
     return app
-
 
 if __name__ == "__main__":
     create_app().run(host='0.0.0.0', debug=True, )

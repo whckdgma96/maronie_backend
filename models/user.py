@@ -1,6 +1,7 @@
 from db_connect import db
 from sqlalchemy.orm import relationship
 
+#sqlalchemy xxver. 이상 추천 : back_populates
 class User(db.Model):
     __tablename__ = "user"
 
