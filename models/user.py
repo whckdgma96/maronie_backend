@@ -1,15 +1,14 @@
-from db_connect import db, Base
+from db_connect import db
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, ForeignKey
-from .liquor import Liquor
+# from .liquor import Liquor
 # from .liquor import Wishlist_cocktail, Wishlist_liquor, Done_liquor, Done_cocktail
 class User(db.Model):
     __tablename__ = "user"
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    email = db.Column(String(100),nullable=False, unique=True)
-    password = db.Column(String(256), nullable=False)
-    nickname = db.Column(String(45), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    email = db.Column(db.String(100),nullable=False, unique=True)
+    password = db.Column(db.String(256), nullable=False)
+    nickname = db.Column(db.String(45), nullable=False)
 
     wish_liquors = relationship("Wishlist_liquor", back_populates="wish_l_users")
 

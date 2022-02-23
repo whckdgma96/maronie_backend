@@ -1,4 +1,5 @@
 from flask import request,session
+import pymysql
 from models.user import User
 from models.liquor import *
 from db_connect import db

@@ -26,3 +26,4 @@ setuptools==       57.4.0
 six==              1.16.0
 SQLAlchemy==       1.4.31
 Werkzeug==         2.0.3
+python-dotenv==    0.19.2
