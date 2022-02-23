@@ -1,7 +1,6 @@
 from db_connect import db
 from sqlalchemy.orm import relationship
-# from .liquor import Liquor
-# from .liquor import Wishlist_cocktail, Wishlist_liquor, Done_liquor, Done_cocktail
+
 class User(db.Model):
     __tablename__ = "user"
 

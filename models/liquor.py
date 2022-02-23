@@ -1,7 +1,5 @@
 from sqlalchemy.orm import relationship
 from db_connect import db
-from .user import Wishlist_liquor
-# from .user import *
 
 class Classification(db.Model):
     __tablename__ = "classification"
