@@ -1,8 +1,8 @@
 from db_connect import db, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
+from .liquor import Liquor
 # from .liquor import Wishlist_cocktail, Wishlist_liquor, Done_liquor, Done_cocktail
-
 class User(db.Model):
     __tablename__ = "user"
 
@@ -11,33 +11,38 @@ class User(db.Model):
     password = db.Column(String(256), nullable=False)
     nickname = db.Column(String(45), nullable=False)
 
+    wish_liquors = relationship("Wishlist_liquor", back_populates="wish_l_users")
+
 class Wishlist_liquor(db.Model):
     __tablename__ = "wishlist_liquor"
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    user_id = db.Column(Integer, nullable=False)
-    liquor_id = db.Column(Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    liquor_id = db.Column(db.Integer, db.ForeignKey('liquor.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
 
-class Wishlist_cocktail(db.Model):
-    __tablename__ = "wishlist_cocktail"
+    wish_l_users = relationship("User", back_populates="wish_liquors")
+    liquors = relationship("Liquor", back_populates="wish_liquors")
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    cocktail_id = db.Column(Integer, nullable=False)
-    user_id = db.Column(Integer, nullable=False)
+# class Wishlist_cocktail(Base):
+#     __tablename__ = "wishlist_cocktail"
 
-class Done_liquor(db.Model):
-    __tablename__ = "done_liquor"
+#     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+#     cocktail_id = Column(Integer, nullable=False)
+#     user_id = Column(Integer, nullable=False)
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    liquor_id = db.Column(Integer, nullable=False)
-    user_id = db.Column(Integer, nullable=False)
+# class Donelist_liquor(Base):
+#     __tablename__ = "donelist_liquor"
 
-class Done_cocktail(db.Model):
-    __tablename__ = "done_cocktail"
+#     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+#     liquor_id = Column(Integer, nullable=False)
+#     user_id = Column(Integer, nullable=False)
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    cocktail_id = db.Column(Integer, nullable=False)
-    user_id = db.Column(Integer, nullable=False)
+# class Donelist_cocktail(Base):
+#     __tablename__ = "donelist_cocktail"
+
+#     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+#     cocktail_id = Column(Integer, nullable=False)
+#     user_id = Column(Integer, nullable=False)
 
 # class User(Base):
 #     __tablename__ = "user"
@@ -53,8 +58,8 @@ class Done_cocktail(db.Model):
 
 
 
-def init_db(): #to-do) 따로 파일로 빼기
-    db.create_all()
+# def init_db(): #to-do) 따로 파일로 빼기
+#     db.create_all()
     
-if __name__ == '__main__':
-    init_db()
+# if __name__ == '__main__':
+#     init_db()

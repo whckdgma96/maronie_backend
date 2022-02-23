@@ -1,10 +1,8 @@
 from flask import request,session
 from models.user import User
 from models.liquor import *
-# from flask_sqlalchemy import SQLAlchemy
+from db_connect import db
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
-import pymysql
-
 
 # 회원가입 유효성
 
