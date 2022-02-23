@@ -1,6 +1,5 @@
 from sqlalchemy.orm import relationship
-from db_connect import db, Base
-from sqlalchemy import Column, Integer, String, Float, Date
+from db_connect import db
 # from .user import *
 
 # ## N:M관계를 이렇게 만드는 것이 맞는지...
@@ -25,7 +24,8 @@ class Liquor(db.Model):
     image_path =db.Column(db.String(256), nullable=True)
     description =db.Column(db.String(500), nullable=True) 
     vendor =db.Column(db.String(100), nullable=True)
-    
+    rating = db.Column(db.Float, default=0)
+
     classifications = relationship("Classification", back_populates="liquors")
     wish_liquors = relationship("Wishlist_liquor", back_populates="liquors")
 #     # ''' Liquor : classification은 1:N관계. relationship을 여기에 정의하는 것이 맞나? '''
