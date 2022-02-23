@@ -49,8 +49,9 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   `image_path` VARCHAR(256) NULL,
   `description` VARCHAR(500) NOT NULL,
   `vendor` VARCHAR(100) NULL,
+  `rating` FLOAT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_classification_idx` (`classification_id` ASC),
+  INDEX `fk_classification_idx` (`classification_id` ASC) VISIBLE,
   CONSTRAINT `fk_liquor_classification`
     FOREIGN KEY (`classification_id`)
     REFERENCES `Liquor`.`classification` (`id`)
