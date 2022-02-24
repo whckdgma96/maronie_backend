@@ -6,7 +6,7 @@ from db_connect import db
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
 
 # 회원가입 유효성
-# try except로 바꾸기(처리속도 향상)
+# TO-DO: try except로 바꾸기(처리속도 향상)
 def idckeck(email:str):
     new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
     if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
@@ -21,7 +21,7 @@ def userRegister(email:str, nickname:str, password:str):
         db.session.commit()
         return {"message":"User Information saved"},200 #성공
     except:
-        return {"message":"fail"},500 #실패
+        return {"message":"Register Fail"},500 #실패
 
 # 로그인
 def userLogin(email: str, password:str):
