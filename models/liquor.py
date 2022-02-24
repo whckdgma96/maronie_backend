@@ -11,6 +11,7 @@ class Classification(db.Model):
     c_liquors = relationship("Liquor", back_populates="classifications")
     c_cocktails = relationship("By_liquor", back_populates="classifications")
 
+
 class Liquor(db.Model):
     __tablename__ = "liquor"
    
@@ -47,6 +48,7 @@ class Cocktail(db.Model):
     done_c = relationship("Donelist_cocktail", back_populates="done_c_info")
     base = relationship("By_liquor", back_populates="cocktails")
 
+
 class Review(db.Model):
     __tablename__ = "review"
 
@@ -59,6 +61,7 @@ class Review(db.Model):
 
     reviewed_users = relationship("User", back_populates="user_reviews")
     reviewed_liquors = relationship("Liquor", back_populates="liquor_reviews")
+
 
 class By_liquor(db.Model):
     __tablename__ = "by_liquor"

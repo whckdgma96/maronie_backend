@@ -16,6 +16,7 @@ class Menu(db.Model):
     image_path = db.Column(db.String(256))
     parings = relationship("Menu", back_populates="menus")
 
+
 class Paring(db.Model):
     __tablename__ = "paring"
     
