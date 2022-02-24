@@ -11,8 +11,13 @@ user_fields = Auth.model('User', {
     'nickname': fields.String(description='User Nickname', required=True, example="CCH")
 })
 
-# 회원가입 유효성
+#DTO
+registerDTO = Auth.model('User_register', {
+    'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
+    'password': fields.String(description='User Password', required=True, example="password"),
+})
 
+# 회원가입 유효성
 @Auth.route('/register/<string:email>')
 class AuthRegisterCheckId(Resource):
     @Auth.response(200, "Available email address")
@@ -23,10 +28,9 @@ class AuthRegisterCheckId(Resource):
         return authService.idckeck(email)
 
 # 회원가입 요청
-
 @Auth.route('/register')
 class AuthRegister(Resource):
-    @Auth.expect(user_fields)
+    @Auth.expect(registerDTO)
     # @Auth.response(200, "Available id")
     # @Auth.response(500, "Unavailable id")
     def post(self):
@@ -37,7 +41,6 @@ class AuthRegister(Resource):
         return authService.userRegister(email,nickname,password)
 
 # 로그인
-
 @Auth.route('/login')
 class AuthLogin(Resource):
     @Auth.expect(user_fields)
@@ -66,7 +69,6 @@ class AuthChangepw(Resource):
         return authService.changepw(email,nickname,new_password)
 
 # 로그아웃
-
 @Auth.route('/logout')
 class AuthLogout(Resource):
     def post(self):
