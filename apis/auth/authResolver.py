@@ -76,14 +76,15 @@ class AuthLogin(Resource):
 class AuthChangepw(Resource):
     @Auth.expect(changepwDTO)
     @Auth.response(200, "password Changed")
-    @Auth.response(404, "Not found")
-    @Auth.response(500, "password change fail")
+    @Auth.response(404, "Not Found")
+    @Auth.response(404, "Wrong Password")
+    @Auth.response(500, "Password Change Fail")
     def post(self):
         '''유저 비밀번호 변경하기'''
         email = request.json['email']
-        nickname = request.json['nickname']
-        new_password = request.json['password']
-        return authService.changepw(email,nickname,new_password)
+        new_password = request.json['new_password']
+        new_password_check = request.json['new_password_check']
+        return authService.changepw(email,new_password,new_password_check)
 
 # 로그아웃
 @Auth.route('/logout')

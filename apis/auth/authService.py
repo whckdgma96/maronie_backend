@@ -6,6 +6,7 @@ from db_connect import db
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
 
 # 회원가입 유효성
+# try except로 바꾸기(처리속도 향상)
 def idckeck(email:str):
     new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
     if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
@@ -44,22 +45,23 @@ def userLogin(email: str, password:str):
         },200
 
 #비밀번호 변경
-def changepw(email,nickname,new_password):
+def changepw(email,new_password,new_password_check):
     conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8') #숨기기
     cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = User.query.filter_by(email=email).first()
     sql = """UPDATE user SET password =%s WHERE nickname =%s"""
-    encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
+    
     if not saved_user: 
         return{
             "message":"User Not Found"
         },404
-    elif nickname != saved_user.nickname:
+    elif new_password != new_password_check:
         return{
-            "message":"User nickname isn't correct"
-        },500
+            "message":"Wrong Password"
+        },405
     else: 
+        encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
         cur.execute(sql, (encrypted_pw, saved_user.nickname))
         conn.commit()
         return {

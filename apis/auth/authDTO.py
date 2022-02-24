@@ -24,6 +24,6 @@ loginDTO = Auth.model('User_login', {
 })
 changepwDTO = Auth.model('pw_change', {
     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
-    'password': fields.String(description='New User Password', required=True, example="password"),
-    'nickname': fields.String(description='User Nickname', required=True, example="CCH")
+    'new_password': fields.String(description='New User Password', required=True, example="password2"),
+    'new_password_check': fields.String(description='New User Password check', required=True, example="password2"),
 })
