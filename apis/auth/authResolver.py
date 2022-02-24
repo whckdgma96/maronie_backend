@@ -1,25 +1,42 @@
-from flask_restx import Resource, Namespace,fields
+from flask_restx import Resource
 from flask import request
-
+from .authDTO import *
 from . import authService
 
-Auth = Namespace(name="auth", description="사용자 인증")
-user_fields = Auth.model('User', {
-    'id': fields.String(description='User Id', required=True, example="1234"),
-    'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
-    'password': fields.String(description='User Password', required=True, example="password"),
-    'nickname': fields.String(description='User Nickname', required=True, example="CCH")
-})
+# Auth = Namespace(name="auth", description="사용자 인증")
+# user_fields = Auth.model('User', {
+#     'id': fields.String(description='User Id', required=True, example="1234"),
+#     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
+#     'password': fields.String(description='User Password', required=True, example="password"),
+#     'nickname': fields.String(description='User Nickname', required=True, example="CCH")
+# })
 
-#DTO
-registerDTO = Auth.model('User_register', {
-    'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
-    'password': fields.String(description='User Password', required=True, example="password"),
-})
+# #DTO
+
+# # checkIdDTO = Auth.model('checkId',{
+# #     'email': fields.String(description='User Email', required=True, example="CCH@naver.com")
+# # }) #얜 안댐
+
+# registerDTO = Auth.model('User_register', {
+#     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
+#     'password': fields.String(description='User Password', required=True, example="password"),
+#     'nickname': fields.String(description='User Nickname', required=True, example="CCH")
+# })
+
+# loginDTO = Auth.model('User_login', {
+#     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
+#     'password': fields.String(description='User Password', required=True, example="password")
+# })
+# changepwDTO = Auth.model('pw_change', {
+#     'email': fields.String(description='User Email', required=True, example="CCH@naver.com"),
+#     'password': fields.String(description='New User Password', required=True, example="password"),
+#     'nickname': fields.String(description='User Nickname', required=True, example="CCH")
+# })
 
 # 회원가입 유효성
 @Auth.route('/register/<string:email>')
 class AuthRegisterCheckId(Resource):
+    # @Auth.expect(checkIdDTO)
     @Auth.response(200, "Available email address")
     @Auth.response(404, "Not found")
     @Auth.response(500, "Unavailable email address")
@@ -43,7 +60,7 @@ class AuthRegister(Resource):
 # 로그인
 @Auth.route('/login')
 class AuthLogin(Resource):
-    @Auth.expect(user_fields)
+    @Auth.expect(loginDTO)
     @Auth.response(200, "login Success")
     @Auth.response(404, "Not found")
     @Auth.response(500, "login Failed")
@@ -57,7 +74,7 @@ class AuthLogin(Resource):
 
 @Auth.route('/changepw')
 class AuthChangepw(Resource):
-    @Auth.expect(user_fields)
+    @Auth.expect(changepwDTO)
     @Auth.response(200, "password Changed")
     @Auth.response(404, "Not found")
     @Auth.response(500, "password change fail")

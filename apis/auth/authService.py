@@ -13,12 +13,14 @@ def idckeck(email:str):
 
 # 회원가입 요청
 def userRegister(email:str, nickname:str, password:str):
-    
     encrypted_pw = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
-    new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
-    db.session.add(new_user)
-    db.session.commit()
-    return {"message":"User Information saved"},200 #성공
+    try:
+        new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
+        db.session.add(new_user)
+        db.session.commit()
+        return {"message":"User Information saved"},200 #성공
+    except:
+        return {"message":"fail"},500 #실패
 
 # 로그인
 def userLogin(email: str, password:str):
@@ -37,7 +39,6 @@ def userLogin(email: str, password:str):
     else: 
         session['login'] = saved_user.email
         return {
-            # "message": "login Success ",
             "name":saved_user.nickname,
             "email":saved_user.email
         },200
