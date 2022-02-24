@@ -22,6 +22,7 @@ class Wishlist_liquor(db.Model):
     wish_l_users = relationship("User", back_populates="wish_liquors")
     liquors = relationship("Liquor", back_populates="wish_liquors")
 
+
 # class Wishlist_cocktail(Base):
 #     __tablename__ = "wishlist_cocktail"
 
