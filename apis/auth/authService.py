@@ -1,4 +1,4 @@
-from flask import request,session
+from flask import session
 import pymysql
 from models.user import User
 from models.liquor import *
