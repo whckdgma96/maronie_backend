@@ -73,9 +73,15 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`cocktail` (
   `image_path` VARCHAR(256) NULL,
   `level` FLOAT NOT NULL,
   `description` VARCHAR(500) NOT NULL,
-  PRIMARY KEY (`id`))
+  `author_id` INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  INDEX `fk_cocktail_user_idx` (`author_id` ASC) VISIBLE,
+  CONSTRAINT `fk_cocktail_user`
+    FOREIGN KEY (`author_id`)
+    REFERENCES `Liquor`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `Liquor`.`review`
