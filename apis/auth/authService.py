@@ -4,6 +4,8 @@ from models.user import User
 from models.liquor import *
 from db_connect import db
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
+from .authDTO import *
+
 
 # 회원가입 유효성
 # TO-DO: try except로 바꾸기(처리속도 향상)
@@ -40,7 +42,7 @@ def userLogin(email: str, password:str):
     else: 
         session['login'] = saved_user.email
         return {
-            "name":saved_user.nickname,
+            "nickname":saved_user.nickname,
             "email":saved_user.email
         },200
 
