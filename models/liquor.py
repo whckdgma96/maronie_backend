@@ -22,7 +22,7 @@ class Liquor(db.Model):
     price = db.Column(db.Integer)
     image_path = db.Column(db.String(256))
     description = db.Column(db.String(500), nullable=False) 
-    vendor = db.Column(db.String(100))
+    vendor = db.Column(db.String(256))
     rating = db.Column(db.Float, nullable=False, default=0)
 
     classifications = relationship("Classification", back_populates="c_liquors")
