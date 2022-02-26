@@ -1,77 +1,74 @@
 from sqlalchemy.orm import relationship
-from db_connect import db, Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, Date
-from .user import *
+from db_connect import db
 
-## N:M관계를 이렇게 만드는 것이 맞는지...
-# By_liquor = db.Table('by_liquor',
-#     Column('cocktail_id', db.Integer, db.ForeignKey('cocktail.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True),
-#     Column('classification_id', db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
-# )
-
-# Paring = db.Table('paring',
-#     Column('menu_id', db.Integer, db.ForeignKey('menu.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True),
-#     Column('classification_id', db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
-# )
-
-class Liquor(db.Model):
-    __tablename__ = "liquor"
-   
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    liquor_name =db.Column(String(100), nullable=False)
-    classification_id = db.Column(Integer, nullable=False)
-    alcohol =db.Column(Float, nullable=True)
-    price =db.Column(Integer, nullable=True)
-    image_path = db.Column(String(256), nullable=True)
-    description = db.Column(String(500), nullable=True) 
-    vendor = db.Column(String(100), nullable=True)
-
-    # ''' Liquor : classification은 1:N관계. relationship을 여기에 정의하는 것이 맞나? '''
-    # # classification=relationship('Classification') 
-    # classifications=relationship('Classification', backref=db.backref('liquor_set')) #backref 설정 해주어야 하나?
-    # wish_liquor = relationship('Wishlist_liquor', secondary=Wishlist_liquor.__tablename__ , back_populates='liquor') #N:M
-    # done_liquor = relationship('Done_liquor', secondary=Done_liquor.__tablename__ , back_populates='liquor') #N:M 
-      
-
-class Cocktail(db.Model):
-    __tablename__ = "cocktail"
-   
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    cocktail_name = db.Column(String(100), nullable=False)
-    alcohol = db.Column(Float, nullable=True)
-    ingredients = db.Column(String(100), nullable=False) 
-    recipe = db.Column(String(500), nullable=False) 
-    heart = db.Column(Integer, default=0, nullable=False)
-    level = db.Column(Float, nullable=False)
-    image_path = db.Column(String(100), nullable=True)
-    description = db.Column(String(500), nullable=False) 
-
-    # classifications = relationship('Classification', secondary=By_liquor.__tablename__ , back_populates='cocktail') #N:M
-    # wish_cocktail = relationship('Wishlist_cocktail', secondary=Wishlist_cocktail.__tablename__ , back_populates='cocktail') #N:M
-    # done_cocktail = relationship('Done_cocktail', secondary=Done_cocktail.__tablename__ , back_populates='cocktail') #N:M 
-
-class Review(db.Model):
-    __tablename__ = "review"
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    user_id = db.Column(Integer, nullable=False )
-    liquor_id = db.Column(Integer, nullable=False )
-    content = db.Column(String(200), nullable=False)
-    rating = db.Column(Float, nullable=False)
-    review_date = db.Column(Date, nullable=True)
 
 class Classification(db.Model):
     __tablename__ = "classification"
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    classification = db.Column(String(45), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    classification = db.Column(db.String(45), nullable=False)
     
-    # menus = relationship('Menu', secondary=Paring.__tablename__ , back_populates='classification') #N:M
-    # cocktails = relationship('Cocktail', secondary=By_liquor.__tablename__ , back_populates='classification') #N:M
+    c_liquors = relationship("Liquor", back_populates="classifications")
+    c_cocktails = relationship("By_liquor", back_populates="classifications")
+
+
+class Liquor(db.Model):
+    __tablename__ = "liquor"
+   
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    liquor_name = db.Column(db.String(100), nullable=False)
+    classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    alcohol = db.Column(db.Float)
+    price = db.Column(db.Integer)
+    image_path = db.Column(db.String(256))
+    description = db.Column(db.String(500), nullable=False) 
+    vendor = db.Column(db.String(256))
+    rating = db.Column(db.Float, nullable=False, default=0)
+
+    classifications = relationship("Classification", back_populates="c_liquors")
+    liquor_reviews = relationship("Review", back_populates="reviewed_liquors")
+    wish_l = relationship("Wishlist_liquor", back_populates="wish_l_info")
+    done_l = relationship("Donelist_liquor", back_populates="done_l_info")
+
+
+class Cocktail(db.Model):
+    __tablename__ = "cocktail"
+   
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cocktail_name = db.Column(db.String(100), nullable=False)
+    alcohol = db.Column(db.Float)
+    ingredients = db.Column(db.String(100), nullable=False) 
+    recipe = db.Column(db.String(500), nullable=False) 
+    heart = db.Column(db.Integer, default=0, nullable=False)
+    level = db.Column(db.Float, nullable=False)
+    image_path = db.Column(db.String(256))
+    description = db.Column(db.String(500), nullable=False) 
+
+    wish_c = relationship("Wishlist_cocktail", back_populates="wish_c_info")
+    done_c = relationship("Donelist_cocktail", back_populates="done_c_info")
+    base = relationship("By_liquor", back_populates="cocktails")
+
+
+class Review(db.Model):
+    __tablename__ = "review"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False )
+    liquor_id = db.Column(db.Integer, db.ForeignKey('liquor.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False )
+    content = db.Column(db.String(200), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    review_date = db.Column(db.Date)
+
+    reviewed_users = relationship("User", back_populates="user_reviews")
+    reviewed_liquors = relationship("Liquor", back_populates="liquor_reviews")
+
 
 class By_liquor(db.Model):
     __tablename__ = "by_liquor"
 
-    id = db.Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    cocktail_id = db.Column(Integer, nullable=False)
-    classification_id = db.Column(Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cocktail_id = db.Column(db.Integer, db.ForeignKey('cocktail.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
 
+    classifications = relationship("Classification", back_populates="c_cocktails")
+    cocktails = relationship("Cocktail", back_populates="base")
