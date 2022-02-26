@@ -33,7 +33,7 @@ def cocktail_detail_view(cocktail_name:str):
     if cocktail:
         return {
             "id":cocktail.id,
-            "ingredient":cocktail.ingredient,
+            "ingredient":cocktail.ingredients,
             "recipe" : cocktail.recipe,
             "level":cocktail.level,
             "description" : cocktail.description
