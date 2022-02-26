@@ -8,7 +8,7 @@ Auth = Namespace(name="auth", description="사용자 인증")
 #     'nickname': fields.String(description='User Nickname', required=True, example="CCH")
 # })
 
-checkIdDTO = Auth.model('checkId',{
+checkIdDTO = Auth.model('checkId', {
     'email': fields.String(description='User Email', required=True, example="CCH@naver.com")
 }) #얜 안댐
 
@@ -27,3 +27,4 @@ changepwDTO = Auth.model('pw_change', {
     'new_password': fields.String(description='New User Password', required=True, example="password2"),
     'new_password_check': fields.String(description='New User Password check', required=True, example="password2"),
 })
+
