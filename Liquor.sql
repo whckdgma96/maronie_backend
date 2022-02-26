@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   `price` INT NULL,
   `image_path` VARCHAR(256) NULL,
   `description` VARCHAR(500) NOT NULL,
-  `vendor` VARCHAR(100) NULL,
+  `vendor` VARCHAR(256) NULL,
   `rating` FLOAT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_classification_idx` (`classification_id` ASC) VISIBLE,
