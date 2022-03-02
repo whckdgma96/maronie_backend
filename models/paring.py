@@ -14,7 +14,7 @@ class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     menu_name = db.Column(db.String(50), nullable=False)
     image_path = db.Column(db.String(256))
-    parings = relationship("Menu", back_populates="menus")
+    parings = relationship("Paring", back_populates="menus")
 
 
 class Paring(db.Model):
@@ -23,4 +23,4 @@ class Paring(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    menus = relationship("Paring", back_populates="parings")
+    menus = relationship("Menu", back_populates="parings")
