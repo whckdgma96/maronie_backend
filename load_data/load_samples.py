@@ -48,14 +48,14 @@ for row in df_classification.itertuples():
 
 '''liquor'''
 for row in df_liquor.itertuples():
-		cur.execute('''INSERT INTO liquor (liquor_name, classification_id, alcohol, price, image_path, description, rating, vendor) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', [row.liquor_name, row.classification_id, row.alcohol, row.price, row.image_path, row.description, row.rating, row.vendor])
+		cur.execute('''INSERT INTO liquor (liquor_name, liquor_name_kor, classification_id, alcohol, price, image_path, description, rating, vendor) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.liquor_name, row.liquor_name_kor, row.classification_id, row.alcohol, row.price, row.image_path, row.description, row.rating, row.vendor])
 
 '''cocktail'''
 #author_id, heart는 default value로 한다.
 for row in df_cocktail.itertuples():
-		cur.execute('''INSERT INTO cocktail (cocktail_name, alcohol, image_path, description, level, ingredients, recipe) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.alcohol, row.image_path, row.description, row.level, row.ingredients, row.recipe])
+		cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, alcohol, image_path, description, level, ingredients, recipe) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.alcohol, row.image_path, row.description, row.level, row.ingredients, row.recipe])
 
 '''by_liquor'''
 for row in df_byLiquor.itertuples():
