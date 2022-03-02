@@ -2,7 +2,7 @@
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema Liquor
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`user` (
   `password` VARCHAR(256) NOT NULL,
   `nickname` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -43,6 +43,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Liquor`.`liquor` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `liquor_name` VARCHAR(100) NOT NULL,
+  `liquor_name_kor` VARCHAR(45) NOT NULL,
   `classification_id` INT NOT NULL,
   `alcohol` FLOAT NULL,
   `price` INT NULL,
@@ -66,10 +67,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Liquor`.`cocktail` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `cocktail_name` VARCHAR(100) NOT NULL,
+  `cocktail_name_kor` VARCHAR(45) NOT NULL,
   `alcohol` FLOAT NULL,
   `ingredients` VARCHAR(100) NOT NULL,
   `recipe` VARCHAR(500) NOT NULL,
-  `heart` INT NOT NULL DEFAULT 0,
   `image_path` VARCHAR(256) NULL,
   `level` FLOAT NOT NULL,
   `description` TEXT NOT NULL,
@@ -83,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`cocktail` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `Liquor`.`review`
 -- -----------------------------------------------------
@@ -94,8 +96,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`review` (
   `content` VARCHAR(200) NOT NULL,
   `review_date` DATE NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_review_user_idx` (`user_id` ASC),
-  INDEX `fk_review_liquor_idx` (`liquor_id` ASC),
+  INDEX `fk_review_user_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_review_liquor_idx` (`liquor_id` ASC) VISIBLE,
   CONSTRAINT `fk_review_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
@@ -127,8 +129,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `classification_id` INT NOT NULL,
   `cocktail_id` INT NOT NULL,
-  INDEX `fk_by_l_classification_idx` (`classification_id` ASC),
-  INDEX `fk_by_l_cocktail_idx` (`cocktail_id` ASC),
+  INDEX `fk_by_l_classification_idx` (`classification_id` ASC) VISIBLE,
+  INDEX `fk_by_l_cocktail_idx` (`cocktail_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_by_l_cocktail`
     FOREIGN KEY (`cocktail_id`)
@@ -150,8 +152,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`paring` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `menu_id` INT NOT NULL,
   `classification_id` INT NOT NULL,
-  INDEX `fk_paring_classification_idx` (`classification_id` ASC),
-  INDEX `fk_paring_menu_idx` (`menu_id` ASC),
+  INDEX `fk_paring_classification_idx` (`classification_id` ASC) VISIBLE,
+  INDEX `fk_paring_menu_idx` (`menu_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_paring_menu`
     FOREIGN KEY (`menu_id`)
@@ -174,8 +176,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_liquor` (
   `liquor_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_l_liquor_idx` (`liquor_id` ASC),
-  INDEX `fk_wishlist_l_user_idx` (`user_id` ASC),
+  INDEX `fk_wishlist_l_liquor_idx` (`liquor_id` ASC) VISIBLE,
+  INDEX `fk_wishlist_l_user_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_wishlist_l_liquor`
     FOREIGN KEY (`liquor_id`)
     REFERENCES `Liquor`.`liquor` (`id`)
@@ -197,8 +199,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`donelist_liquor` (
   `liquor_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_donelist_l_user_idx` (`user_id` ASC),
-  INDEX `fk_donelist_l_liquor_idx` (`liquor_id` ASC),
+  INDEX `fk_donelist_l_user_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_donelist_l_liquor_idx` (`liquor_id` ASC) VISIBLE,
   CONSTRAINT `fk_donelist_l_liquor`
     FOREIGN KEY (`liquor_id`)
     REFERENCES `Liquor`.`liquor` (`id`)
@@ -220,8 +222,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`donelist_cocktail` (
   `cocktail_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_donelist_c_user_idx` (`user_id` ASC),
-  INDEX `fk_donelist_c_cocktail_idx` (`cocktail_id` ASC),
+  INDEX `fk_donelist_c_user_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_donelist_c_cocktail_idx` (`cocktail_id` ASC) VISIBLE,
   CONSTRAINT `fk_donelist_c_cocktail`
     FOREIGN KEY (`cocktail_id`)
     REFERENCES `Liquor`.`cocktail` (`id`)
@@ -243,8 +245,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`wishlist_cocktail` (
   `cocktail_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_c_user_idx` (`user_id` ASC),
-  INDEX `fk_wishlist_c_cocktail_idx` (`cocktail_id` ASC),
+  INDEX `fk_wishlist_c_user_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_wishlist_c_cocktail_idx` (`cocktail_id` ASC) VISIBLE,
   CONSTRAINT `fk_wishlist_c_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `Liquor`.`user` (`id`)
