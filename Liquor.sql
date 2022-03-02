@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`user` (
   `password` VARCHAR(256) NOT NULL,
   `nickname` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `nickname_UNIQUE` (`nickname` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
