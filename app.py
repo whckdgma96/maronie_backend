@@ -25,7 +25,6 @@ def create_app():
     app.secret_key = config.SECRET_KEY #.env 사용
     app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
 
-    # from . import models
     api = Api(app)
     api.add_namespace(Auth, '/auth')
     api.add_namespace(Liquor, '/liquor')

@@ -3,7 +3,6 @@ from . import searchService
 from .searchDTO import *
 
 
-
 # 술 이름으로 검색
 @Search.route('/<string:keyword>')
 class search_keyword(Resource):

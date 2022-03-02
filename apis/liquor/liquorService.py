@@ -15,8 +15,7 @@ from models.paring import Menu, Paring
 #     else: 
 #         return {"message":"Not found"},404
 
-# 술 상세페이지 id로 조회
-
+'''
 def liquor_detail_view(liquor_id:int):
     liquor = Liquor.query.filter_by(id = liquor_id).first()
     by_liquor = By_liquor.query.filter_by(classification_id = liquor.classification_id).first()
@@ -36,6 +35,18 @@ def liquor_detail_view(liquor_id:int):
             "paring":[{"menu":menu.menu_name,"menu_image":menu.image_path}],
             "cocktail":[{'cocktail_name':cocktail.cocktail_name, "cocktail_image":cocktail.image_path}],
         },200 #성공
+    else: 
+        return {"message":"Not found"},404
+'''
+# 술 상세페이지 id로 조회
+def liquor_detail_view(liquor_id:int):
+    liquor = Liquor.query.filter_by(id = liquor_id).first()
+    by_liquor = By_liquor.query.filter_by(classification_id = liquor.classification_id).all()
+    paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
+
+    result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : by_liquor }
+    if liquor:
+        return result,200 #성공
     else: 
         return {"message":"Not found"},404
 

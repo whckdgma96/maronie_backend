@@ -1,5 +1,6 @@
-import json
-import pandas as pd
+from distutils.log import error
+# import json
+# import pandas as pd
 from models.liquor import Liquor
 from models.liquor import Cocktail
 from .searchDTO import *
@@ -39,4 +40,7 @@ def search_keyword(keyword:str):
     try:
         return result, 200
     except:
+        #에러 종류 프린트
+        #better : flask logger
+        print(error)
         return 500
