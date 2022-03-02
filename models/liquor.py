@@ -17,6 +17,7 @@ class Liquor(db.Model):
    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     liquor_name = db.Column(db.String(100), nullable=False)
+    liquor_name_kor = db.Column(db.String(45), nullable=False)
     classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     alcohol = db.Column(db.Float)
     price = db.Column(db.Integer)
@@ -36,6 +37,7 @@ class Cocktail(db.Model):
    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     cocktail_name = db.Column(db.String(100), nullable=False)
+    cocktail_name_kor = db.Column(db.String(45), nullable=False)
     alcohol = db.Column(db.Float)
     ingredients = db.Column(db.String(100), nullable=False) 
     recipe = db.Column(db.String(500), nullable=False) 
