@@ -50,26 +50,5 @@ class liquor_detailPage(Resource):
         '''칵테일 id로 정보 조회'''
         return liquorService.cocktail_detail_view(cocktail_id)
 
-# 술 이름으로 검색
-@Liquor.route('/search/<string:liquor_name>')
-class liquor_detailPage(Resource):
-    @Liquor.response(200, "Liquor exist")
-    @Liquor.response(404, "Not found")
-    @Liquor.response(500, "Liquor doesn't exist")
-    def get(self,liquor_name):
-        '''술 이름으로 정보 조회'''
-        return liquorService.liquor_search_text(liquor_name)
-
-# 칵테일 이름으로 검색
-@Cocktail.route('/search/<string:cocktail_name>')
-class liquor_detailPage(Resource):
-    @Liquor.response(200, "Available cocktail_name")
-    @Liquor.response(404, "Not found")
-    @Liquor.response(500, "Unavailable cocktail_name")
-    def get(self,cocktail_name):
-        '''칵테일 이름으로 정보 조회'''
-        return liquorService.cocktail_search_text(cocktail_name)
-
-
 
 

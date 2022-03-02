@@ -8,7 +8,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
-    nickname = db.Column(db.String(45), nullable=False)
+    nickname = db.Column(db.String(45), nullable=False, unique=True)
 
     wish_liquors = relationship("Wishlist_liquor", back_populates="wish_l_users")
     wish_cocktails = relationship("Wishlist_cocktail", back_populates="wish_c_users")

@@ -41,7 +41,6 @@ class Cocktail(db.Model):
     alcohol = db.Column(db.Float)
     ingredients = db.Column(db.String(100), nullable=False) 
     recipe = db.Column(db.String(500), nullable=False) 
-    heart = db.Column(db.Integer, default=0, nullable=False)
     level = db.Column(db.Float, nullable=False)
     image_path = db.Column(db.String(256))
     description = db.Column(db.Text, nullable=False) 
@@ -60,7 +59,6 @@ class Review(db.Model):
     content = db.Column(db.String(200), nullable=False)
     rating = db.Column(db.Float, nullable=False)
     review_date = db.Column(db.Date)
-
     reviewed_users = relationship("User", back_populates="user_reviews")
     reviewed_liquors = relationship("Liquor", back_populates="liquor_reviews")
 
