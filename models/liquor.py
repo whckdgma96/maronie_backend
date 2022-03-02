@@ -21,7 +21,7 @@ class Liquor(db.Model):
     alcohol = db.Column(db.Float)
     price = db.Column(db.Integer)
     image_path = db.Column(db.String(256))
-    description = db.Column(db.String(500), nullable=False) 
+    description = db.Column(db.Text, nullable=False) 
     vendor = db.Column(db.String(256))
     rating = db.Column(db.Float, nullable=False, default=0)
 
@@ -42,7 +42,7 @@ class Cocktail(db.Model):
     heart = db.Column(db.Integer, default=0, nullable=False)
     level = db.Column(db.Float, nullable=False)
     image_path = db.Column(db.String(256))
-    description = db.Column(db.String(500), nullable=False) 
+    description = db.Column(db.Text, nullable=False) 
 
     wish_c = relationship("Wishlist_cocktail", back_populates="wish_c_info")
     done_c = relationship("Donelist_cocktail", back_populates="done_c_info")
