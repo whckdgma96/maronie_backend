@@ -3,8 +3,8 @@ from flask import request
 from .authDTO import *
 from . import authService
 
-# 회원가입 유효성
-@Auth.route('/register/<string:email>')
+# 회원가입 email 유효성 검사
+@Auth.route('/register/email=<string:email>')
 class AuthRegisterCheckId(Resource):
     # @Auth.expect(checkIdDTO)
     @Auth.response(200, "Available email address")
@@ -14,12 +14,23 @@ class AuthRegisterCheckId(Resource):
         '''회원가입시 ID유효성 검사'''
         return authService.idckeck(email)
 
+# 회원가입 nickname 유효성 검사
+@Auth.route('/register/nickname=<string:nickname>')
+class AuthRegisterCheckNickname(Resource):
+    # @Auth.expect(checkIdDTO)
+    @Auth.response(200, "Available nickname")
+    @Auth.response(404, "Not found")
+    @Auth.response(500, "Unavailable nickname")
+    def get(self,nickname):
+        '''회원가입시 ID유효성 검사'''
+        return authService.nicknameckeck(nickname)
+
 # 회원가입 요청
 @Auth.route('/register')
 class AuthRegister(Resource):
     @Auth.expect(registerDTO)
-    # @Auth.response(200, "Available id")
-    # @Auth.response(500, "Unavailable id")
+    @Auth.response(201, "User Information saved")
+    @Auth.response(500, "Register Failed")
     def post(self):
         '''회원가입 성공시 DB에 저장'''
         email = request.json['email']
@@ -45,7 +56,7 @@ class AuthLogin(Resource):
 @Auth.route('/changepw')
 class AuthChangepw(Resource):
     @Auth.expect(changepwDTO)
-    @Auth.response(200, "password Changed")
+    @Auth.response(201, "password Changed")
     @Auth.response(404, "Not Found")
     @Auth.response(404, "Wrong Password")
     @Auth.response(500, "Password Change Fail")

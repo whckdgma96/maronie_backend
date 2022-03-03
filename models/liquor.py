@@ -59,6 +59,7 @@ class Review(db.Model):
     content = db.Column(db.String(200), nullable=False)
     rating = db.Column(db.Float, nullable=False)
     review_date = db.Column(db.Date)
+
     reviewed_users = relationship("User", back_populates="user_reviews")
     reviewed_liquors = relationship("Liquor", back_populates="liquor_reviews")
 
