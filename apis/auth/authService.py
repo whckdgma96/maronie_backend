@@ -7,12 +7,18 @@ import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
 from .authDTO import *
 
 
-# 회원가입 유효성
+# 회원가입 email 유효성 검사
 # TO-DO: try except로 바꾸기(처리속도 향상)
 def idckeck(email:str):
     new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
     if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
     else: return {"message":"Available email"},200
+
+# 회원가입 nickname 유효성 검사
+def nicknameckeck(nickname:str):
+    new_user = User.query.filter_by(nickname=nickname).first() # id 가 동일한 유저의 정보 저장
+    if new_user: return {"message":"Unavailable nickname"},500 #결과값이 있다면 = 등록된 유저
+    else: return {"message":"Available nickname"},200
 
 # 회원가입 요청
 def userRegister(email:str, nickname:str, password:str):
