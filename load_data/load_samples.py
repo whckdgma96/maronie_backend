@@ -31,8 +31,21 @@ for table in tables:
 # cur.execute('''SET foreign_key_checks = 1''') #외래키 해제 다시 복구
 
 '''User 테이블에 id 1번으로 admin 유저 넣기'''
-encrypted_pw = bcrypt.hashpw(os.getenv('ADMIN_USER_PASSWORD').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw = bcrypt.hashpw(os.getenv('USER_PASSWORD1').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw1 = bcrypt.hashpw(os.getenv('USER_PASSWORD1').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw2 = bcrypt.hashpw(os.getenv('USER_PASSWORD2').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw3 = bcrypt.hashpw(os.getenv('USER_PASSWORD3').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw4 = bcrypt.hashpw(os.getenv('USER_PASSWORD4').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw5 = bcrypt.hashpw(os.getenv('USER_PASSWORD5').encode('utf-8'),bcrypt.gensalt())
+encrypted_pw6 = bcrypt.hashpw(os.getenv('USER_PASSWORD6').encode('utf-8'),bcrypt.gensalt())
+
 cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('ADMIN_USER_EMAIL'), encrypted_pw, "admin_Maronie"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER1_EMAIL'), encrypted_pw, "CCH"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER2_EMAIL'), encrypted_pw, "PDH"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER3_EMAIL'), encrypted_pw, "KWH"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER4_EMAIL'), encrypted_pw, "CJW"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER5_EMAIL'), encrypted_pw, "KJS"])
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER6_EMAIL'), encrypted_pw, "KSG"])
 
 # Opening csv files
 df_classification = pd.read_csv('classification_sample.csv',keep_default_na=False) #keep_default_na=False : NaN->None로 바꾸기. None은 db에서 null로 인식된다
@@ -41,6 +54,11 @@ df_cocktail = pd.read_csv('cocktail_sample.csv',keep_default_na=False)
 df_byLiquor = pd.read_csv('by_liquor_sample.csv',keep_default_na=False)
 df_menu = pd.read_csv('menu_sample.csv',keep_default_na=False)
 df_paring = pd.read_csv('paring_sample.csv',keep_default_na=False)
+
+df_wishlist_cocktail = pd.read_csv('wishlist_cocktail_sample.csv',keep_default_na=False)
+df_wishlist_liquor = pd.read_csv('wishlist_liquor_sample.csv',keep_default_na=False)
+df_donelist_cocktail = pd.read_csv('donelist_cocktail_sample.csv',keep_default_na=False)
+df_donelist_liquor = pd.read_csv('donelist_liquor_sample.csv',keep_default_na=False)
 
 '''classification'''
 for row in df_classification.itertuples():
@@ -72,6 +90,25 @@ for row in df_paring.itertuples():
 		cur.execute('''INSERT INTO paring (menu_id, classification_id) 
 		VALUES(%s, %s)''', [row.menu_id, row.classification_id])
 
+'''donelist_cocktail'''
+for row in df_donelist_cocktail.itertuples():
+		cur.execute('''INSERT INTO donelist_cocktail (id, cocktail_id,user_id) 
+		VALUES(%s, %s, %s)''', [row.id, row.cocktail_id, row.user_id])
+
+'''donelist_liquor'''
+for row in df_donelist_liquor.itertuples():
+		cur.execute('''INSERT INTO donelist_liquor (id, liquor_id,user_id) 
+		VALUES(%s, %s, %s)''', [row.id, row.liquor_id, row.user_id])
+
+'''wishlist_cocktail'''
+for row in df_wishlist_cocktail.itertuples():
+		cur.execute('''INSERT INTO wishlist_cocktail (id, cocktail_id,user_id) 
+		VALUES(%s, %s, %s)''', [row.id, row.cocktail_id, row.user_id])
+
+'''wishlist_liquor'''
+for row in df_wishlist_liquor.itertuples():
+		cur.execute('''INSERT INTO wishlist_liquor (id, liquor_id,user_id) 
+		VALUES(%s, %s, %s)''', [row.id, row.liquor_id, row.user_id])
 #Committing the changes
 conn.commit()
 
