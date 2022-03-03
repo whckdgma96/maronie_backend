@@ -54,12 +54,11 @@ df_cocktail = pd.read_csv('cocktail_sample.csv',keep_default_na=False)
 df_byLiquor = pd.read_csv('by_liquor_sample.csv',keep_default_na=False)
 df_menu = pd.read_csv('menu_sample.csv',keep_default_na=False)
 df_paring = pd.read_csv('paring_sample.csv',keep_default_na=False)
-
 df_wishlist_cocktail = pd.read_csv('wishlist_cocktail_sample.csv',keep_default_na=False)
 df_wishlist_liquor = pd.read_csv('wishlist_liquor_sample.csv',keep_default_na=False)
 df_donelist_cocktail = pd.read_csv('donelist_cocktail_sample.csv',keep_default_na=False)
 df_donelist_liquor = pd.read_csv('donelist_liquor_sample.csv',keep_default_na=False)
-
+df_review = pd.read_csv('review_sample.csv',keep_default_na=False, encoding='cp949')
 '''classification'''
 for row in df_classification.itertuples():
 		cur.execute('''INSERT INTO classification (classification) VALUES(%s)''', [row.classification])
@@ -109,6 +108,12 @@ for row in df_wishlist_cocktail.itertuples():
 for row in df_wishlist_liquor.itertuples():
 		cur.execute('''INSERT INTO wishlist_liquor (id, liquor_id,user_id) 
 		VALUES(%s, %s, %s)''', [row.id, row.liquor_id, row.user_id])
+
+'''review'''
+for row in df_review.itertuples():
+		cur.execute('''INSERT INTO review (id, user_id, liquor_id, rating, content, review_date) 
+		VALUES(%s,%s,%s,%s,%s,%s)''', [row.id, row.user_id, row.liquor_id, row.rating, row.content, row.review_date])
+
 #Committing the changes
 conn.commit()
 
