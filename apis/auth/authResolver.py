@@ -43,7 +43,6 @@ class AuthRegister(Resource):
 class AuthLogin(Resource):
     @Auth.expect(loginDTO)
     @Auth.response(200, "login Success",login_response)
-    @Auth.response(404, "Not found")
     @Auth.response(500, "login Failed")
     @Auth.marshal_with(login_response)
     def post(self):

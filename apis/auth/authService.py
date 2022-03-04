@@ -38,11 +38,11 @@ def userLogin(email: str, password:str):
     #유효하지 않은 ID
     if not saved_user: return{
             "message": "User Not Found"
-        }, 404
+        }, 500
     # 비밀번호 미일치
     elif not bcrypt.checkpw(password.encode("utf-8"),saved_user.password.encode("utf-8") ):
         return {
-            "message": "Auth Failed"
+            "message": "Auth Failed(Wrong password)"
         }, 500
     # 모두 일치
     else: 
@@ -60,11 +60,11 @@ def changepw(email,new_password,new_password_check):
     if not saved_user: 
         return{
             "message":"User Not Found"
-        },500
+        },404
     elif new_password != new_password_check:
         return{
             "message":"Wrong Password"
-        },500
+        },405
     else: 
         encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
         cur.execute(sql, (encrypted_pw, saved_user.nickname))
