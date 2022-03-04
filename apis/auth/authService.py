@@ -27,9 +27,9 @@ def userRegister(email:str, nickname:str, password:str):
         new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
         db.session.add(new_user)
         db.session.commit()
-        return {"message":"User Information saved"},200 #성공
+        return {"message":"User Information saved"},201 #성공
     except:
-        return {"message":"Register Fail"},500 #실패
+        return {"message":"Register Failed"},500 #실패
 
 # 로그인
 def userLogin(email: str, password:str):
@@ -74,7 +74,7 @@ def changepw(email,new_password,new_password_check):
         conn.commit()
         return {
             "message":"password changed"
-        },200
+        },201
 
 # 로그아웃
 def userLogout():
