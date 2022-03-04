@@ -46,7 +46,7 @@ class liquor_detailPage(Resource):
     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
     @Cocktail.response(404, "Not found")
     @Cocktail.response(500, "Unavailable cocktail_id")
-    @Cocktail.marshal_with(cocktail_detail_response, mask=False)
+    @Cocktail.marshal_with(cocktail_detail_response , mask=False)
     def get(self,cocktail_id):
         '''칵테일 id로 정보 조회'''
         return liquorService.cocktail_detail_view(cocktail_id)
