@@ -1,4 +1,4 @@
-from flask import session
+from flask import abort, session
 import pymysql
 from models.user import User
 from models.liquor import *
@@ -36,14 +36,11 @@ def userLogin(email: str, password:str):
     saved_user = User.query.filter_by(email=email).first()
     
     #유효하지 않은 ID
-    if not saved_user: return{
-            "message": "User Not Found"
-        }, 500
+    if not saved_user: 
+        abort(500, "User Not Found")
     # 비밀번호 미일치
     elif not bcrypt.checkpw(password.encode("utf-8"),saved_user.password.encode("utf-8") ):
-        return {
-            "message": "Auth Failed(Wrong password)"
-        }, 500
+        abort(500, "Auth Failed(Wrong password)")
     # 모두 일치
     else: 
         session['login'] = saved_user.email

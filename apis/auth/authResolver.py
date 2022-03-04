@@ -44,7 +44,7 @@ class AuthLogin(Resource):
     @Auth.expect(loginDTO)
     @Auth.response(200, "login Success",login_response)
     @Auth.response(500, "login Failed")
-    @Auth.marshal_with(login_response)
+    @Auth.marshal_with(login_response, mask=False, code=200)
     def post(self):
         '''로그인 기능'''
         email = request.json['email']
