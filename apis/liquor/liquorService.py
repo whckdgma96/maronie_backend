@@ -43,7 +43,7 @@ def liquor_detail_view(liquor_id:int):
     liquor = Liquor.query.filter_by(id = liquor_id).first()
     by_liquor = By_liquor.query.filter_by(classification_id = liquor.classification_id).all()
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
-    # review = Review.query.filter_by(liquor_id = liquor_id).all()
+
     result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : by_liquor }
     if liquor:
         return result,200 #성공
@@ -53,11 +53,11 @@ def liquor_detail_view(liquor_id:int):
 
 
 # 칵테일 상세페이지 id로 조회
-
 def cocktail_detail_view(cocktail_id:int):
     cocktail = Cocktail.query.filter_by(id=cocktail_id).first()
-    ingred = cocktail.ingredients
-    recipe = cocktail.recipe
+    ingredients = cocktail.ingredients
+
+    # recipe = cocktail.recipe
 
     ingred = ingred.split('\\n')
     recipe = recipe.split('\\n')
@@ -71,7 +71,7 @@ def cocktail_detail_view(cocktail_id:int):
         #     "level":cocktail.level,
         #     "description" : cocktail.description
         # },200 #성공
-        return result,200
+        return result,200  
         # {
         #     "ingredients":ingred.split('\\n'),
         #     "recipe" : recipe.split('\\n')
@@ -80,31 +80,3 @@ def cocktail_detail_view(cocktail_id:int):
         return {"message":"Not found"},404
 
 
-# 술 이름으로 조회
-# def liquor_search_text(liquor_name:str):
-#     liquor = Liquor.query.filter(Liquor.liquor_name.like('%'+liquor_name+'%')).first()
-#     if liquor:
-#         return {
-#             "liquor_name":liquor.liquor_name,
-#             # "classification_id":liquor.classification_id,
-#             "rating" : liquor.rating,
-#             # "description" : liquor.description
-#         },200 #성공
-#     else: 
-#         return {"message":"Not found"},404
-
-# # 칵테일 이름으로 조회
-
-# def cocktail_search_text(cocktail_name:str):
-#     cocktail = Cocktail.query.filter(Cocktail.cocktail_name.like('%'+cocktail_name+'%')).first()
-#     if cocktail:
-#         return {
-#             "id":cocktail.id,
-#             "name" : cocktail.cocktail_name,
-#             "ingredient":cocktail.ingredients,
-#             "recipe" : cocktail.recipe,
-#             "level":cocktail.level,
-#             "description" : cocktail.description
-#         },200 #성공
-#     else: 
-#         return {"message":"Not found"},404

@@ -3,6 +3,7 @@ from flask_restx import Namespace, fields
 Liquor = Namespace(name="Liquor", description="Liquor")
 Cocktail = Namespace(name="cocktail", description="Cocktail")
 
+#detail : 상세페이지
 detail_liquor = Liquor.model('detail_liquor', {
     'liquor_name': fields.String(description='Liquor name', required=True, example="Blue Curacao"),
     'liquor_name_kor': fields.String(description='Liquor name(korean)', required=True, example="블루 큐라소"),
@@ -26,19 +27,15 @@ detail_by_liquor =  Liquor.model('detail_by_liquor', {
     'cocktail image': fields.String(description='Image Path', required=False, attribute="cocktails.image_path",example="https://w.namu.la/s/827ac58e595bb28aa551a1d18fcbcf291a3f01890eb07e4efbb8128eb7007bfdfd0ba10794d4a39194af008f5c7b72c9b6e9386da7a4a0227b19b20884c962d2e2078560c76b2e5a608c4f6dd7b203fdadd31739538aeb5af6c2e26f7b7ac14d"),
 })
 
-detail_review = Liquor.model("review",{
-    
-})
 
-detail_result_response =  Liquor.model('detail_result',{
+liquor_detail_response =  Liquor.model('detail_result',{
     'liquor' : fields.Nested(detail_liquor),
     'paring' : fields.Nested(detail_paring),
     'cocktail' : fields.Nested(detail_by_liquor)
 })
 
 
-
-cocktail_result_response = Cocktail.model('cocktail_result1',{
+detail_cocktail1 = Cocktail.model('detail_cocktail1',{
     'cocktail_name': fields.String(description='Cocktail name', required=True, example="Blue Hawaii"),
     'cocktail_name_kor': fields.String(description='Cocktail name(korean)', required=True, example="블루 하와이"),
     'image_path': fields.String(description='Image Path', required=False,example="https://w.namu.la/s/827ac58e595bb28aa551a1d18fcbcf291a3f01890eb07e4efbb8128eb7007bfdfd0ba10794d4a39194af008f5c7b72c9b6e9386da7a4a0227b19b20884c962d2e2078560c76b2e5a608c4f6dd7b203fdadd31739538aeb5af6c2e26f7b7ac14d"),
@@ -47,12 +44,12 @@ cocktail_result_response = Cocktail.model('cocktail_result1',{
     'description': fields.String(description="설명",required=True, example='색이 예쁘다. 새콤달콤한 맛')
 })
 
-cocktail_result_response2 = Cocktail.model('cocktail_result2',{
+detail_cocktail2 = Cocktail.model('detail_cocktail2',{
     'ingredients': fields.String(description="재료",required=True, example='화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz'),
     'recipe': fields.String(description='레시피',required=True, example='허리케인 글라스에 얼음\n쉐이커에 얼음\n화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz\nShake\n잔에 부어준다')
 })
 
-cocktail_result = Cocktail.model('cocktail_result',{
-    'result1': fields.Nested(cocktail_result_response),
-    'result2': fields.Nested(cocktail_result_response2)
+cocktail_detail_response = Cocktail.model('cocktail_detail',{
+    'result1': fields.Nested(detail_cocktail1),
+    'result2': fields.Nested(detail_cocktail2)
 })
