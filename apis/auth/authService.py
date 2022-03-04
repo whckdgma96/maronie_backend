@@ -60,11 +60,11 @@ def changepw(email,new_password,new_password_check):
     if not saved_user: 
         return{
             "message":"User Not Found"
-        },404
+        },500
     elif new_password != new_password_check:
         return{
             "message":"Wrong Password"
-        },405
+        },500
     else: 
         encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
         cur.execute(sql, (encrypted_pw, saved_user.nickname))
