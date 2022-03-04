@@ -1,7 +1,7 @@
-from db_connect import db
+from flask import abort
 
 from models.liquor import Liquor, By_liquor, Cocktail, Review
-from models.paring import Menu, Paring
+from models.paring import Paring
 
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
@@ -13,7 +13,7 @@ def liquor_detail_view(liquor_id:int):
     if liquor:
         return result,200 #성공
     else: 
-        return {"message":"Not found"},404
+        abort(500, "Unavailable liquor_id")
 
 
 # 칵테일 상세페이지 id로 조회
@@ -25,7 +25,7 @@ def cocktail_detail_view(cocktail_id:int):
         cocktail.recipe = cocktail.recipe.split('\\n')
         return cocktail,200  
     else: 
-        return {"message":"Not found"},404
+        abort(500, "Unavailable cocktail_id")
 
 
 '''
