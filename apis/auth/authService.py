@@ -47,10 +47,7 @@ def userLogin(email: str, password:str):
     # 모두 일치
     else: 
         session['login'] = saved_user.email
-        return {
-            "nickname":saved_user.nickname,
-            "email":saved_user.email
-        },200
+        return saved_user,200
 
 #비밀번호 변경
 def changepw(email,new_password,new_password_check):

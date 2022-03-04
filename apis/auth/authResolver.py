@@ -42,9 +42,10 @@ class AuthRegister(Resource):
 @Auth.route('/login')
 class AuthLogin(Resource):
     @Auth.expect(loginDTO)
-    @Auth.response(200, "login Success")
+    @Auth.response(200, "login Success",login_response)
     @Auth.response(404, "Not found")
     @Auth.response(500, "login Failed")
+    @Auth.marshal_with(login_response)
     def post(self):
         '''로그인 기능'''
         email = request.json['email']
@@ -52,7 +53,6 @@ class AuthLogin(Resource):
         return authService.userLogin(email,password)
 
 #비밀번호 변경
-
 @Auth.route('/changepw')
 class AuthChangepw(Resource):
     @Auth.expect(changepwDTO)
