@@ -24,30 +24,12 @@ cur = conn.cursor()
 cur.execute('''show tables''')
 tables = cur.fetchall() #튜플 형태
 
-# cur.execute('''SET foreign_key_checks = 0''') #외래키 해제 후 테이블 삭제
 for table in tables:
 	cur.execute(f"DELETE FROM {table[0]}")
 	cur.execute(f"ALTER TABLE {table[0]} AUTO_INCREMENT = 1")
-# cur.execute('''SET foreign_key_checks = 1''') #외래키 해제 다시 복구
-
-'''User 테이블에 id 1번으로 admin 유저 넣기'''
-encrypted_pw = bcrypt.hashpw(os.getenv('USER_PASSWORD1').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw1 = bcrypt.hashpw(os.getenv('USER_PASSWORD1').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw2 = bcrypt.hashpw(os.getenv('USER_PASSWORD2').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw3 = bcrypt.hashpw(os.getenv('USER_PASSWORD3').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw4 = bcrypt.hashpw(os.getenv('USER_PASSWORD4').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw5 = bcrypt.hashpw(os.getenv('USER_PASSWORD5').encode('utf-8'),bcrypt.gensalt())
-encrypted_pw6 = bcrypt.hashpw(os.getenv('USER_PASSWORD6').encode('utf-8'),bcrypt.gensalt())
-
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('ADMIN_USER_EMAIL'), encrypted_pw, "admin_Maronie"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER1_EMAIL'), encrypted_pw, "CCH"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER2_EMAIL'), encrypted_pw, "PDH"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER3_EMAIL'), encrypted_pw, "KWH"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER4_EMAIL'), encrypted_pw, "CJW"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER5_EMAIL'), encrypted_pw, "KJS"])
-cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('USER6_EMAIL'), encrypted_pw, "KSG"])
 
 # Opening csv files
+df_user = pd.read_csv('user_sample.csv',keep_default_na=False)
 df_classification = pd.read_csv('classification_sample.csv',keep_default_na=False) #keep_default_na=False : NaN->None로 바꾸기. None은 db에서 null로 인식된다
 df_liquor = pd.read_csv('liquor_sample.csv',keep_default_na=False)
 df_cocktail = pd.read_csv('cocktail_sample.csv',keep_default_na=False)
@@ -59,6 +41,16 @@ df_wishlist_liquor = pd.read_csv('wishlist_liquor_sample.csv',keep_default_na=Fa
 df_donelist_cocktail = pd.read_csv('donelist_cocktail_sample.csv',keep_default_na=False)
 df_donelist_liquor = pd.read_csv('donelist_liquor_sample.csv',keep_default_na=False)
 df_review = pd.read_csv('review_sample.csv',keep_default_na=False, encoding='cp949')
+
+'''user'''
+#User 테이블에 id 1번으로 admin 유저 넣기
+encrypted_pw = bcrypt.hashpw(os.getenv('ADMIN_USER_PASSWORD').encode('utf-8'),bcrypt.gensalt())
+cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [os.getenv('ADMIN_USER_EMAIL'), encrypted_pw, "admin_Maronie"])
+
+for row in df_user.itertuples():
+	encrypted_pw = bcrypt.hashpw(row.password.encode('utf-8'),bcrypt.gensalt())
+	cur.execute('''INSERT INTO user (email, password, nickname) VALUES(%s,%s,%s)''', [row.email, encrypted_pw, row.nickname])
+
 '''classification'''
 for row in df_classification.itertuples():
 		cur.execute('''INSERT INTO classification (classification) VALUES(%s)''', [row.classification])
