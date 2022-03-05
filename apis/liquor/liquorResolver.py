@@ -1,4 +1,6 @@
 from flask_restx import Resource
+from flask import request
+# from flask_login import login_required
 from .liquorDTO import *
 from . import liquorService
 
@@ -25,9 +27,14 @@ class cocktail_detailPage(Resource):
         return liquorService.cocktail_detail_view(cocktail_id)
 
 # 칵테일 레시피 등록 요청
-# @Cocktail.route('/recipe')
-# class cocktail_recipe(Resource):
-#     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
-#     @Cocktail.response(404, "Not found")
-#     @Cocktail.response(500, "Unavailable cocktail_id")
-#     @Cocktail.marshal_with(cocktail_detail_response , mask=False)
+@Cocktail.route('/recipe')
+# @login_required
+class cocktail_recipe(Resource):
+    @Cocktail.expect(recipe_createDTO)
+    @Cocktail.response(201, "recipe successfully created")
+    @Cocktail.response(500, "Fail to create")
+    def post(self):
+        '''유저가 칵테일 레시피 등록'''
+        data = request.json
+        return liquorService.create_cocktail_recipe(data=data)
+
