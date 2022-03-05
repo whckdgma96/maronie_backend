@@ -3,7 +3,7 @@ from . import searchService
 from .searchDTO import *
 
 # 술 이름으로 검색
-@Search.route('/<string:keyword>')
+@Search.route('=<string:keyword>')
 class search_keyword(Resource):
     @Search.response(200, "success", result_text_response)
     @Search.response(500, "fail")
