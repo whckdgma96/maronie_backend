@@ -15,7 +15,7 @@ class liquor_detailPage(Resource):
 
 # 칵테일 상세페이지 id로 조회
 @Cocktail.route('=<int:cocktail_id>')
-class liquor_detailPage(Resource):
+class cocktail_detailPage(Resource):
     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
     @Cocktail.response(404, "Not found")
     @Cocktail.response(500, "Unavailable cocktail_id")
@@ -24,9 +24,10 @@ class liquor_detailPage(Resource):
         '''칵테일 id로 정보 조회'''
         return liquorService.cocktail_detail_view(cocktail_id)
 
-
-
-
-
-
-
+# 칵테일 레시피 등록 요청
+# @Cocktail.route('/recipe')
+# class cocktail_recipe(Resource):
+#     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
+#     @Cocktail.response(404, "Not found")
+#     @Cocktail.response(500, "Unavailable cocktail_id")
+#     @Cocktail.marshal_with(cocktail_detail_response , mask=False)

@@ -9,7 +9,7 @@ class Classification(db.Model):
     classification = db.Column(db.String(45), nullable=False)
     
     c_liquors = relationship("Liquor", back_populates="classifications")
-    c_cocktails = relationship("By_liquor", back_populates="classifications")
+    c_cocktails = relationship("Cocktail", back_populates="classifications")
 
 
 class Liquor(db.Model):
@@ -45,11 +45,12 @@ class Cocktail(db.Model):
     image_path = db.Column(db.String(256))
     description = db.Column(db.Text, nullable=False) 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
 
     wish_c = relationship("Wishlist_cocktail", back_populates="wish_c_info")
     done_c = relationship("Donelist_cocktail", back_populates="done_c_info")
-    base = relationship("By_liquor", back_populates="cocktails")
     author = relationship("User", back_populates="my_cocktails")
+    classifications = relationship("Classification", back_populates="c_cocktails")
 
 class Review(db.Model):
     __tablename__ = "review"
@@ -64,13 +65,3 @@ class Review(db.Model):
     reviewed_users = relationship("User", back_populates="user_reviews")
     reviewed_liquors = relationship("Liquor", back_populates="liquor_reviews")
 
-
-class By_liquor(db.Model):
-    __tablename__ = "by_liquor"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    cocktail_id = db.Column(db.Integer, db.ForeignKey('cocktail.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    classification_id = db.Column(db.Integer, db.ForeignKey('classification.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-
-    classifications = relationship("Classification", back_populates="c_cocktails")
-    cocktails = relationship("Cocktail", back_populates="base")
