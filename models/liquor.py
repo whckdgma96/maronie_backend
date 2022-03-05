@@ -44,11 +44,12 @@ class Cocktail(db.Model):
     level = db.Column(db.Float, nullable=False)
     image_path = db.Column(db.String(256))
     description = db.Column(db.Text, nullable=False) 
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
 
     wish_c = relationship("Wishlist_cocktail", back_populates="wish_c_info")
     done_c = relationship("Donelist_cocktail", back_populates="done_c_info")
     base = relationship("By_liquor", back_populates="cocktails")
-
+    author = relationship("User", back_populates="my_cocktails")
 
 class Review(db.Model):
     __tablename__ = "review"

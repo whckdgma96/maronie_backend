@@ -15,7 +15,7 @@ class liquor_detailPage(Resource):
 
 # 칵테일 상세페이지 id로 조회
 @Cocktail.route('=<int:cocktail_id>')
-class liquor_detailPage(Resource):
+class cocktail_detailPage(Resource):
     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
     @Cocktail.response(404, "Not found")
     @Cocktail.response(500, "Unavailable cocktail_id")
@@ -23,10 +23,4 @@ class liquor_detailPage(Resource):
     def get(self,cocktail_id):
         '''칵테일 id로 정보 조회'''
         return liquorService.cocktail_detail_view(cocktail_id)
-
-
-
-
-
-
 
