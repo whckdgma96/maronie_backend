@@ -21,8 +21,8 @@ def cocktail_detail_view(cocktail_id:int):
     cocktail = Cocktail.query.filter_by(id=cocktail_id).first()
 
     if cocktail:
-        cocktail.ingredients = cocktail.ingredients.split('\\n')
-        cocktail.recipe = cocktail.recipe.split('\\n')
+        cocktail.ingredients.split('\\n')
+        cocktail.recipe.split('\\n')
         return cocktail,200  
     else: 
         abort(500, "Unavailable cocktail_id")

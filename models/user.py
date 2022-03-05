@@ -15,7 +15,7 @@ class User(db.Model):
     done_liquors = relationship("Donelist_liquor", back_populates="done_l_users")
     done_cocktails = relationship("Donelist_cocktail", back_populates="done_c_users")
     user_reviews = relationship("Review", back_populates="reviewed_users")
-
+    my_cocktails = relationship("Cocktail", back_populates="author")
 
 '''북마크 기능. 먹어보고 싶거나 관심있는 술을 담아둔다.'''
 class Wishlist_liquor(db.Model):
