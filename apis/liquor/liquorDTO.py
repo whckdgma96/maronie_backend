@@ -41,8 +41,8 @@ cocktail_detail_response = Cocktail.model('cocktail_detail',{
     'alcohol': fields.Float(description='도수', required=False, example=20),
     'level': fields.Float(description='난이도',required=True, example=3),
     'description': fields.String(description="설명",required=True, example='색이 예쁘다. 새콤달콤한 맛'),
-    'ingredients': fields.String(description="재료",required=True, example='화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz'),
-    'recipe': fields.String(description='레시피',required=True, example='허리케인 글라스에 얼음\n쉐이커에 얼음\n화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz\nShake\n잔에 부어준다')
+    'ingredients': fields.List(fields.String(description="재료",required=True, example='화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz')),
+    'recipe': fields.List(fields.String(description='레시피',required=True, example='허리케인 글라스에 얼음\n쉐이커에 얼음\n화이트럼 1oz\n블루큐라소 1/2oz\n파인애플주스 1oz\n라임즙 1/3oz\nShake\n잔에 부어준다'))
 })
 
 
