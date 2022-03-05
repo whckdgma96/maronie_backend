@@ -1,5 +1,7 @@
+import json
 from flask import abort
-
+from flask_restx import marshal
+from .liquorDTO import cocktail_detail_response
 from models.liquor import Liquor, By_liquor, Cocktail, Review
 from models.paring import Paring
 
@@ -21,9 +23,10 @@ def cocktail_detail_view(cocktail_id:int):
     cocktail = Cocktail.query.filter_by(id=cocktail_id).first()
 
     if cocktail:
-        cocktail.ingredients.split('\\n')
-        cocktail.recipe.split('\\n')
-        return cocktail,200  
+        result = marshal(cocktail,cocktail_detail_response)
+        result['ingredients'] = cocktail.ingredients.split('\\n')
+        result['recipe'] = cocktail.recipe.split('\\n')
+        return result,200  
     else: 
         abort(500, "Unavailable cocktail_id")
 
