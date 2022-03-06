@@ -66,7 +66,7 @@ def changepw(email,new_password):
         conn.commit()
         return {
             "message":"password changed"
-        },200
+        },201
 
 # 로그아웃
 def userLogout():
