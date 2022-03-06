@@ -63,8 +63,7 @@ class AuthChangepw(Resource):
         '''유저 비밀번호 변경하기'''
         email = request.json['email']
         new_password = request.json['new_password']
-        new_password_check = request.json['new_password_check']
-        return authService.changepw(email,new_password,new_password_check)
+        return authService.changepw(email,new_password)
 
 # 로그아웃
 @Auth.route('/logout')
