@@ -19,7 +19,7 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
         new_review = Review(user_id = user_id,liquor_id=liquor_id,rating=rating,content=content,review_date=review_date)
         db.session.add(new_review)
         db.session.commit()
-        return {"message":"리뷰등록 성공"},200
+        return {"message":"리뷰등록 성공"},201
 
 def update_review(user_id:int,liquor_id:int,rating:float,content:str):
     conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기

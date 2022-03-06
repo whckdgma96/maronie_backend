@@ -7,8 +7,8 @@ from models.user import User
 @Review.route('/create')
 class Create_review(Resource):
     @Review.expect(create_reviewDTO)
-    @Review.response(200, 'Successfully created a review')
-    @Review.response(500, 'Failure creating a review')
+    @Review.response(201, '리뷰등록 성공')
+    @Review.response(500, 'Failed to create a review')
     def post(self):
         '''술 리뷰 생성'''
         try:
