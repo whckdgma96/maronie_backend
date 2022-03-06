@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema Liquor
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Liquor` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `Liquor` ;
 USE `Liquor` ;
 
 -- -----------------------------------------------------
@@ -67,20 +67,27 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Liquor`.`cocktail` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `cocktail_name` VARCHAR(100) NOT NULL,
+  `cocktail_name` VARCHAR(100) NULL,
   `cocktail_name_kor` VARCHAR(45) NOT NULL,
   `alcohol` FLOAT NULL,
-  `ingredients` VARCHAR(100) NOT NULL,
-  `recipe` VARCHAR(500) NOT NULL,
+  `ingredients` TEXT NOT NULL,
+  `recipe` TEXT NOT NULL,
   `image_path` VARCHAR(256) NULL,
-  `level` FLOAT NOT NULL,
+  `level` INT NOT NULL,
   `description` TEXT NOT NULL,
   `author_id` INT NOT NULL DEFAULT 1,
+  `classification_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_cocktail_user_idx` (`author_id` ASC) VISIBLE,
+  INDEX `fk_cocktail_classification_idx` (`classification_id` ASC) VISIBLE,
   CONSTRAINT `fk_cocktail_user`
     FOREIGN KEY (`author_id`)
     REFERENCES `Liquor`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_cocktail_classification`
+    FOREIGN KEY (`classification_id`)
+    REFERENCES `Liquor`.`classification` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -120,29 +127,6 @@ CREATE TABLE IF NOT EXISTS `Liquor`.`menu` (
   `menu_name` VARCHAR(50) NOT NULL,
   `image_path` VARCHAR(256) NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Liquor`.`by_liquor`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Liquor`.`by_liquor` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `classification_id` INT NOT NULL,
-  `cocktail_id` INT NOT NULL,
-  INDEX `fk_by_l_classification_idx` (`classification_id` ASC) VISIBLE,
-  INDEX `fk_by_l_cocktail_idx` (`cocktail_id` ASC) VISIBLE,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_by_l_cocktail`
-    FOREIGN KEY (`cocktail_id`)
-    REFERENCES `Liquor`.`cocktail` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_by_l_classification`
-    FOREIGN KEY (`classification_id`)
-    REFERENCES `Liquor`.`classification` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

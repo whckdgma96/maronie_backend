@@ -33,7 +33,6 @@ df_user = pd.read_csv('user_sample.csv',keep_default_na=False)
 df_classification = pd.read_csv('classification_sample.csv',keep_default_na=False) #keep_default_na=False : NaN->None로 바꾸기. None은 db에서 null로 인식된다
 df_liquor = pd.read_csv('liquor_sample.csv',keep_default_na=False)
 df_cocktail = pd.read_csv('cocktail_sample.csv',keep_default_na=False)
-df_byLiquor = pd.read_csv('by_liquor_sample.csv',keep_default_na=False)
 df_menu = pd.read_csv('menu_sample.csv',keep_default_na=False)
 df_paring = pd.read_csv('paring_sample.csv',keep_default_na=False)
 df_wishlist_cocktail = pd.read_csv('wishlist_cocktail_sample.csv',keep_default_na=False)
@@ -63,13 +62,8 @@ for row in df_liquor.itertuples():
 '''cocktail'''
 #author_id, heart는 default value로 한다.
 for row in df_cocktail.itertuples():
-		cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, alcohol, image_path, description, level, ingredients, recipe) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.alcohol, row.image_path, row.description, row.level, row.ingredients, row.recipe])
-
-'''by_liquor'''
-for row in df_byLiquor.itertuples():
-		cur.execute('''INSERT INTO by_liquor (classification_id, cocktail_id) 
-		VALUES(%s, %s)''', [row.classification_id, row.cocktail_id])
+		cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, alcohol, classification_id, image_path, description, level, ingredients, recipe) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.alcohol, row.classification_id, row.image_path, row.description, row.level, row.ingredients, row.recipe])
 
 '''menu'''
 for row in df_menu.itertuples():
