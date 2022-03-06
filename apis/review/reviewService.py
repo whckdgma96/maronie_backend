@@ -21,3 +21,17 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
         db.session.commit()
         return {"message":"리뷰등록 성공"},200
 
+def update_review(user_id:int,liquor_id:int,rating:float,content:str):
+    conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    cur = conn.cursor()
+    sql = """UPDATE review SET rating=%s, content=%s, review_date=%s WHERE user_id=%s AND liquor_id=%s"""
+    review_date = datetime.today().strftime("%Y-%m-%d")
+    review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
+    if not review_check:
+        abort(500, "리뷰등록을 해주세요.")
+    
+    else:
+        cur.execute(sql,(rating,content,review_date,user_id,liquor_id))
+        conn.commit()
+        return {"message":"리뷰수정 성공"},200
+    

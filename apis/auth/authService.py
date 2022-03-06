@@ -48,8 +48,8 @@ def userLogin(email: str, password:str):
         return saved_user,200
 
 #비밀번호 변경
-def changepw(email,new_password,new_password_check):
-    conn = pymysql.connect(host='127.0.0.1',port=3306, user='root', password='root', db='liquor', charset='utf8') #숨기기
+def changepw(email,new_password):
+    conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
     cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = User.query.filter_by(email=email).first()
@@ -59,17 +59,14 @@ def changepw(email,new_password,new_password_check):
         return{
             "message":"User Not Found"
         },404
-    elif new_password != new_password_check:
-        return{
-            "message":"Wrong Password"
-        },405
+    
     else: 
         encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
         cur.execute(sql, (encrypted_pw, saved_user.nickname))
         conn.commit()
         return {
             "message":"password changed"
-        },201
+        },200
 
 # 로그아웃
 def userLogout():
