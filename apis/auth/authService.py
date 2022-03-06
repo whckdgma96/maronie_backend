@@ -44,6 +44,7 @@ def userLogin(email: str, password:str):
     # 모두 일치
     else: 
         session['login'] = saved_user.email
+        print(session['login'])
         return saved_user,200
 
 #비밀번호 변경
