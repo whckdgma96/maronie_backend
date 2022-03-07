@@ -10,7 +10,8 @@ dotenv.load_dotenv()
 # print(type(int(os.environ.get('MYSQL_PORT'))))
 
 #Connecting to the database
-conn = pymysql.connect(host='127.0.0.1',
+#os.getenv('MYSQL_HOST')
+conn = pymysql.connect(host=os.getenv('MYSQL_HOST'),
 					   port=int(os.getenv('MYSQL_PORT')), 
 					   user=os.getenv('MYSQL_USER'),
  					   password=os.getenv('MYSQL_PASSWORD'), 
@@ -77,39 +78,31 @@ for row in df_paring.itertuples():
 
 '''donelist_cocktail'''
 for row in df_donelist_cocktail.itertuples():
-		cur.execute('''INSERT INTO donelist_cocktail (id, cocktail_id,user_id) 
-		VALUES(%s, %s, %s)''', [row.id, row.cocktail_id, row.user_id])
+		cur.execute('''INSERT INTO donelist_cocktail (cocktail_id,user_id) 
+		VALUES(%s, %s)''', [row.cocktail_id, row.user_id])
 
 '''donelist_liquor'''
 for row in df_donelist_liquor.itertuples():
-		cur.execute('''INSERT INTO donelist_liquor (id, liquor_id,user_id) 
-		VALUES(%s, %s, %s)''', [row.id, row.liquor_id, row.user_id])
+		cur.execute('''INSERT INTO donelist_liquor (liquor_id,user_id) 
+		VALUES(%s, %s)''', [row.liquor_id, row.user_id])
 
 '''wishlist_cocktail'''
 for row in df_wishlist_cocktail.itertuples():
-		cur.execute('''INSERT INTO wishlist_cocktail (id, cocktail_id,user_id) 
-		VALUES(%s, %s, %s)''', [row.id, row.cocktail_id, row.user_id])
+		cur.execute('''INSERT INTO wishlist_cocktail (cocktail_id,user_id) 
+		VALUES(%s, %s)''', [row.cocktail_id, row.user_id])
 
 '''wishlist_liquor'''
 for row in df_wishlist_liquor.itertuples():
-		cur.execute('''INSERT INTO wishlist_liquor (id, liquor_id,user_id) 
-		VALUES(%s, %s, %s)''', [row.id, row.liquor_id, row.user_id])
+		cur.execute('''INSERT INTO wishlist_liquor (liquor_id,user_id) 
+		VALUES(%s, %s)''', [row.liquor_id, row.user_id])
 
 '''review'''
 for row in df_review.itertuples():
-		cur.execute('''INSERT INTO review (id, user_id, liquor_id, rating, content, review_date) 
-		VALUES(%s,%s,%s,%s,%s,%s)''', [row.id, row.user_id, row.liquor_id, row.rating, row.content, row.review_date])
+		cur.execute('''INSERT INTO review (user_id, liquor_id, rating, content, review_date) 
+		VALUES(%s,%s,%s,%s,%s)''', [row.user_id, row.liquor_id, row.rating, row.content, row.review_date])
 
 #Committing the changes
 conn.commit()
 
 #closing the database con
 conn.close()
-
-'''
-진: 고든스 진, 봄베이 사파이어
-럼: 바카디 골드 럼 
-위스키: 잭 다니엘, 조니워커 
-보드카: 앱솔루트, 스미노프
-데킬라: 호세쿠엘보
-'''
