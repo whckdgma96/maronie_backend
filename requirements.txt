@@ -1,4 +1,4 @@
-python           ==3.8.10
+python3.8   
 alembic          ==1.7.6  
 aniso8601        ==9.0.1  
 attrs            ==21.4.0 
@@ -19,7 +19,6 @@ jsonschema       ==4.4.0
 Mako             ==1.1.6
 MarkupSafe       ==2.0.1
 numpy            ==1.22.2
-pandas           ==1.4.1
 pip              ==21.2.3
 pycparser        ==2.21
 PyMySQL          ==1.0.2
