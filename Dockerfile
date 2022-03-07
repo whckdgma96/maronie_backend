@@ -1,4 +1,4 @@
-FROM  tensorflow/tensorflow:latest-gpu-py3   #base image pull
+FROM  tensorflow/tensorflow:latest-gpu-py3
 
 COPY requirements.txt /app/
 EXPOSE 5000
