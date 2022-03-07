@@ -4,8 +4,6 @@ COPY requirements.txt /app/
 EXPOSE 5000
 WORKDIR /app
 
-ARG PYTHON=python3.8
-
 RUN pip install --upgrade pip \
     &&  pip install --requirement requirements.txt
 
