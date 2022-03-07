@@ -11,7 +11,7 @@ dotenv.load_dotenv()
 
 #Connecting to the database
 #os.getenv('MYSQL_HOST')
-conn = pymysql.connect(host=os.getenv('MYSQL_HOST'),
+conn = pymysql.connect(host='127.0.0.1',
 					   port=int(os.getenv('MYSQL_PORT')), 
 					   user=os.getenv('MYSQL_USER'),
  					   password=os.getenv('MYSQL_PASSWORD'), 
@@ -40,7 +40,7 @@ df_wishlist_cocktail = pd.read_csv('wishlist_cocktail_sample.csv',keep_default_n
 df_wishlist_liquor = pd.read_csv('wishlist_liquor_sample.csv',keep_default_na=False)
 df_donelist_cocktail = pd.read_csv('donelist_cocktail_sample.csv',keep_default_na=False)
 df_donelist_liquor = pd.read_csv('donelist_liquor_sample.csv',keep_default_na=False)
-df_review = pd.read_csv('review_sample.csv',keep_default_na=False, encoding='cp949')
+df_review = pd.read_csv('review_sample.csv',keep_default_na=False)
 
 '''user'''
 #User 테이블에 id 1번으로 admin 유저 넣기
