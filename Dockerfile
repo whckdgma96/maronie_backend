@@ -1,4 +1,5 @@
-FROM python:3.8-slim
+#python version 3.6
+FROM  tensorflow/tensorflow:latest-gpu-py3 
 
 COPY requirements.txt /app/
 EXPOSE 5000

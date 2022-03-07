@@ -1,8 +1,10 @@
 from flask_restx import Namespace, fields
+from werkzeug.datastructures import FileStorage
 
 Search = Namespace(name="Search", description="술 라벨 이미지 검색 혹은 술과 칵테일 이름으로 정보 검색")
 
-result_liquor = Search.model('result_liquor', {
+'''text : 텍스트 검색'''
+text_liquor = Search.model('text_liquor', {
     'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="id"),
     'liquor_name': fields.String(description='Liquor name', required=True, example="Blue Curacao"),
     'liquor_name_kor': fields.String(description='Liquor name(korean)', required=True, example="블루 큐라소"),
@@ -12,7 +14,7 @@ result_liquor = Search.model('result_liquor', {
     'rating': fields.Float(description='ration', required=False, example=4.5),
 })
 
-result_cocktail = Search.model('result_cocktail', {
+text_cocktail = Search.model('text_cocktail', {
     'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="id"),
     'cocktail_name': fields.String(description='Cocktail name', required=True, example="Blue Hawaii"),
     'cocktail_name_kor': fields.String(description='Cocktail name(korean)', required=True, example="블루 하와이"),
@@ -20,7 +22,19 @@ result_cocktail = Search.model('result_cocktail', {
     'description': fields.String(description='Description', required=True, example="색이 예쁘다. 새콤달콤한 맛"),
 })
 
+'''image : 이미지 검색'''
+image_liquor = Search.parser()
+image_liquor.add_argument('file', location='files', type=FileStorage, required=True)
+
+'''최종 response 형태'''
 result_text_response = Search.model('result_text',{
-    'liquor' : fields.Nested(result_liquor),
-    'cocktail' : fields.Nested(result_cocktail)
+    'liquor' : fields.Nested(text_liquor),
+    'cocktail' : fields.Nested(text_cocktail)
+})
+
+result_image_response = Search.model('result_image',{
+    "liquor_id": fields.Integer(description='Liquor id', required=True, example=20, attribute="id"),
+    "image_path": fields.String(description='Image Path', required=False, example="https://www.berevita.com/pub/media/catalog/product/cache/image/1000x1320/e9c3970ab036de70892d86c6d221abfe/d/e/de-kuyper-blue-curacao.jpg"),
+    "liquor_name_kor": fields.String(description='Liquor name(korean)', required=True, example="앱솔루트"),
+    "liquor_name": fields.String(description='Liquor name', required=True, example="Absolute"),
 })
