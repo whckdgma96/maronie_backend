@@ -4,9 +4,6 @@ COPY requirements.txt /app/
 EXPOSE 5000
 WORKDIR /app
 
-RUN apt-get update &&
-  apt-get -y upgrade
-  
 RUN apt install -y python3.8
 
 RUN pip install --upgrade pip \
