@@ -17,7 +17,7 @@ Jinja2           ==3.0.3
 jsonschema       ==4.0.0
 Mako             ==1.1.6
 MarkupSafe       ==2.0.1
-numpy            ==1.22.2
+numpy            ==1.19.5
 pip              ==21.2.3
 pycparser        ==2.21
 PyMySQL          ==1.0.2
