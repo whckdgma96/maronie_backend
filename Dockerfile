@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM  tensorflow/tensorflow:latest-gpu-py3   #base image pull
 
 COPY requirements.txt /app/
 EXPOSE 5000
