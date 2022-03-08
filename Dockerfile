@@ -6,7 +6,8 @@ EXPOSE 5000
 WORKDIR /backend
 
 #opencv-python을 위해 필요하다
-RUN apt-get install --fix-missing libgl1-mesa-glx -y 
+RUN apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential
+RUN apt-get install libgl1-mesa-glx -y 
 
 RUN pip install --upgrade pip \
     &&  pip install --requirement requirements.txt
