@@ -12,6 +12,8 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
     review_date = datetime.today().strftime("%Y-%m-%d")
     # print(review_date)
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
+
+    
     if logined_user.id != user_id:
         abort(500, "로그인 정보가 일치하지 않습니다.")
     elif review_check: # 있는 리뷰 -> 업데이트를 해야댐
@@ -29,8 +31,11 @@ def update_review(user_id:int,liquor_id:int,rating:float,content:str):
     sql = """UPDATE review SET rating=%s, content=%s, review_date=%s WHERE user_id=%s AND liquor_id=%s"""
     review_date = datetime.today().strftime("%Y-%m-%d")
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
-    if not review_check:
-        abort(500, "리뷰등록을 해주세요.")
+    
+    if logined_user.id != user_id:
+        abort(500, "로그인 정보가 일치하지 않습니다.")
+    elif not review_check:
+        abort(500, "등록된 리뷰가 없습니다.")
     
     else:
         cur.execute(sql,(rating,content,review_date,user_id,liquor_id))
