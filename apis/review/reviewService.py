@@ -1,76 +1,58 @@
 from flask import abort, session
 import pymysql
-from models.user import User
 from models.liquor import *
+from models.user import *
 from db_connect import db
-import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
-from .authDTO import *
+from datetime import datetime
 
-
-# 회원가입 email 유효성 검사
-# TO-DO: try except로 바꾸기(처리속도 향상)
-def idckeck(email:str):
-    new_user = User.query.filter_by(email=email).first() # id 가 동일한 유저의 정보 저장
-    if new_user: return {"message":"Unavailable email"},500 #결과값이 있다면 = 등록된 유저
-    else: return {"message":"Available email"},200
-
-# 회원가입 nickname 유효성 검사
-def nicknameckeck(nickname:str):
-    new_user = User.query.filter_by(nickname=nickname).first() # id 가 동일한 유저의 정보 저장
-    if new_user: return {"message":"Unavailable nickname"},500 #결과값이 있다면 = 등록된 유저
-    else: return {"message":"Available nickname"},200
-
-# 회원가입 요청
-def userRegister(email:str, nickname:str, password:str):
-    encrypted_pw = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
-    try:
-        new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
-        db.session.add(new_user)
-        db.session.commit()
-        return {"message":"User Information saved"},201 #성공
-    except:
-        return {"message":"Register Failed"},500 #실패
-
-# 로그인
-def userLogin(email: str, password:str):
-    saved_user = User.query.filter_by(email=email).first()
+def create_review(user_id:int,liquor_id:int,rating:float,content:str):
     
-    #유효하지 않은 ID
-    if not saved_user: 
-        abort(500, "User Not Found")
-    # 비밀번호 미일치
-    elif not bcrypt.checkpw(password.encode("utf-8"),saved_user.password.encode("utf-8") ):
-        abort(500, "Auth Failed(Wrong password)")
-    # 모두 일치
-    else: 
-        session['login'] = saved_user.email
-        print(session['login'])
-        return saved_user,200
+    logined_user = User.query.filter_by(email=session['login']).first()
 
-#비밀번호 변경
-def changepw(email,new_password):
+    review_date = datetime.today().strftime("%Y-%m-%d")
+    # print(review_date)
+    review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
+
+    
+    if logined_user.id != user_id:
+        abort(500, "로그인 정보가 일치하지 않습니다.")
+    elif review_check: # 있는 리뷰 -> 업데이트를 해야댐
+        abort(500, "이미 등록된 리뷰가 있습니다")
+    else: 
+        new_review = Review(user_id = user_id,liquor_id=liquor_id,rating=rating,content=content,review_date=review_date)
+        db.session.add(new_review)
+        db.session.commit()
+        return {"message":"리뷰등록 성공"},201
+
+def update_review(user_id:int,liquor_id:int,rating:float,content:str):
+    logined_user = User.query.filter_by(email=session['login']).first()
     conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
     cur = conn.cursor()
-    #DB연결 후 메서드 호출
-    saved_user = User.query.filter_by(email=email).first()
-    sql = """UPDATE user SET password =%s WHERE nickname =%s"""
+    sql = """UPDATE review SET rating=%s, content=%s, review_date=%s WHERE user_id=%s AND liquor_id=%s"""
+    review_date = datetime.today().strftime("%Y-%m-%d")
+    review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
     
-    if not saved_user: 
-        return{
-            "message":"User Not Found"
-        },404
+    if logined_user.id != user_id:
+        abort(500, "로그인 정보가 일치하지 않습니다.")
+    elif not review_check:
+        abort(500, "등록된 리뷰가 없습니다.")
     
-    else: 
-        encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
-        cur.execute(sql, (encrypted_pw, saved_user.nickname))
+    else:
+        cur.execute(sql,(rating,content,review_date,user_id,liquor_id))
         conn.commit()
-        return {
-            "message":"password changed"
-        },201
+        return {"message":"리뷰수정 성공"},200
 
-# 로그아웃
-def userLogout():
-    session.clear()
-    return {"message":"logout success"},200
-
-
+def delete_review(user_id:int, liquor_id:int):
+    logined_user = User.query.filter_by(email=session['login']).first()
+    conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    cur = conn.cursor()
+    sql= """DELETE from review WHERE user_id=%s AND liquor_id=%s"""
+    review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
+    if logined_user.id != user_id:
+        abort(500, "로그인 정보가 일치하지 않습니다.")
+    elif not review_check:
+        abort(500, "등록된 리뷰가 없습니다.")
+    else:
+        cur.execute(sql,(user_id, liquor_id))
+        conn.commit()
+        return {"message":"리뷰삭제 성공"},200
