@@ -6,7 +6,7 @@ from db_connect import db
 import bcrypt #pip install bcrypt (암호화, 암호일치 확인)
 from .authDTO import *
 
-
+import os
 # 회원가입 email 유효성 검사
 # TO-DO: try except로 바꾸기(처리속도 향상)
 def idckeck(email:str):
@@ -49,7 +49,7 @@ def userLogin(email: str, password:str):
 
 #비밀번호 변경
 def changepw(email,new_password):
-    conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    conn = pymysql.connect(host='127.0.0.1',port=int(os.getenv('MYSQL_PORT')), user=os.getenv('MYSQL_USER'), password=os.getenv('MYSQL_PASSWORD'), db=os.getenv('MYSQL_DATABASE'), charset='utf8') #숨기기
     cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = User.query.filter_by(email=email).first()
