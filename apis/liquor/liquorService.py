@@ -63,30 +63,30 @@ def create_cocktail_recipe(data):
         print(ex)
         return {"message":"Fail to create"},500 #실패
         
-#칵테일 레시피 수정
-def update_cocktail_recipe(data):
-    # try:
-    #     author_id = data['author_id']
-    #     cocktail_name=data["cocktail_name"]
-    #     cocktail_name_kor= data["cocktail_name_kor"]
-    #     classification_id= data["classification_id"]
-    #     level = data["level"]
-    #     alcohol = data["alcohol"]
-    #     description = data["description"]
-    #     image_path = data["image_path"]
-    #     ingredients = '\n'.join(data["ingredients"])
-    #     recipe = '\n'.join(data["recipe"])
+# #칵테일 레시피 수정
+# def update_cocktail_recipe(data):
+#     # try:
+#     #     author_id = data['author_id']
+#     #     cocktail_name=data["cocktail_name"]
+#     #     cocktail_name_kor= data["cocktail_name_kor"]
+#     #     classification_id= data["classification_id"]
+#     #     level = data["level"]
+#     #     alcohol = data["alcohol"]
+#     #     description = data["description"]
+#     #     image_path = data["image_path"]
+#     #     ingredients = '\n'.join(data["ingredients"])
+#     #     recipe = '\n'.join(data["recipe"])
         
-    #     new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
-    #                             classification_id=classification_id, level=level, alcohol=alcohol,
-    #                             description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
-    #     db.session.add(new_cocktail)
-    #     db.session.commit()
-    #     return {"message":"recipe successfully created"},201 #성공
-    # except Exception as ex:
-    #     print(ex)
-    #     return {"message":"Fail to create"},500 #실패
-    logined_user = User.query.filter_by(email=session['login']).first()
-    conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='Liquor', charset='utf8') #숨기기
-    cur = conn.cursor()
-    sql = """UPDATE cocktail SET recipe=%sWHERE author_id=%s AND id=%s"""
+#     #     new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
+#     #                             classification_id=classification_id, level=level, alcohol=alcohol,
+#     #                             description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
+#     #     db.session.add(new_cocktail)
+#     #     db.session.commit()
+#     #     return {"message":"recipe successfully created"},201 #성공
+#     # except Exception as ex:
+#     #     print(ex)
+#     #     return {"message":"Fail to create"},500 #실패
+#     logined_user = User.query.filter_by(email=session['login']).first()
+#     conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='Liquor', charset='utf8') #숨기기
+#     cur = conn.cursor()
+#     sql = """UPDATE cocktail SET recipe=%sWHERE author_id=%s AND id=%s"""
