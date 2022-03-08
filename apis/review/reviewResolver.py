@@ -42,3 +42,11 @@ class UpdateReview(Resource):
             return reviewService.update_review(user_id,liquor_id,rating,content)
         # except:
         #     abort(500, "로그인 해주세요.")
+
+@Review.route("/delete/user_id=<int:user_id>/liouor_id=<int:liquor_id>")
+class DeleteReview(Resource):
+    def delete(self, user_id, liquor_id):
+        if not session:
+            abort(500, "로그인 해주세요")
+        else:
+            return reviewService.delete_review( user_id, liquor_id)

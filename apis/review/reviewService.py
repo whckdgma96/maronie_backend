@@ -41,4 +41,18 @@ def update_review(user_id:int,liquor_id:int,rating:float,content:str):
         cur.execute(sql,(rating,content,review_date,user_id,liquor_id))
         conn.commit()
         return {"message":"리뷰수정 성공"},200
-    
+
+def delete_review(user_id:int, liquor_id:int):
+    logined_user = User.query.filter_by(email=session['login']).first()
+    conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    cur = conn.cursor()
+    sql= """DELETE from review WHERE user_id=%s AND liquor_id=%s"""
+    review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
+    if logined_user.id != user_id:
+        abort(500, "로그인 정보가 일치하지 않습니다.")
+    elif not review_check:
+        abort(500, "등록된 리뷰가 없습니다.")
+    else:
+        cur.execute(sql,(user_id, liquor_id))
+        conn.commit()
+        return {"message":"리뷰삭제 성공"},200
