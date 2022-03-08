@@ -12,10 +12,9 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
     review_date = datetime.today().strftime("%Y-%m-%d")
     # print(review_date)
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
-    if not session:
-        abort(500, "로그인 해주세요")
+
     
-    elif logined_user.id != user_id:
+    if logined_user.id != user_id:
         abort(500, "로그인 정보가 일치하지 않습니다.")
     elif review_check: # 있는 리뷰 -> 업데이트를 해야댐
         abort(500, "이미 등록된 리뷰가 있습니다")
@@ -32,10 +31,8 @@ def update_review(user_id:int,liquor_id:int,rating:float,content:str):
     sql = """UPDATE review SET rating=%s, content=%s, review_date=%s WHERE user_id=%s AND liquor_id=%s"""
     review_date = datetime.today().strftime("%Y-%m-%d")
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
-    if not session:
-        abort(500, "로그인 해주세요")
     
-    elif logined_user.id != user_id:
+    if logined_user.id != user_id:
         abort(500, "로그인 정보가 일치하지 않습니다.")
     elif not review_check:
         abort(500, "등록된 리뷰가 없습니다.")
