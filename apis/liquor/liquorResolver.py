@@ -30,11 +30,12 @@ class cocktail_detailPage(Resource):
 @Cocktail.route('/recipe')
 # @login_required
 class cocktail_recipe(Resource):
-    @Cocktail.expect(recipe_createDTO)
+    @Cocktail.expect(image_cocktail)
     @Cocktail.response(201, "recipe successfully created")
     @Cocktail.response(500, "Fail to create")
     def post(self):
         '''유저가 칵테일 레시피 등록'''
-        data = request.json
-        return liquorService.create_cocktail_recipe(data=data)
+        cocktail_thumbnail = request.files
+        data = request.form
+        return liquorService.create_cocktail_recipe(cocktail_thumbnail, data)
 

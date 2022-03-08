@@ -16,3 +16,5 @@ SQLALCHEMY_DATABASE_URI = (f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.geten
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 UPLOAD_FOLDER = "./media/upload"
+COCKTAIL_THUMBNAIL_FOLDER = "./media/cocktail_thumbnail"
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
