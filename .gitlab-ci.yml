@@ -16,4 +16,3 @@ Deploy:
     - docker system prune -af --volumes
     - docker build -t team-11-backend .
     - docker run -it -d --restart always --name backend -v /home/team11/media:/backend/media -p 5000:5000 team-11-backend
-    
