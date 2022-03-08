@@ -11,15 +11,13 @@ class Create_review(Resource):
     @Review.response(500, 'Failed to create a review')
     def post(self):
         '''술 리뷰 생성'''
-        try:
-            logined_user = User.query.filter_by(email=session['login']).first()
-            user_id = logined_user.id
-            liquor_id = request.json['liquor_id']
-            rating = request.json['rating']
-            content = request.json['content']
-            return reviewService.create_review(user_id,liquor_id,rating,content)
-        except Exception as ex:
-            abort(500, ex)
+
+        user_id = request.json['user_id']
+        liquor_id = request.json['liquor_id']
+        rating = request.json['rating']
+        content = request.json['content']
+        return reviewService.create_review(user_id,liquor_id,rating,content)
+
 
 @Review.route('/update')
 class UpdateReview(Resource):
@@ -28,12 +26,8 @@ class UpdateReview(Resource):
     @Review.response(500, 'Failed to revise the review')
     def post(self):
         '''술 리뷰 수정'''
-        try:
-            logined_user = User.query.filter_by(email=session['login']).first()
-            user_id = logined_user.id
-            liquor_id = request.json['liquor_id']
-            rating = request.json['rating']
-            content = request.json['content']
-            return reviewService.update_review(user_id,liquor_id,rating,content)
-        except:
-            abort(500, "로그인 해주세요.")
+        user_id = request.json['user_id']
+        liquor_id = request.json['liquor_id']
+        rating = request.json['rating']
+        content = request.json['content']
+        return reviewService.update_review(user_id,liquor_id,rating,content)
