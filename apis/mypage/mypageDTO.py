@@ -19,3 +19,12 @@ wishlist_response = Mypage.model('wishlist response',{
     'liquor' : fields.Nested(wishlist_liquor),
     'cocktail' : fields.Nested(wishlist_cocktail)
 })
+
+create_wishlist_liquor = Mypage.model('create_wishlist_liquor',{
+    'user_id' : fields.Integer(description='user id', required=True, example=2,attribute="user_id"),
+    "liquor_id" : fields.Integer(description='liquor id', required=True, example=2,attribute="liquor_id")
+})
+create_wishlist_cocktail = Mypage.model('create_wishlist_cocktail',{
+    'user_id' : fields.Integer(description='user id', required=True, example=2,attribute="user_id"),
+    "cocktail_id" : fields.Integer(description='cocktail id', required=True, example=2,attribute="cocktail_id")
+})
