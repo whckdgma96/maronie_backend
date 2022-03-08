@@ -248,3 +248,16 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+USE `Liquor`;
+
+DELIMITER $$
+USE `Liquor`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `Liquor`.`compute_avg` AFTER INSERT ON `review` FOR EACH ROW
+BEGIN
+	update `liquor`
+    set `rating` = (select AVG(`rating`) from `review` where `review`.`liquor_id` = `liquor`.`id`)
+    where `id` = NEW.`liquor_id`;
+END$$
+
+
+DELIMITER ;

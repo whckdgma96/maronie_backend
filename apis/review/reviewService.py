@@ -1,3 +1,4 @@
+import os
 from flask import abort, session
 import pymysql
 from models.liquor import *
@@ -44,7 +45,11 @@ def update_review(user_id:int,liquor_id:int,rating:float,content:str):
 
 def delete_review(user_id:int, liquor_id:int):
     logined_user = User.query.filter_by(email=session['login']).first()
-    conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    conn = pymysql.connect(host='127.0.0.1',
+                           port=int(os.getenv('MYSQL_PORT')), 
+                           user=os.getenv('MYSQL_USER'), 
+                           password=os.getenv('MYSQL_PASSWORD'), 
+                           db=os.getenv('MYSQL_DATABASE'), charset='utf8') 
     cur = conn.cursor()
     sql= """DELETE from review WHERE user_id=%s AND liquor_id=%s"""
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
