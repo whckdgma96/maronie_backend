@@ -16,6 +16,7 @@ def create_app():
     from apis.liquor.liquorResolver import Cocktail
     from apis.search.searchResolver import Search
     from apis.review.reviewResolver import Review
+    from apis.mypage.mypageResolver import Mypage
     # from apis.paring.paringResolver import paring
 
     app.config.from_object(config)  # config 에서 가져온 파일을 사용합니다.
@@ -33,6 +34,7 @@ def create_app():
     api.add_namespace(Cocktail, '/cocktail')
     api.add_namespace(Search, '/search')
     api.add_namespace(Review, '/review')
+    api.add_namespace(Mypage,'/Mypage')
     return app
 
 if __name__ == "__main__":
