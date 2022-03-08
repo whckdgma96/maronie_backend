@@ -6,7 +6,7 @@ EXPOSE 5000
 WORKDIR /backend
 
 #opencv-python을 위해 필요하다
-RUN apt-get install ffmpeg libsm6 libxext6 libgl1-mesa-glx -y
+RUN apt-get install --fix-missing libgl1-mesa-glx -y 
 
 RUN pip install --upgrade pip \
     &&  pip install --requirement requirements.txt
