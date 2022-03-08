@@ -29,27 +29,27 @@ def search_keyword(keyword:str):
 
 
 # ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
-def search_image(liquor_image):
-    if 'file' not in liquor_image:
-        flash('No file part')
-        return abort(500,'No file part')
+# def search_image(liquor_image):
+#     if 'file' not in liquor_image:
+#         flash('No file part')
+#         return abort(500,'No file part')
 
-    test_img = liquor_image['file']
+#     test_img = liquor_image['file']
 
-    if test_img.filename == '':
-        flash('No selected file')
-        return abort(500,'No selected file')
+#     if test_img.filename == '':
+#         flash('No selected file')
+#         return abort(500,'No selected file')
 
-    filename= secure_filename(test_img.filename)
-    image_path = os.path.join(UPLOAD_FOLDER, filename)
-    test_img.save(image_path)
+#     filename= secure_filename(test_img.filename)
+#     image_path = os.path.join(UPLOAD_FOLDER, filename)
+#     test_img.save(image_path)
 
-    predicted_id = predict_liquor(image_path)
-    predicted_liquor = Liquor.query.filter_by(id = predicted_id).first()
+#     predicted_id = predict_liquor(image_path)
+#     predicted_liquor = Liquor.query.filter_by(id = predicted_id).first()
 
-    new_path = os.path.join(UPLOAD_FOLDER, predicted_liquor.liquor_name)
-    os.makedirs(new_path, exist_ok=True)
-    shutil.move(image_path, new_path)
+#     new_path = os.path.join(UPLOAD_FOLDER, predicted_liquor.liquor_name)
+#     os.makedirs(new_path, exist_ok=True)
+#     shutil.move(image_path, new_path)
     
-    return predicted_liquor
+#     return predicted_liquor
     
