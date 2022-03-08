@@ -49,10 +49,10 @@ class cocktail_recipe(Resource):
     @Cocktail.response(201, "recipe successfully created")
     @Cocktail.response(500, "Fail to create")
     def post(self):
-        '''유저가 칵테일 레시피 등록'''
+        '''유저가 칵테일 레시피 수정'''
         if not session:
             abort(500, "로그인 해주세요")
         else:
             data = request.json
-            return liquorService.create_cocktail_recipe(data=data)
+            return liquorService.update_cocktail_recipe(data=data)
 
