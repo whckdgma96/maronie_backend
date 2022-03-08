@@ -18,8 +18,8 @@ class Create_review(Resource):
             rating = request.json['rating']
             content = request.json['content']
             return reviewService.create_review(user_id,liquor_id,rating,content)
-        except:
-            abort(500, "리뷰 등록 실패.")
+        except Exception as ex:
+            abort(500, ex)
 
 @Review.route('/update')
 class UpdateReview(Resource):

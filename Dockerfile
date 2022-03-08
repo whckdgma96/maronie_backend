@@ -1,8 +1,9 @@
+#python version 3.6
 FROM  tensorflow/tensorflow:latest-gpu-py3
 
-COPY requirements.txt /app/
+COPY requirements.txt /backend/
 EXPOSE 5000
-WORKDIR /app
+WORKDIR /backend
 
 RUN pip install --upgrade pip \
     &&  pip install --requirement requirements.txt
