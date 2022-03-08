@@ -49,7 +49,7 @@ def userLogin(email: str, password:str):
 
 #비밀번호 변경
 def changepw(email,new_password):
-    conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
+    conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='Liquor', charset='utf8') #숨기기
     cur = conn.cursor()
     #DB연결 후 메서드 호출
     saved_user = User.query.filter_by(email=email).first()
