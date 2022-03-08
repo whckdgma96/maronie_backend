@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from flask import abort, flash
 
 from config import UPLOAD_FOLDER #app.config['UPLOAD_FOLDER']를 import하는것에 실패
-from .predict import predict_liquor
+# from .predict import predict_liquor
 from models.liquor import Liquor
 from models.liquor import Cocktail
 from .searchDTO import *
