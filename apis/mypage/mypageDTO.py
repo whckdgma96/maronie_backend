@@ -1,6 +1,10 @@
 from flask_restx import Namespace,fields
 
 from models.user import Wishlist_cocktail
+'''custom fields'''
+class String2List(fields.Raw):
+    def format(self, value):
+        return value.split('\\n')
 
 Mypage = Namespace(name="mypage", description="마이페이지")
 
@@ -53,4 +57,30 @@ create_donelist_liquor = Mypage.model('create_donelist_liquor',{
 create_donelist_cocktail = Mypage.model('create_donelist_cocktail',{
     'user_id' : fields.Integer(description='user id', required=True, example=2,attribute="user_id"),
     "cocktail_id" : fields.Integer(description='cocktail id', required=True, example=2,attribute="cocktail_id")
+})
+
+my_cocktail_recipe = Mypage.model('my_cocktail_recipe',{
+
+    'cocktail_id' : fields.Integer(description='칵테일 id', required=True, example=1,attribute="id"),
+    'author_id' : fields.Integer(description='레시피를 등록한 유저의 id',required=True, example=1),
+    'cocktail_name': fields.String(description='Cocktail name', required=False, example='Black Russian'),
+    'cocktail_name_kor': fields.String(description='Cocktail name(Korean)', required=True, example='블랙 러시안'),
+    'image_path': fields.String(description='Image Path', required=False, example='https://stevethebartender.com.au/ezoimgfmt/m8g5e5y2.stackpathcdn.com/wp-content/uploads/2014/07/black-russian-cocktail.jpg?ezimgfmt=ng:webp/ngcb1'),
+    'level' : fields.Integer(description='난이도',required=False, example=1),
+    'alcohol': fields.Float(description='도수', required=False, example=37.9),
+	'description': fields.String(description='Description', required=True, example='커피향과 술 맛을 동시에 느낄 수 있지만 도수가 상당히 높은 칵테일'),
+    'ingredients': String2List(description='재료',required=True, attribute='ingredients', 
+                    example=['Vodka 50ml\nKahlúa 20ml']),
+    'recipe': String2List(description='레시피',required=True, attribute='recipe', 
+                    example=['온더락잔에 얼음\n보드카 50ml\n깔루아 20ml\nStir'])
+})
+
+my_review = Mypage.model('my_review',{
+    'review_id' : fields.Integer(description='review_id',required=True, example=1,attribute="id"),
+    'liquor_id' : fields.Integer(description='liquor_id',required=True,example=8,attribute='liquor_id'),
+    "liquor_name": fields.String(description='liquor_name',required=True,example='Blue Curacao',attribute='reviewed_liquors.liquor_name'),
+    "liquor_name_kor" :fields.String(description='liquor_name_kor',required=True,example='블루 큐라소',attribute='reviewed_liquors.liquor_name_kor'),
+    'rating' : fields.Float(description='rating',required=True,example=4.5,attribute='rating'),
+    'content': fields.String(description='content',required=True,example='블루 큐라소 만의 맛이 느껴지네요',attribute='content'),
+    "review_date" : fields.Date(description='review_date',required=False,example='2022-02-03')
 })
