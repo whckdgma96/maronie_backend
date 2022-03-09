@@ -161,15 +161,15 @@ def delete_donelist_cocktail(user_id:int, cocktail_id:int):
 # 칵테일 레시피 모아보기
 def my_cocktail_recipe(user_id:int):
     cocktails = Cocktail.query.filter_by(author_id=user_id).all()
-    if not cocktails:
-        abort(500, "등록된 레시피가 없습니다.")
-    else:
-        return cocktails
+    # if not cocktails:
+    #     abort(500, "등록된 레시피가 없습니다.")
+    # else:
+    return cocktails,200
 # 내가쓴 리뷰 모아보기
 
 def my_review(user_id:int):
     reviews = Review.query.filter_by(user_id = user_id).all()
-    if not reviews:
-        abort(500, "등록된 리뷰가 없습니다.")
-    else:
-        return reviews
+    # if not reviews:
+    #     abort(500, "등록된 리뷰가 없습니다.")
+    # else:
+    return reviews,200
