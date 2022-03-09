@@ -115,6 +115,7 @@ update_image_and_recipe.add_argument('alcohol', help='20.3', location='form', ty
 update_image_and_recipe.add_argument('description', help='설명', location='form')                
 update_image_and_recipe.add_argument('ingredients', help='재료1\n재료2\n', location='form')
 update_image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", location='form')
+
 '''recipe : 칵테일 레시피 관련'''
 # recipe_detail = Cocktail.model('recipe_detail',{
 #     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),

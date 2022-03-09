@@ -4,6 +4,9 @@ from werkzeug.datastructures import FileStorage
 Search = Namespace(name="Search", description="술 라벨 이미지 검색 혹은 술과 칵테일 이름으로 정보 검색")
 
 '''text : 텍스트 검색'''
+text_keyord = Search.parser()
+text_keyord.add_argument('keyword', help='검색 키워드', required=True)
+
 text_liquor = Search.model('text_liquor', {
     'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="id"),
     'liquor_name': fields.String(description='Liquor name', required=True, example="Blue Curacao"),
@@ -40,3 +43,5 @@ result_image_response = Search.model('result_image',{
     "liquor_name_kor": fields.String(description='Liquor name(korean)', required=True, example="앱솔루트"),
     "liquor_name": fields.String(description='Liquor name', required=True, example="Absolute"),
 })
+
+

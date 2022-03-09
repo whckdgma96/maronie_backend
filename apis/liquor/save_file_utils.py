@@ -14,14 +14,12 @@ def naming_file(filename):
     return new_filename
     
 def save_image(thumbnail):
-    cocktail_img = thumbnail['file']
-
-    if cocktail_img.filename == '':
+    if thumbnail.filename == '':
         flash('No selected file')
         return abort(500,'No selected file')
 
-    if cocktail_img and allowed_file(cocktail_img.filename):
-        filename = naming_file(secure_filename(cocktail_img.filename))
+    if thumbnail and allowed_file(thumbnail.filename):
+        filename = naming_file(secure_filename(thumbnail.filename))
         image_path = os.path.join(COCKTAIL_THUMBNAIL_FOLDER, filename)
-        cocktail_img.save(image_path)
+        thumbnail.save(image_path)
         return image_path

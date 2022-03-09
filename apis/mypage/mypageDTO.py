@@ -1,6 +1,5 @@
 from flask_restx import Namespace,fields
 
-from models.user import Wishlist_cocktail
 '''custom fields'''
 class String2List(fields.Raw):
     def format(self, value):

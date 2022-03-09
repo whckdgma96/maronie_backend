@@ -5,7 +5,7 @@ from .liquorDTO import *
 from . import liquorService
 
 # 술 상세페이지 id로 조회
-@Liquor.route('=<int:liquor_id>')
+@Liquor.route('/<int:liquor_id>')
 class liquor_detailPage(Resource):
     @Liquor.response(200, "Liquor exist", liquor_detail_response)
     @Liquor.response(404, "Not found")
@@ -16,7 +16,7 @@ class liquor_detailPage(Resource):
         return liquorService.liquor_detail_view(liquor_id)
 
 # 칵테일 상세페이지 id로 조회
-@Cocktail.route('=<int:cocktail_id>')
+@Cocktail.route('/<int:cocktail_id>')
 class cocktail_detailPage(Resource):
     @Cocktail.response(200, "Available cocktail_id",cocktail_detail_response)
     @Cocktail.response(404, "Not found")
@@ -27,7 +27,7 @@ class cocktail_detailPage(Resource):
         return liquorService.cocktail_detail_view(cocktail_id)
 
 # 칵테일 레시피 등록 요청
-@Cocktail.route('/recipe')
+@Cocktail.route('/recipe/create')
 # @login_required
 class cocktail_recipe(Resource):
     @Cocktail.expect(image_and_recipe)
@@ -40,7 +40,7 @@ class cocktail_recipe(Resource):
         return liquorService.create_cocktail_recipe(thumbnail, data)
 
 # 칵테일 레시피 수정 요청
-@Cocktail.route('/recipe/update/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+@Cocktail.route('/recipe/update/<int:user_id>/cocktail/<int:cocktail_id>')
 # @login_required
 class cocktail_recipe(Resource):
     @Cocktail.expect(image_and_recipe)
@@ -53,7 +53,7 @@ class cocktail_recipe(Resource):
         return liquorService.update_cocktail_recipe(user_id, cocktail_id, thumbnail, data)
 
 # 칵테일 레시피 삭제 요청
-@Cocktail.route('/recipe/delete/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+@Cocktail.route('/recipe/delete/<int:user_id>/cocktail/<int:cocktail_id>')
 # @login_required
 class cocktail_recipe(Resource):
     @Cocktail.response(200, "cocktail recipe successfully deleted")

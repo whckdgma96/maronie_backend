@@ -29,12 +29,12 @@ def create_app():
 
     #blueprint로 한번에 묶기
     api = Api(app)
-    api.add_namespace(Auth, '/auth')
-    api.add_namespace(Liquor, '/liquor')
-    api.add_namespace(Cocktail, '/cocktail')
-    api.add_namespace(Search, '/search')
-    api.add_namespace(Review, '/review')
-    api.add_namespace(Mypage,'/Mypage')
+    api.add_namespace(Auth, '/api/auth')
+    api.add_namespace(Liquor, '/api/liquor')
+    api.add_namespace(Cocktail, '/api/cocktail')
+    api.add_namespace(Search, '/api/search')
+    api.add_namespace(Review, '/api/review')
+    api.add_namespace(Mypage,'/api/mypage')
     return app
 
 if __name__ == "__main__":

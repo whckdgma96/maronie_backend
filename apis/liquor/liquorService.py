@@ -100,6 +100,7 @@ def update_cocktail_recipe(user_id:int, cocktail_id:int, thumbnail, data):
         for key in data.to_dict().keys():
             print(data[key])
             cocktail.key = data[key]
+        db.session.save()
         db.session.commit()
         '''
         
@@ -113,8 +114,6 @@ def delete_cocktail_recipe(user_id:int, cocktail_id:int):
     # if logined_user.id != user_id:
     #     abort(500, "로그인 정보가 일치하지 않습니다.")
     try:
-        #수정, 삭제는 마이페이지의 '내 레시피 모아보기' 페이지에서만 가능
-        #그래도 유저아이디도 함께 필터링 해서 이 유저가 이 리뷰를 작성했는지 더블 체크 하는 것이 좋을까?
         cocktail = db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).first()
         db.session.delete(cocktail)
         db.session.commit()

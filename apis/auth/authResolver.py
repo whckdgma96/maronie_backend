@@ -4,25 +4,27 @@ from .authDTO import *
 from . import authService
 
 # 회원가입 email 유효성 검사
-@Auth.route('/register/email=<string:email>')
+@Auth.route('/register/check_email')
 class AuthRegisterCheckId(Resource):
-    # @Auth.expect(checkIdDTO)
+    @Auth.expect(check_email)
     @Auth.response(200, "Available email address")
     @Auth.response(404, "Not found")
     @Auth.response(500, "Unavailable email address")
-    def get(self,email):
+    def get(self):
         '''회원가입시 ID유효성 검사'''
+        email = request.args.get('email')
         return authService.idckeck(email)
 
 # 회원가입 nickname 유효성 검사
-@Auth.route('/register/nickname=<string:nickname>')
+@Auth.route('/register/check_nickname')
 class AuthRegisterCheckNickname(Resource):
-    # @Auth.expect(checkIdDTO)
+    @Auth.expect(check_nickname)
     @Auth.response(200, "Available nickname")
     @Auth.response(404, "Not found")
     @Auth.response(500, "Unavailable nickname")
-    def get(self,nickname):
+    def get(self,):
         '''회원가입시 ID유효성 검사'''
+        nickname = request.args.get('nickname')
         return authService.nicknameckeck(nickname)
 
 # 회원가입 요청
@@ -52,7 +54,7 @@ class AuthLogin(Resource):
         return authService.userLogin(email,password)
 
 #비밀번호 변경
-@Auth.route('/changepw')
+@Auth.route('/change_password')
 class AuthChangepw(Resource):
     @Auth.expect(changepwDTO)
     @Auth.response(201, "password Changed")

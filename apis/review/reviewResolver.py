@@ -43,7 +43,7 @@ class UpdateReview(Resource):
         # except:
         #     abort(500, "로그인 해주세요.")
 
-@Review.route("/delete/user_id=<int:user_id>/liouor_id=<int:liquor_id>")
+@Review.route("/delete/<int:user_id>/liquor/<int:liquor_id>")
 class DeleteReview(Resource):
     def delete(self, user_id, liquor_id):
         if not session:

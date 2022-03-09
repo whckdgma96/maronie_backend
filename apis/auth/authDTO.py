@@ -2,9 +2,13 @@ from flask_restx import Namespace,fields
 
 Auth = Namespace(name="auth", description="사용자 인증")
 
-# checkIdDTO = Auth.model('checkId', {
-#     'email': fields.String(description='User Email', required=True, example="CCH@gmail.com")
-# }) 
+
+check_email = Auth.parser()
+check_email.add_argument('email', help='이메일 중복 검사', required=True)
+
+check_nickname = Auth.parser()
+check_nickname.add_argument('nickname', help='닉네임 중복 검사', required=True)
+
 
 registerDTO = Auth.model('User_register', {
     'email': fields.String(description='User Email', required=True, example="CCH@gmail.com"),
