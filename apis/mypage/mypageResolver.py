@@ -126,3 +126,25 @@ class delete_donelist_cocktail(Resource):
     def delete(self, user_id, cocktail_id):
         '''cocktail donelist 삭제'''
         return mypageService.delete_donelist_cocktail(user_id,cocktail_id)
+
+# 칵테일 레시피 모아보기
+@Mypage.route('/recipe/user_id=<int:user_id>')
+class my_cocktail_recipe(Resource):
+    @Mypage.response(200,"success",my_cocktail_recipe)
+    @Mypage.response(500, "fail")
+    @Mypage.marshal_with(my_cocktail_recipe, mask=False)
+    def get(self, user_id):
+        '''칵테일 레시피 모아보기'''
+        return mypageService.my_cocktail_recipe(user_id)
+
+
+# 내가쓴 리뷰 모아보기
+
+@Mypage.route('/review/user_id=<int:user_id>')
+class my_review(Resource):
+    @Mypage.response(200,"success",my_review)
+    @Mypage.response(500, "fail")
+    @Mypage.marshal_with(my_review, mask=False)
+    def get(self, user_id):
+        '''내가쓴 리뷰 모아보기'''
+        return mypageService.my_review(user_id)
