@@ -39,3 +39,32 @@ class cocktail_recipe(Resource):
         data = request.form
         return liquorService.create_cocktail_recipe(thumbnail, data)
 
+# 칵테일 레시피 수정 요청
+@Cocktail.route('/recipe/update/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+# @login_required
+class cocktail_recipe(Resource):
+    @Cocktail.expect(image_and_recipe)
+    @Cocktail.response(200, "cocktail recipe successfully updated")
+    @Cocktail.response(500, "Fail to update")
+    def put(self,user_id, cocktail_id):
+        '''유저가 칵테일 레시피 수정'''
+        thumbnail = request.files
+        data = request.form
+        return liquorService.update_cocktail_recipe(user_id, cocktail_id, thumbnail, data)
+
+# 칵테일 레시피 삭제 요청
+@Cocktail.route('/recipe/delete/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+# @login_required
+class cocktail_recipe(Resource):
+    @Cocktail.response(200, "cocktail recipe successfully deleted")
+    @Cocktail.response(500, "Fail to delete")
+    def delete(self, user_id, cocktail_id):
+        '''유저가 칵테일 레시피 삭제 요청'''
+        return liquorService.delete_cocktail_recipe(user_id, cocktail_id)
+
+'''
+흔히 204를 반환하는 경우는 PUT 요청에 대한 응답으로, 
+사용자에게 보여지는 페이지를 바꾸지 않고 리소스를 업데이트할 때 쓰입니다. 
+리소스를 생성한 경우엔 201 Created를 대신 반환합니다. 
+새롭게 업데이트한 페이지를 보여줘야 할 경우 200을 사용해야 합니다.
+'''

@@ -93,7 +93,7 @@ detail_review = Liquor.model('detail_review',{
 
 '''request 형태'''
 image_and_recipe = Cocktail.parser()
-image_and_recipe.add_argument('file', location='files', type=FileStorage)
+image_and_recipe.add_argument('file', location='files', type=FileStorage, required=True)
 image_and_recipe.add_argument('author_id', help='4', location='form', required=True, type=int)
 image_and_recipe.add_argument('cocktail_name', help='Mojito', location='form')
 image_and_recipe.add_argument('cocktail_name_kor', help='모히토', location='form', required=True)
@@ -104,6 +104,17 @@ image_and_recipe.add_argument('description', help='설명', location='form', req
 image_and_recipe.add_argument('ingredients', help='재료1\n재료2\n', location='form', required=True)
 image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", location='form', required=True)
 
+update_image_and_recipe = Cocktail.parser()
+update_image_and_recipe.add_argument('file', location='files', type=FileStorage)
+update_image_and_recipe.add_argument('author_id', help='4', location='form', type=int)
+update_image_and_recipe.add_argument('cocktail_name', help='Mojito', location='form')
+update_image_and_recipe.add_argument('cocktail_name_kor', help='모히토', location='form')
+update_image_and_recipe.add_argument('classification_id', help='2', location='form')
+update_image_and_recipe.add_argument('level', help='2', location='form', type=int)
+update_image_and_recipe.add_argument('alcohol', help='20.3', location='form', type=float)
+update_image_and_recipe.add_argument('description', help='설명', location='form')                
+update_image_and_recipe.add_argument('ingredients', help='재료1\n재료2\n', location='form')
+update_image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", location='form')
 '''recipe : 칵테일 레시피 관련'''
 # recipe_detail = Cocktail.model('recipe_detail',{
 #     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),

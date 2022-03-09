@@ -1,10 +1,9 @@
 from distutils.log import error
 import os
 import shutil
-from werkzeug.utils import secure_filename
 from flask import abort, flash
-import uuid
-from config import ALLOWED_EXTENSIONS, UPLOAD_FOLDER #app.config['UPLOAD_FOLDER']를 import하는것에 실패
+from apis.liquor.save_file_utils import save_image
+from config import UPLOAD_FOLDER #app.config['UPLOAD_FOLDER']를 import하는것에 실패
 from .predict import predict_liquor
 from models.liquor import Liquor
 from models.liquor import Cocktail
@@ -28,14 +27,6 @@ def search_keyword(keyword:str):
         print(error)
 
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def naming_file(filename):
-    u=uuid.uuid4()
-    new_filename = str(u) + "." + filename.rsplit('.', 1)[1].lower()
-    return new_filename
-
 def search_image(liquor_image):
     if 'file' not in liquor_image:
         flash('No file part')
@@ -43,15 +34,13 @@ def search_image(liquor_image):
 
     test_img = liquor_image['file']
 
-    if test_img.filename == '':
-        flash('No selected file')
-        return abort(500,'No selected file')
-    if test_img and allowed_file(test_img.filename):
-        filename= naming_file(secure_filename(test_img.filename))
-        image_path = os.path.join(UPLOAD_FOLDER, filename)
-        test_img.save(image_path)
+    image_path = save_image(test_img)
 
     predicted_id = predict_liquor(image_path)
+
+    if predicted_id == -1:
+        return abort(500,'해당되는 이미지를 찾을 수 없습니다')
+
     predicted_liquor = Liquor.query.filter_by(id = predicted_id).first()
     new_path = os.path.join(UPLOAD_FOLDER, predicted_liquor.liquor_name)
 

@@ -12,6 +12,10 @@ def predict_liquor(path):
     img = img.reshape(1,224,224,3)
     
     prediction = model.predict(img)
-    return np.argmax(prediction)+1
+    print(np.max(prediction))
+    if np.max(prediction) < 0.8:
+        return -1
+    else:
+        return np.argmax(prediction)+1
 
 
