@@ -137,7 +137,6 @@ def create_donelist_cocktail(user_id:int,cocktail_id:int):
 
 #술 donelist 삭제
 def delete_donelist_liquor(user_id:int, liquor_id:int):
-    # conn = pymysql.connect(host='127.0.0.1',port=3306, user='team11', password='AIteam11Liquor', db='liquor', charset='utf8') #숨기기
     conn = pymysql.connect(host='127.0.0.1',port=int(os.getenv('MYSQL_PORT')), user=os.getenv('MYSQL_USER'), password=os.getenv('MYSQL_PASSWORD'), db=os.getenv('MYSQL_DATABASE'), charset='utf8') #숨기기
     cur = conn.cursor()
     sql= """DELETE from donelist_liquor WHERE user_id=%s AND liquor_id=%s"""
@@ -159,3 +158,19 @@ def delete_donelist_cocktail(user_id:int, cocktail_id:int):
         return {"message":"술 donelist 삭제 성공"},200
     except: 
         abort(500, "술 donelist 삭제 실패")
+
+# 칵테일 레시피 모아보기
+def my_cocktail_recipe(user_id:int):
+    cocktails = Cocktail.query.filter_by(author_id=user_id).all()
+    if not cocktails:
+        abort(500, "등록된 레시피가 없습니다.")
+    else:
+        return cocktails
+# 내가쓴 리뷰 모아보기
+
+def my_review(user_id:int):
+    reviews = Review.query.filter_by(user_id = user_id).all()
+    if not reviews:
+        abort(500, "등록된 리뷰가 없습니다.")
+    else:
+        return reviews
