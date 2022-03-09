@@ -14,3 +14,4 @@ def predict_liquor(path):
     prediction = model.predict(img)
     return np.argmax(prediction)+1
 
+

@@ -22,9 +22,11 @@ text_cocktail = Search.model('text_cocktail', {
     'description': fields.String(description='Description', required=True, example="색이 예쁘다. 새콤달콤한 맛"),
 })
 
+
 '''image : 이미지 검색'''
 image_liquor = Search.parser()
 image_liquor.add_argument('file', location='files', type=FileStorage, required=True)
+
 
 '''최종 response 형태'''
 result_text_response = Search.model('result_text',{
