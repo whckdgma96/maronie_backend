@@ -1,6 +1,5 @@
-from attr import attributes
 from flask_restx import Namespace, fields
-
+from werkzeug.datastructures import FileStorage
 
 Liquor = Namespace(name='Liquor', description='Liquor')
 Cocktail = Namespace(name='cocktail', description='Cocktail')
@@ -21,9 +20,9 @@ class RatingDistribution(fields.Raw):
         print(value)
         return 'hi'
 
-'''request 형태'''
-'''recipe : 칵테일 레시피 관련'''
-recipe_createDTO = Cocktail.model('recipe_create',{
+
+
+recipe_detail = Cocktail.model('recipe_detail',{
     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),
     'cocktail_name': fields.String(description='Cocktail name', required=False, example='Mojito'),
     'cocktail_name_kor': fields.String(description='Cocktail name(Korean)', required=True, example='모히토'),
@@ -31,7 +30,6 @@ recipe_createDTO = Cocktail.model('recipe_create',{
     'level' : fields.Integer(description='난이도',required=False, example=3),
     'alcohol': fields.Float(description='도수', required=False, example=20),
 	'description': fields.String(description='Description', required=True, example='오렌지 껍질술인 트리플 섹에 파란 색소를 첨가하여 만든 리큐르. 오렌지 향에 강한 단맛.'),
-	'image_path' : fields.String(description='uploded cocktail image path', required=False, example="https://dimg.donga.com/ugc/CDB/SHINDONGA/Article/60/ef/96/61/60ef966116bfd2738276.jpg"),
     'ingredients': String2List(description='재료',required=True, attribute='ingredients', 
                     example=['3 mint leaves',
                     '1/2 ounce simple syrup',
@@ -92,6 +90,44 @@ detail_review = Liquor.model('detail_review',{
     'review_date' : fields.Date(description='리뷰 작성 날짜', required=False,  example='2022-03-08')
 })
 
+
+'''request 형태'''
+image_and_recipe = Cocktail.parser()
+image_and_recipe.add_argument('file', location='files', type=FileStorage)
+image_and_recipe.add_argument('author_id', help='4', location='form', required=True, type=int)
+image_and_recipe.add_argument('cocktail_name', help='Mojito', location='form')
+image_and_recipe.add_argument('cocktail_name_kor', help='모히토', location='form', required=True)
+image_and_recipe.add_argument('classification_id', help='2', location='form', required=True)
+image_and_recipe.add_argument('level', help='2', location='form', type=int, required=True)
+image_and_recipe.add_argument('alcohol', help='20.3', location='form', type=float)
+image_and_recipe.add_argument('description', help='설명', location='form', required=True)                
+image_and_recipe.add_argument('ingredients', help='재료1\n재료2\n', location='form', required=True)
+image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", location='form', required=True)
+
+'''recipe : 칵테일 레시피 관련'''
+# recipe_detail = Cocktail.model('recipe_detail',{
+#     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),
+#     'cocktail_name': fields.String(description='Cocktail name', required=False, example='Mojito'),
+#     'cocktail_name_kor': fields.String(description='Cocktail name(Korean)', required=True, example='모히토'),
+#     'classification_id' : fields.Integer(description='칵테일이 어떤 종류인지', required=True, example=2),
+#     'level' : fields.Integer(description='난이도',required=False, example=3),
+#     'alcohol': fields.Float(description='도수', required=False, example=20),
+# 	'description': fields.String(description='Description', required=True, example='오렌지 껍질술인 트리플 섹에 파란 색소를 첨가하여 만든 리큐르. 오렌지 향에 강한 단맛.'),
+#     'ingredients': String2List(description='재료',required=True, attribute='ingredients', 
+#                     example=['3 mint leaves',
+#                     '1/2 ounce simple syrup',
+#                     '2 ounces white rum',
+#                     '3/4 ounce lime juice, freshly squeezed',
+#                     'Club soda, to top',
+#                     'Garnish: mint sprig',
+#                     'Garnish: lime wheel']),
+#     'recipe': String2List(description='레시피',required=True, attribute='recipe', 
+#                     example=["Lightly muddle the mint with the simple syrup in a shaker.",
+#                     "Add the rum, lime juice and ice, and give it a brief shake.",
+#                     "Strain into a highball glass over fresh ice.",
+#                     "Top with the club soda.",
+#                     "Garnish with a mint sprig and lime wheel."])
+# })
 
 '''최종 response 형태'''
 liquor_detail_response =  Liquor.model('detail_result',{

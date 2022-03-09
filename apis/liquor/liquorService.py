@@ -1,10 +1,13 @@
-from flask import abort, session
+import os
+from flask import abort, flash, session
 from flask_restx import marshal
+from sqlalchemy import null
+from apis.search.searchService import allowed_file, naming_file
+from config import ALLOWED_EXTENSIONS, COCKTAIL_THUMBNAIL_FOLDER
 from models.liquor import Liquor, Cocktail, Review
 from models.paring import Paring
+from werkzeug.utils import secure_filename
 from db_connect import db
-import pymysql
-from models.user import *
 
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
@@ -13,7 +16,7 @@ def liquor_detail_view(liquor_id:int):
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
     reviews = Review.query.filter_by(liquor_id = liquor_id).all()
     '''
-    이런식으로 db.session으로 연결해서 쿼리문 날리기
+    별점분포 ? 이런식으로 db.session으로 연결해서 쿼리문 날리기 시도해보자...
     timerank = db.session.query(FoodHour.food, func.sum(FoodHour.count).label('total')).filter(
                 FoodHour.hour == curr_hour).group_by(FoodHour.food).order_by(desc('total')).limit(3).all()
 
@@ -40,19 +43,33 @@ def cocktail_detail_view(cocktail_id:int):
         abort(500, "Unavailable cocktail_id")
 
 #칵테일 레시피 등록
-def create_cocktail_recipe(data):
+def create_cocktail_recipe(thumbnail, data):
     try:
         author_id = data['author_id']
-        cocktail_name=data["cocktail_name"]
+        cocktail_name = None #(NULL) 이 아니라 비어있게 진짜 null로 만들고 싶은데,,,
+        if "cocktail_name" in data:
+            cocktail_name=data["cocktail_name"]
         cocktail_name_kor= data["cocktail_name_kor"]
         classification_id= data["classification_id"]
         level = data["level"]
-        alcohol = data["alcohol"]
+        alcohol = None
+        if "alcohol" in data:
+            alcohol = data["alcohol"]
         description = data["description"]
-        image_path = data["image_path"]
-        ingredients = '\n'.join(data["ingredients"])
-        recipe = '\n'.join(data["recipe"])
-        
+        ingredients = data["ingredients"]
+        recipe = data['recipe']
+        image_path= None
+        if "file" in thumbnail:
+            cocktail_img = thumbnail['file']
+
+            if cocktail_img.filename == '':
+                flash('No selected file')
+                return abort(500,'No selected file')
+            if cocktail_img and allowed_file(cocktail_img.filename):
+                filename = naming_file(secure_filename(cocktail_img.filename))
+                image_path = os.path.join(COCKTAIL_THUMBNAIL_FOLDER, filename)
+                cocktail_img.save(image_path)
+
         new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
                                 classification_id=classification_id, level=level, alcohol=alcohol,
                                 description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
@@ -63,30 +80,3 @@ def create_cocktail_recipe(data):
         print(ex)
         return {"message":"Fail to create"},500 #실패
         
-# #칵테일 레시피 수정
-# def update_cocktail_recipe(data):
-#     # try:
-#     #     author_id = data['author_id']
-#     #     cocktail_name=data["cocktail_name"]
-#     #     cocktail_name_kor= data["cocktail_name_kor"]
-#     #     classification_id= data["classification_id"]
-#     #     level = data["level"]
-#     #     alcohol = data["alcohol"]
-#     #     description = data["description"]
-#     #     image_path = data["image_path"]
-#     #     ingredients = '\n'.join(data["ingredients"])
-#     #     recipe = '\n'.join(data["recipe"])
-        
-#     #     new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
-#     #                             classification_id=classification_id, level=level, alcohol=alcohol,
-#     #                             description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
-#     #     db.session.add(new_cocktail)
-#     #     db.session.commit()
-#     #     return {"message":"recipe successfully created"},201 #성공
-#     # except Exception as ex:
-#     #     print(ex)
-#     #     return {"message":"Fail to create"},500 #실패
-#     logined_user = User.query.filter_by(email=session['login']).first()
-#     conn = pymysql.connect(host='elice-kdt-ai-3rd-team11.koreacentral.cloudapp.azure.com',port=3306, user='team11', password='AIteam11Liquor', db='Liquor', charset='utf8') #숨기기
-#     cur = conn.cursor()
-#     sql = """UPDATE cocktail SET recipe=%sWHERE author_id=%s AND id=%s"""
