@@ -173,4 +173,3 @@ def my_review(user_id:int):
     #     abort(500, "등록된 리뷰가 없습니다.")
     # else:
     return reviews,200
-    
