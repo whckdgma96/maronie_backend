@@ -1,6 +1,5 @@
 from flask_restx import Namespace,fields
-
-from models.user import Wishlist_cocktail
+from apis.liquor.liquorDTO import String2List
 
 Mypage = Namespace(name="mypage", description="마이페이지")
 
@@ -66,9 +65,9 @@ my_cocktail_recipe = Mypage.model('my_cocktail_recipe',{
     'alcohol': fields.Float(description='도수', required=False, example=37.9),
 	'description': fields.String(description='Description', required=True, example='커피향과 술 맛을 동시에 느낄 수 있지만 도수가 상당히 높은 칵테일'),
     'ingredients': String2List(description='재료',required=True, attribute='ingredients', 
-                    example=['Vodka 50ml\nKahlúa 20ml']),
+                    example=['Vodka 50ml','Kahlúa 20ml']),
     'recipe': String2List(description='레시피',required=True, attribute='recipe', 
-                    example=['온더락잔에 얼음\n보드카 50ml\n깔루아 20ml\nStir'])
+                    example=['온더락잔에 얼음','보드카 50ml','깔루아 20ml','Stir'])
 })
 
 my_review = Mypage.model('my_review',{
