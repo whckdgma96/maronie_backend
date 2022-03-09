@@ -5,13 +5,15 @@ from .searchDTO import *
 
 
 # 술 이름으로 검색
-@Search.route('=<string:keyword>')
+@Search.route('')
 class search_keyword(Resource):
+    @Search.expect(text_keyord)
     @Search.response(200, "success", result_text_response)
     @Search.response(500, "fail")
     @Search.marshal_with(result_text_response, mask=False)
-    def get(self,keyword):
+    def get(self):
         '''술/칵테일 이름으로 정보 조회'''
+        keyword = request.args.get('keyword')
         return searchService.search_keyword(keyword)
 
 #술 이미지로 검색

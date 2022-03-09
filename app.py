@@ -17,7 +17,6 @@ def create_app():
     from apis.search.searchResolver import Search
     from apis.review.reviewResolver import Review
     from apis.mypage.mypageResolver import Mypage
-
     # from apis.paring.paringResolver import paring
 
     app.config.from_object(config)  # config 에서 가져온 파일을 사용합니다.
@@ -28,14 +27,14 @@ def create_app():
     app.secret_key = config.SECRET_KEY #.env 사용
     app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
 
+    #blueprint로 한번에 묶기
     api = Api(app)
-    api.add_namespace(Auth, '/auth')
-    api.add_namespace(Liquor, '/liquor')
-    api.add_namespace(Cocktail, '/cocktail')
-    api.add_namespace(Search, '/search')
-    api.add_namespace(Review, '/review')
-    api.add_namespace(Mypage,'/Mypage')
-
+    api.add_namespace(Auth, '/api/auth')
+    api.add_namespace(Liquor, '/api/liquor')
+    api.add_namespace(Cocktail, '/api/cocktail')
+    api.add_namespace(Search, '/api/search')
+    api.add_namespace(Review, '/api/review')
+    api.add_namespace(Mypage,'/api/mypage')
     return app
 
 if __name__ == "__main__":

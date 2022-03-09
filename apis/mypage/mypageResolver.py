@@ -3,7 +3,7 @@ from flask import request, session, abort
 from .mypageDTO import *
 from . import mypageService
 # wishlist 출력
-@Mypage.route('/wishlist=<int:user_id>')
+@Mypage.route('/wishlist/<int:user_id>')
 class wishlist(Resource):
     @Mypage.response(200,"success",wishlist_response)
     @Mypage.response(500, "fail")
@@ -17,21 +17,21 @@ class wishlist(Resource):
         return mypageService.wishlist(user_id)
 
 # liquor wishlist 추가
-@Mypage.route('/wishlist/liquor')
+@Mypage.route('/wishlist/create/liquor')
 class create_wishlist_liquor(Resource):
     @Mypage.expect(create_wishlist_liquor)
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
 
     def post(self):
-        '''# liquor wishlist 추가'''
+        '''liquor wishlist 추가'''
         user_id = request.json['user_id']
         liquor_id = request.json['liquor_id']
 
         return mypageService.create_wishlist_liquor(user_id,liquor_id)
 
 # cocktail wishlist 추가
-@Mypage.route('/wishlist/cocktail')
+@Mypage.route('/wishlist/create/cocktail')
 class create_wishlist_cocktail(Resource):
     @Mypage.expect(create_wishlist_cocktail)
     @Mypage.response(200,"success")
@@ -45,7 +45,7 @@ class create_wishlist_cocktail(Resource):
         return mypageService.create_wishlist_cocktail(user_id,cocktail_id)
 
 # liquor wishlist 삭제
-@Mypage.route('/wishlist/delete/user_id=<int:user_id>/liquor_id=<int:liquor_id>')
+@Mypage.route('/wishlist/delete/<int:user_id>/liquor/<int:liquor_id>')
 class delete_wishlist_liquor(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
@@ -55,7 +55,7 @@ class delete_wishlist_liquor(Resource):
         return mypageService.delete_wishlist_liquor(user_id,liquor_id)
 
 # cocktail wishlist 삭제
-@Mypage.route('/wishlist/delete/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+@Mypage.route('/wishlist/delete/<int:user_id>/cocktail/<int:cocktail_id>')
 class delete_wishlist_cocktail(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
@@ -66,7 +66,7 @@ class delete_wishlist_cocktail(Resource):
 
 
 # donelist 출력
-@Mypage.route('/donelist=<int:user_id>')
+@Mypage.route('/donelist/<int:user_id>')
 class donelist(Resource):
     @Mypage.response(200,"success",donelist_response)
     @Mypage.response(500, "fail")
@@ -80,21 +80,21 @@ class donelist(Resource):
         return mypageService.donelist(user_id)
 
 # liquor donelist 추가
-@Mypage.route('/donelist/liquor')
+@Mypage.route('/donelist/create/liquor')
 class create_donelist_liquor(Resource):
     @Mypage.expect(create_donelist_liquor)
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
 
     def post(self):
-        '''# liquor donelist 추가'''
+        '''liquor donelist 추가'''
         user_id = request.json['user_id']
         liquor_id = request.json['liquor_id']
 
         return mypageService.create_donelist_liquor(user_id,liquor_id)
 
 # cocktail donelist 추가
-@Mypage.route('/donelist/cocktail')
+@Mypage.route('/donelist/create/cocktail')
 class create_donelist_cocktail(Resource):
     @Mypage.expect(create_donelist_cocktail)
     @Mypage.response(200,"success")
@@ -108,7 +108,7 @@ class create_donelist_cocktail(Resource):
         return mypageService.create_donelist_cocktail(user_id,cocktail_id)
 
 # liquor donelist 삭제
-@Mypage.route('/donelist/delete/user_id=<int:user_id>/liquor_id=<int:liquor_id>')
+@Mypage.route('/donelist/delete/<int:user_id>/liquor/<int:liquor_id>')
 class delete_donelist_liquor(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
@@ -118,7 +118,7 @@ class delete_donelist_liquor(Resource):
         return mypageService.delete_donelist_liquor(user_id,liquor_id)
 
 # cocktail donelist 삭제
-@Mypage.route('/donelist/delete/user_id=<int:user_id>/cocktail_id=<int:cocktail_id>')
+@Mypage.route('/donelist/delete/<int:user_id>/cocktail/<int:cocktail_id>')
 class delete_donelist_cocktail(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
@@ -128,7 +128,7 @@ class delete_donelist_cocktail(Resource):
         return mypageService.delete_donelist_cocktail(user_id,cocktail_id)
 
 # 칵테일 레시피 모아보기
-@Mypage.route('/recipe/user_id=<int:user_id>')
+@Mypage.route('/recipe/<int:user_id>')
 class my_cocktail_recipe(Resource):
     @Mypage.response(200,"success",my_cocktail_recipe)
     @Mypage.response(500, "fail")
@@ -139,8 +139,7 @@ class my_cocktail_recipe(Resource):
 
 
 # 내가쓴 리뷰 모아보기
-
-@Mypage.route('/review/user_id=<int:user_id>')
+@Mypage.route('/review/<int:user_id>')
 class my_review(Resource):
     @Mypage.response(200,"success",my_review)
     @Mypage.response(500, "fail")
