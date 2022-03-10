@@ -25,7 +25,7 @@ class search_image(Resource):
     @Search.marshal_with(result_image_response, mask=False)
     def post(self):
         '''술 이미지로 검색'''
-        liquor_image = request.files
-        return searchService.search_image(liquor_image=liquor_image)
+        test_image = request.files
+        return searchService.search_image(test_image)
 
 

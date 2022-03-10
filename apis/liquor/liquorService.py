@@ -58,8 +58,7 @@ def create_cocktail_recipe(thumbnail, data):
         ingredients = data["ingredients"]
         recipe = data['recipe']
         image_path= null()
-        image_path= save_image(thumbnail)
-
+        image_path= save_image(thumbnail, False) #is_search=False
         new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
                                 classification_id=classification_id, level=level, alcohol=alcohol,
                                 description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
