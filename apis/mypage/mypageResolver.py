@@ -20,7 +20,7 @@ class wishlist(Resource):
 class create_wishlist_liquor(Resource):
     @Mypage.expect(create_wishlist_liquor)
     @Mypage.response(201,"success")
-    @Mypage.response(409,"duplicate")
+    @Mypage.response(200,"duplicate")
     @Mypage.response(500, "fail")
     def post(self):
         '''liquor wishlist 추가'''
@@ -34,7 +34,7 @@ class create_wishlist_liquor(Resource):
 class create_wishlist_cocktail(Resource):
     @Mypage.expect(create_wishlist_cocktail)
     @Mypage.response(201,"success")
-    @Mypage.response(409,"duplicate")
+    @Mypage.response(200,"duplicate")
     @Mypage.response(500, "fail")
     def post(self):
         '''cocktail wishlist 추가'''
@@ -80,7 +80,7 @@ class donelist(Resource):
 class create_donelist_liquor(Resource):
     @Mypage.expect(create_donelist_liquor)
     @Mypage.response(201,"success")
-    @Mypage.response(409,"duplicate")
+    @Mypage.response(200,"duplicate")
     @Mypage.response(500, "fail")
     def post(self):
         '''liquor donelist 추가'''
@@ -94,7 +94,7 @@ class create_donelist_liquor(Resource):
 class create_donelist_cocktail(Resource):
     @Mypage.expect(create_donelist_cocktail)
     @Mypage.response(201,"success")
-    @Mypage.response(409,"duplicate")
+    @Mypage.response(200,"duplicate")
     @Mypage.response(500, "fail")
     def post(self):
         '''cocktail donelist 추가'''

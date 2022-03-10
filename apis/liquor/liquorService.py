@@ -1,11 +1,11 @@
 import os
 from flask import abort
-from sqlalchemy import null
+from sqlalchemy import desc, func, null
 from apis.liquor.save_file_utils import save_image
 from models.liquor import Liquor, Cocktail, Review
 from models.paring import Paring
 from db_connect import db
-from models.user import Donelist_cocktail, Donelist_liquor, User, Wishlist_cocktail, Wishlist_liquor
+from models.user import Donelist_cocktail, Donelist_liquor, Wishlist_cocktail, Wishlist_liquor
 
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
@@ -14,7 +14,22 @@ def liquor_detail_view(liquor_id:int):
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
     reviews = Review.query.filter_by(liquor_id = liquor_id).all()
     
-    result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review' :reviews}
+    rating_list = [5.0, 4.0, 3.0, 2.0, 1.0]
+
+    rating_distribution = db.session.query(func.floor(Review.rating).label('rating'), func.count(func.floor(Review.rating)).label('each_total')).filter(
+                Review.liquor_id == liquor_id).group_by(func.floor(Review.rating)).order_by(desc('rating')).all()
+    # print(rating_distribution)
+    rating_distribution= dict(rating_distribution)
+    for key in rating_list:
+        if key not in rating_distribution:
+            rating_distribution[key] = 0
+    rating_distribution = dict(sorted(rating_distribution.items(),reverse=True))
+    
+    # result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_info' :reviews,
+    #         'rating_distribution':rating_distribution, 'review' :reviews}
+    review_info ={ 'total_reviews' : reviews, 'rating_distribution':rating_distribution}
+    result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_summary':review_info, 'review' :reviews}
+              
     if liquor:
         return result,200 #성공
     else: 

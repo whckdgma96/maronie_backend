@@ -80,6 +80,7 @@ class check_mark(Resource):
     @Cocktail.expect(check_mark_query)
     @Cocktail.response(200, "ok", check_mark_respnse)
     @Cocktail.response(500, "failed")
+    @Cocktail.marshal_with(check_mark_respnse, mask=False)
     def get(self):
         '''유저 id와 칵테일 id로 각 리스트에 존재 확인'''
         user_id = request.args.get('user_id')

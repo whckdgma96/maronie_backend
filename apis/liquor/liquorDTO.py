@@ -13,6 +13,7 @@ class TotalCount(fields.Raw):
     def format(self, value):
         return len(value)
 
+
 recipe_detail = Cocktail.model('recipe_detail',{
     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),
     'cocktail_name': fields.String(description='Cocktail name', required=False, example='Mojito'),
@@ -108,11 +109,17 @@ check_mark_query = Liquor.parser()
 check_mark_query.add_argument('user_id', type=int, required=True)
 check_mark_query.add_argument('beverage_id', type=int, required=True)
 
+review_info = Liquor.model('review_info', {
+    'total_reviews' : TotalCount(description='총 리뷰 수',required=True, example=3),
+    'rating_distribution' : fields.Raw(description='리뷰 별점 분포', required=True,  example={"5.0":2,"4.0" :5,"3.0" :0, "2.0" :3, "1.0": 2}),
+})
+
 '''최종 response 형태'''
 liquor_detail_response =  Liquor.model('detail_result',{
     'liquor' : fields.Nested(detail_liquor),
     'paring' : fields.Nested(detail_paring),
     'cocktail' : fields.Nested(detail_cocktail_summary),
+    'review_summary' : fields.Nested(review_info),
     'review' : fields.Nested(detail_review)
 })
 
