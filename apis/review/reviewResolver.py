@@ -47,6 +47,7 @@ class Update_review(Resource):
 @Review.route("/delete/<int:review_id>/user/<int:user_id>")
 class delete_review(Resource):
     def delete(self, user_id, review_id):
+        '''등록된 리뷰 삭제'''
         if not session:
             abort(500, "로그인 해주세요")
         else:
@@ -63,7 +64,7 @@ class review(Resource):
         '''리뷰 하나만 조회'''
         return reviewService.get_review(user_id, review_id)
 
-@Review.route("/more_reviews/liquor/<int:liquor_id>/<int:last_review_id>")
+@Review.route("/liquor/<int:liquor_id>/more_reviews/<int:last_review_id>")
 class next_reviews(Resource):
     @Review.response(200, "Review exist",next_reviewsDTO)
     @Review.response(404, "Not found")
