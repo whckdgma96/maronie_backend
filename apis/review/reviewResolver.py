@@ -47,11 +47,11 @@ class Update_review(Resource):
 @Review.route("/delete/<int:review_id>/user/<int:user_id>")
 class delete_review(Resource):
     def delete(self, user_id, review_id):
+        '''등록된 리뷰 삭제'''
         if not session:
             abort(500, "로그인 해주세요")
         else:
             return reviewService.delete_review( user_id, review_id)
-
 
 @Review.route("/<int:review_id>/user/<int:user_id>")
 class review(Resource):
@@ -61,4 +61,14 @@ class review(Resource):
     @Review.marshal_with(show_reviewDTO, mask=False)
     def get(self, user_id, review_id):
         '''리뷰 하나만 조회'''
-        return reviewService.show_review(user_id, review_id)
+        return reviewService.get_review(user_id, review_id)
+
+@Review.route("/liquor/<int:liquor_id>/more_reviews/<int:last_review_id>")
+class next_reviews(Resource):
+    @Review.response(200, "Review exist",next_reviewsDTO)
+    @Review.response(404, "Not found")
+    @Review.response(500, "Review doesn't exist")
+    @Review.marshal_with(next_reviewsDTO, mask=False)
+    def get(self, liquor_id, last_review_id):
+        '''다음 리뷰 불러오기'''
+        return reviewService.get_next_reviews(liquor_id, last_review_id)

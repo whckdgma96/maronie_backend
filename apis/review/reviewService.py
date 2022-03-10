@@ -27,7 +27,10 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
 
 def update_review(user_id:int,review_id:int,rating:float,content:str):
     logined_user = User.query.filter_by(email=session['login']).first()
-    conn = pymysql.connect(host='127.0.0.1',port=int(os.getenv('MYSQL_PORT')), user=os.getenv('MYSQL_USER'), password=os.getenv('MYSQL_PASSWORD'), db=os.getenv('MYSQL_DATABASE'), charset='utf8') #숨기기
+    conn = pymysql.connect(host='127.0.0.1', port=int(os.getenv('MYSQL_PORT')), 
+                           user=os.getenv('MYSQL_USER'), 
+                           password=os.getenv('MYSQL_PASSWORD'), 
+                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
     cur = conn.cursor()
     sql = """UPDATE review SET rating=%s, content=%s, review_date=%s WHERE user_id=%s AND id=%s"""
     review_date = datetime.today().strftime("%Y-%m-%d")
@@ -45,7 +48,10 @@ def update_review(user_id:int,review_id:int,rating:float,content:str):
 
 def delete_review(user_id:int, review_id:int):
     logined_user = User.query.filter_by(email=session['login']).first()
-    conn = pymysql.connect(host='127.0.0.1',port=int(os.getenv('MYSQL_PORT')), user=os.getenv('MYSQL_USER'), password=os.getenv('MYSQL_PASSWORD'), db=os.getenv('MYSQL_DATABASE'), charset='utf8') #숨기기
+    conn = pymysql.connect(host='127.0.0.1', port=int(os.getenv('MYSQL_PORT')), 
+                           user=os.getenv('MYSQL_USER'), 
+                           password=os.getenv('MYSQL_PASSWORD'), 
+                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
  
     cur = conn.cursor()
     sql= """DELETE from review WHERE user_id=%s AND id=%s"""
@@ -59,7 +65,12 @@ def delete_review(user_id:int, review_id:int):
         conn.commit()
         return {"message":"리뷰삭제 성공"},200
 
-def show_review(user_id:int, review_id:int):
+def get_review(user_id:int, review_id:int):
     #로그인 여부 판별 생략
     review = Review.query.filter_by(id=review_id).first()
     return review
+
+def get_next_reviews(liquor_id:int, last_review_id:int):
+    reviews = Review.query.filter(Review.id > last_review_id).filter_by(liquor_id = liquor_id).limit(10).all()
+    result = {'last_review_id' : reviews[-1].id, 'liquor_id' : reviews[-1].liquor_id, 'reviews': reviews}
+    return result
