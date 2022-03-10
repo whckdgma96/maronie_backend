@@ -150,7 +150,7 @@ def delete_donelist_cocktail(user_id:int, id:int):
     sql= """DELETE from donelist_cocktail WHERE id=%s"""
     # sql= """DELETE from donelist_cocktail WHERE user_id=%s AND cocktail_id=%s"""
     try:
-        cur.execute(sql,(user_id, cocktail_id))
+        cur.execute(sql,id)
         conn.commit()
         return {"message":"술 donelist 삭제 성공"},200
     except: 
