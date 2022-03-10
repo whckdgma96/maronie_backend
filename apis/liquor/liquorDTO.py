@@ -13,13 +13,6 @@ class TotalCount(fields.Raw):
     def format(self, value):
         return len(value)
 
-class RatingDistribution(fields.Raw):
-    def format(self, value):
-        # distribution={1 : 0, 2:0, 3:0, 4:0, 5:0}
-        # distribution[int(value)] +=1
-        print(value)
-        return 'hi'
-
 
 
 recipe_detail = Cocktail.model('recipe_detail',{
