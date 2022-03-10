@@ -22,7 +22,7 @@ class AuthRegisterCheckNickname(Resource):
     @Auth.response(200, "Available nickname")
     @Auth.response(404, "Not found")
     @Auth.response(500, "Unavailable nickname")
-    def get(self,):
+    def get(self):
         '''회원가입시 ID유효성 검사'''
         nickname = request.args.get('nickname')
         return authService.nicknameckeck(nickname)

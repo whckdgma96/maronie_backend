@@ -1,11 +1,11 @@
 import os
 from flask import abort
-from sqlalchemy import null
+from sqlalchemy import desc, func, null
 from apis.liquor.save_file_utils import save_image
 from models.liquor import Liquor, Cocktail, Review
 from models.paring import Paring
 from db_connect import db
-from models.user import User
+from models.user import Donelist_cocktail, Donelist_liquor, Wishlist_cocktail, Wishlist_liquor
 
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
@@ -13,19 +13,23 @@ def liquor_detail_view(liquor_id:int):
     cocktail = Cocktail.query.filter_by(classification_id = liquor.classification_id).all()
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
     reviews = Review.query.filter_by(liquor_id = liquor_id).all()
-    '''
-    별점분포 ? 이런식으로 db.session으로 연결해서 쿼리문 날리기 시도해보자...
-    timerank = db.session.query(FoodHour.food, func.sum(FoodHour.count).label('total')).filter(
-                FoodHour.hour == curr_hour).group_by(FoodHour.food).order_by(desc('total')).limit(3).all()
+    
+    rating_list = [5.0, 4.0, 3.0, 2.0, 1.0]
 
-            sbq = db.session.query(FoodHour.food, (func.sum(
-                FoodHour.count)/24).label('avg')).group_by(FoodHour.food).subquery()
-
-            timeraterank = db.session.query(FoodHour.food, (func.sum(FoodHour.count)/sbq.c.avg).label('rate')).join(sbq, sbq.c.food == FoodHour.food).filter(
-                FoodHour.hour == curr_hour).group_by(FoodHour.food).order_by(desc('rate')).limit(3).all()
-
-    '''
-    result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review' :reviews}
+    rating_distribution = db.session.query(func.floor(Review.rating).label('rating'), func.count(func.floor(Review.rating)).label('each_total')).filter(
+                Review.liquor_id == liquor_id).group_by(func.floor(Review.rating)).order_by(desc('rating')).all()
+    # print(rating_distribution)
+    rating_distribution= dict(rating_distribution)
+    for key in rating_list:
+        if key not in rating_distribution:
+            rating_distribution[key] = 0
+    rating_distribution = dict(sorted(rating_distribution.items(),reverse=True))
+    
+    # result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_info' :reviews,
+    #         'rating_distribution':rating_distribution, 'review' :reviews}
+    review_info ={ 'total_reviews' : reviews, 'rating_distribution':rating_distribution}
+    result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_summary':review_info, 'review' :reviews}
+              
     if liquor:
         return result,200 #성공
     else: 
@@ -121,3 +125,31 @@ def delete_cocktail_recipe(user_id:int, cocktail_id:int):
 
     except Exception as ex:
         return ex, 500
+
+def check_mark_cocktail(user_id:int, cocktail_id:int):
+    is_wish, is_done = False, False
+
+    wishlist = Wishlist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
+    donelist = Donelist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
+    
+    if wishlist:
+        is_wish = True
+    if donelist:
+        is_done = True
+    
+    result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
+    return result
+
+def check_mark_liquor(user_id:int, liquor_id:int):
+    is_wish, is_done = False, False
+
+    wishlist = Wishlist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
+    donelist = Donelist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
+    
+    if wishlist:
+        is_wish = True
+    if donelist:
+        is_done = True
+    
+    result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
+    return result

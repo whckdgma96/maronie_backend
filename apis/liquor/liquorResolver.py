@@ -62,6 +62,31 @@ class cocktail_recipe(Resource):
         '''유저가 칵테일 레시피 삭제 요청'''
         return liquorService.delete_cocktail_recipe(user_id, cocktail_id)
 
+#유저 id와 술 id로 각 리스트에 존재 확인
+@Liquor.route('/check_mark')
+class check_mark(Resource):
+    @Liquor.expect(check_mark_query)
+    @Liquor.response(200, "ok", check_mark_respnse)
+    @Liquor.response(500, "failed")
+    def get(self):
+        '''유저 id와 술 id로 각 리스트에 존재 확인'''
+        user_id = request.args.get('user_id')
+        liquor_id = request.args.get('beverage_id')
+        return liquorService.check_mark_liquor(user_id, liquor_id)
+
+#유저 id와 칵테일 id로 각 리스트에 존재 확인
+@Cocktail.route('/check_mark')
+class check_mark(Resource):
+    @Cocktail.expect(check_mark_query)
+    @Cocktail.response(200, "ok", check_mark_respnse)
+    @Cocktail.response(500, "failed")
+    @Cocktail.marshal_with(check_mark_respnse, mask=False)
+    def get(self):
+        '''유저 id와 칵테일 id로 각 리스트에 존재 확인'''
+        user_id = request.args.get('user_id')
+        cocktail_id = request.args.get('beverage_id')
+        return liquorService.check_mark_cocktail(user_id, cocktail_id)
+
 '''
 흔히 204를 반환하는 경우는 PUT 요청에 대한 응답으로, 
 사용자에게 보여지는 페이지를 바꾸지 않고 리소스를 업데이트할 때 쓰입니다. 
