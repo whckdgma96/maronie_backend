@@ -3,7 +3,7 @@ import os
 import shutil
 from flask import abort, flash
 from apis.liquor.save_file_utils import save_image
-from config import UPLOAD_FOLDER #app.config['UPLOAD_FOLDER']를 import하는것에 실패
+from config import NEGATIVE_FOLDER, UPLOAD_FOLDER #app.config['UPLOAD_FOLDER']를 import하는것에 실패
 from .predict import predict_liquor
 from models.liquor import Liquor
 from models.liquor import Cocktail
@@ -27,22 +27,22 @@ def search_keyword(keyword:str):
         print(error)
 
 
-def search_image(liquor_image):
-    if 'file' not in liquor_image:
-        flash('No file part')
-        return abort(500,'No file part')
+def search_image(test_image):
+    '''이미지 저장'''
+    # test_img = liquor_image['file']
+    image_path = save_image(test_image)
 
-    test_img = liquor_image['file']
-
-    image_path = save_image(test_img)
-
+    '''이미지 검색'''
     predicted_id = predict_liquor(image_path)
-
+    
+    '''일치하는 결과 없을 경우'''
     if predicted_id == -1:
+        shutil.move(image_path, NEGATIVE_FOLDER)
         return abort(500,'해당되는 이미지를 찾을 수 없습니다')
 
+    '''일치하는 결과가 있는경우'''
     predicted_liquor = Liquor.query.filter_by(id = predicted_id).first()
-    new_path = os.path.join(UPLOAD_FOLDER, predicted_liquor.liquor_name)
+    new_path = os.path.join(UPLOAD_FOLDER, str(predicted_liquor.liquor_name).rstrip().replace(" ",""))
 
     os.makedirs(new_path, exist_ok=True)
     shutil.move(image_path, new_path)
