@@ -13,18 +13,7 @@ def liquor_detail_view(liquor_id:int):
     cocktail = Cocktail.query.filter_by(classification_id = liquor.classification_id).all()
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
     reviews = Review.query.filter_by(liquor_id = liquor_id).all()
-    '''
-    별점분포 ? 이런식으로 db.session으로 연결해서 쿼리문 날리기 시도해보자...
-    timerank = db.session.query(FoodHour.food, func.sum(FoodHour.count).label('total')).filter(
-                FoodHour.hour == curr_hour).group_by(FoodHour.food).order_by(desc('total')).limit(3).all()
-
-            sbq = db.session.query(FoodHour.food, (func.sum(
-                FoodHour.count)/24).label('avg')).group_by(FoodHour.food).subquery()
-
-            timeraterank = db.session.query(FoodHour.food, (func.sum(FoodHour.count)/sbq.c.avg).label('rate')).join(sbq, sbq.c.food == FoodHour.food).filter(
-                FoodHour.hour == curr_hour).group_by(FoodHour.food).order_by(desc('rate')).limit(3).all()
-
-    '''
+    
     result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review' :reviews}
     if liquor:
         return result,200 #성공

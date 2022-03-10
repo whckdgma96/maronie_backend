@@ -25,12 +25,12 @@ def wishlist(user_id:int):
 def create_wishlist_liquor(user_id:int,liquor_id:int):
     wishlist_check = Wishlist_liquor.query.filter_by(user_id = user_id).filter_by(liquor_id = liquor_id).first()
     if wishlist_check:
-        abort(500, "이미 등록된 위시리스트입니다.")
+        abort(409, "이미 등록된 위시리스트입니다.")
     try:
         new_wishlist = Wishlist_liquor(user_id=user_id,liquor_id=liquor_id)
         db.session.add(new_wishlist)
         db.session.commit()
-        return {"message":"위시리스트 등록 성공"},200
+        return {"message":"위시리스트 등록 성공"},201
     except:
         abort(500, "위시리스트 등록 실패")
 
@@ -38,12 +38,12 @@ def create_wishlist_liquor(user_id:int,liquor_id:int):
 def create_wishlist_cocktail(user_id:int,cocktail_id:int):
     wishlist_check = Wishlist_cocktail.query.filter_by(user_id = user_id).filter_by(cocktail_id = cocktail_id).first()
     if wishlist_check:
-        abort(500, "이미 등록된 위시리스트입니다.")
+        abort(409, "이미 등록된 위시리스트입니다.")
     try:
         new_wishlist = Wishlist_cocktail(user_id=user_id,cocktail_id=cocktail_id)
         db.session.add(new_wishlist)
         db.session.commit()
-        return {"message":"위시리스트 등록 성공"},200
+        return {"message":"위시리스트 등록 성공"},201
     except:
         abort(500, "위시리스트 등록 실패")
 
@@ -100,12 +100,12 @@ def donelist(user_id:int):
 def create_donelist_liquor(user_id:int,liquor_id:int):
     donelist_check = Donelist_liquor.query.filter_by(user_id = user_id).filter_by(liquor_id = liquor_id).first()
     if donelist_check:
-        abort(500, "이미 등록된 donelist입니다.")
+        abort(409, "이미 등록된 donelist입니다.")
     try:
         new_donelist = Donelist_liquor(user_id=user_id,liquor_id=liquor_id)
         db.session.add(new_donelist)
         db.session.commit()
-        return {"message":"donelist 등록 성공"},200
+        return {"message":"donelist 등록 성공"},201
     except:
         abort(500, "donelist 등록 실패")
 
@@ -113,12 +113,12 @@ def create_donelist_liquor(user_id:int,liquor_id:int):
 def create_donelist_cocktail(user_id:int,cocktail_id:int):
     donelist_check = Donelist_cocktail.query.filter_by(user_id = user_id).filter_by(cocktail_id = cocktail_id).first()
     if donelist_check:
-        abort(500, "이미 등록된 donelist입니다.")
+        abort(409, "이미 등록된 donelist입니다.")
     try:
         new_donelist = Donelist_cocktail(user_id=user_id,cocktail_id=cocktail_id)
         db.session.add(new_donelist)
         db.session.commit()
-        return {"message":"donelist 등록 성공"},200
+        return {"message":"donelist 등록 성공"},201
     except:
         abort(500, "donelist 등록 실패")
 
