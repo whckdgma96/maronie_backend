@@ -8,7 +8,7 @@ class String2List(fields.Raw):
 Mypage = Namespace(name="mypage", description="마이페이지")
 
 wishlist_liquor = Mypage.model('wishlist_liquor',{
-    'id' : fields.Integer(description='wishlist_liquor id', required=True, example=1)
+    'id' : fields.Integer(description='wishlist_liquor id', required=True, example=1),
     'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="wish_l_info.id"),
     'image_path': fields.String(description='Image Path', attribute='wish_l_info.image_path', required=False, example="https://www.berevita.com/pub/media/catalog/product/cache/image/1000x1320/e9c3970ab036de70892d86c6d221abfe/d/e/de-kuyper-blue-curacao.jpg"),
     'liquor_name_kor':fields.String(description='Liquor name(korean)', attribute='wish_l_info.liquor_name_kor', required=True, example="블루 큐라소")
