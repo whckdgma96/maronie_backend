@@ -57,7 +57,7 @@ class delete_wishlist_liquor(Resource):
 class delete_wishlist_cocktail(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
-    def delete(self, user_id, cocktail_id):
+    def delete(self, user_id, id):
         '''cocktail wishlist 삭제'''
         return mypageService.delete_wishlist_cocktail(user_id,id)
 
