@@ -3,10 +3,13 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_restx import Api
 from flask_cors import CORS
+from flask_session import Session
 
 from db_connect import db
 import config
-    
+
+
+
 def create_app():
     app = Flask(__name__)
     CORS(app)
@@ -26,7 +29,8 @@ def create_app():
     
     app.secret_key = config.SECRET_KEY #.env 사용
     app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
-
+    # Create and initialize the Flask-Session object AFTER `app` has been configured
+    server_session = Session(app)
     #blueprint로 한번에 묶기
     api = Api(app)
     api.add_namespace(Auth, '/api/auth')
