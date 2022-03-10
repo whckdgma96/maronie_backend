@@ -1,6 +1,6 @@
 import os
 from flask import abort
-from sqlalchemy import desc, func, null
+from sqlalchemy import func, null
 from apis.liquor.save_file_utils import save_image
 from models.liquor import Liquor, Cocktail, Review
 from models.paring import Paring
@@ -10,24 +10,23 @@ from models.user import Donelist_cocktail, Donelist_liquor, Wishlist_cocktail, W
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
     liquor = Liquor.query.filter_by(id = liquor_id).first()
-    cocktail = Cocktail.query.filter_by(classification_id = liquor.classification_id).all()
+    cocktail = Cocktail.query.filter_by(classification_id = liquor.classification_id).limit(3).all()
     paring = Paring.query.filter_by(classification_id =liquor.classification_id).limit(3).all()
-    reviews = Review.query.filter_by(liquor_id = liquor_id).all()
-    
-    rating_list = [5.0, 4.0, 3.0, 2.0, 1.0]
+    reviews = Review.query.filter_by(liquor_id = liquor_id).limit(3).all()
 
+    '''별점 분포 구하기'''
     rating_distribution = db.session.query(func.floor(Review.rating).label('rating'), func.count(func.floor(Review.rating)).label('each_total')).filter(
-                Review.liquor_id == liquor_id).group_by(func.floor(Review.rating)).order_by(desc('rating')).all()
-    # print(rating_distribution)
+                Review.liquor_id == liquor_id).group_by(func.floor(Review.rating)).order_by(null).all()  #order_by(null) 을 사용하면 속도가 빨라진다.
+
     rating_distribution= dict(rating_distribution)
+
+    rating_list = [5.0, 4.0, 3.0, 2.0, 1.0]
     for key in rating_list:
         if key not in rating_distribution:
             rating_distribution[key] = 0
     rating_distribution = dict(sorted(rating_distribution.items(),reverse=True))
     
-    # result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_info' :reviews,
-    #         'rating_distribution':rating_distribution, 'review' :reviews}
-    review_info ={ 'total_reviews' : reviews, 'rating_distribution':rating_distribution}
+    review_info ={ 'total_reviews' : liquor.liquor_reviews, 'rating_distribution':rating_distribution, 'last_review_id' : reviews[-1].id}
     result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_summary':review_info, 'review' :reviews}
               
     if liquor:
@@ -49,19 +48,18 @@ def cocktail_detail_view(cocktail_id:int):
 def create_cocktail_recipe(thumbnail, data):
     try:
         author_id = data['author_id']
-        cocktail_name = null()
+        cocktail_name = ""
         if "cocktail_name" in data:
             cocktail_name=data["cocktail_name"]
         cocktail_name_kor= data["cocktail_name_kor"]
         classification_id= data["classification_id"]
         level = data["level"]
-        alcohol = null()
+        alcohol = -1
         if "alcohol" in data:
             alcohol = data["alcohol"]
         description = data["description"]
         ingredients = data["ingredients"]
         recipe = data['recipe']
-        image_path= null()
         image_path= save_image(thumbnail, False) #is_search=False
         new_cocktail = Cocktail(author_id=author_id, cocktail_name=cocktail_name, cocktail_name_kor=cocktail_name_kor,
                                 classification_id=classification_id, level=level, alcohol=alcohol,
@@ -127,29 +125,29 @@ def delete_cocktail_recipe(user_id:int, cocktail_id:int):
         return ex, 500
 
 def check_mark_cocktail(user_id:int, cocktail_id:int):
-    is_wish, is_done = False, False
+    is_wish, is_done = 0, 0
 
     wishlist = Wishlist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
     donelist = Donelist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
     
     if wishlist:
-        is_wish = True
+        is_wish = wishlist.id
     if donelist:
-        is_done = True
+        is_done = donelist.id
     
     result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
     return result
 
 def check_mark_liquor(user_id:int, liquor_id:int):
-    is_wish, is_done = False, False
+    is_wish, is_done = 0, 0
 
     wishlist = Wishlist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
     donelist = Donelist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
     
     if wishlist:
-        is_wish = True
+        is_wish = wishlist.id
     if donelist:
-        is_done = True
+        is_done = donelist.id
     
     result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
     return result

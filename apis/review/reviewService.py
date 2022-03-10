@@ -68,7 +68,12 @@ def delete_review(user_id:int, review_id:int):
         conn.commit()
         return {"message":"리뷰삭제 성공"},200
 
-def show_review(user_id:int, review_id:int):
+def get_review(user_id:int, review_id:int):
     #로그인 여부 판별 생략
     review = Review.query.filter_by(id=review_id).first()
     return review
+
+def get_next_reviews(liquor_id:int, last_review_id:int):
+    reviews = Review.query.filter(Review.id > last_review_id).filter_by(liquor_id = liquor_id).limit(10).all()
+    result = {'last_review_id' : reviews[-1].id, 'liquor_id' : reviews[-1].liquor_id, 'reviews': reviews}
+    return result
