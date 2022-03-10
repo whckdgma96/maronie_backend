@@ -13,8 +13,6 @@ class TotalCount(fields.Raw):
     def format(self, value):
         return len(value)
 
-
-
 recipe_detail = Cocktail.model('recipe_detail',{
     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),
     'cocktail_name': fields.String(description='Cocktail name', required=False, example='Mojito'),
@@ -51,8 +49,6 @@ detail_liquor = Liquor.model('detail_liquor', {
     'rating': fields.Float(description='average rating', required=False, example=4.5),
     'total_bookmark' : TotalCount(description='총 즐겨찾기 수',required=True, attribute='wish_l',example=3),
     'total_done' : TotalCount(description='총 마셔봤어요 수',required=True, attribute='done_l', example=3),
-    'total_reviews' : TotalCount(description='총 리뷰 수',required=True, attribute='liquor_reviews', example=3),
-    # 'distribution' : RatingDistribution(attribute='liquor_reviews'),
 })
 
 detail_paring = Liquor.model('detail_paring', {
@@ -76,7 +72,6 @@ detail_user_reviews = Liquor.model('detail_user_reviews',{
 })
 
 detail_review = Liquor.model('detail_review',{
-    # 'distribution' : RatingDistribution(attribute='rating'),
     'nickname' : fields.String(description='유저 닉네임', required=True, attribute='reviewed_users.nickname', example='CCH'),
     'rating': fields.Float(description='별점',required=True,  example=4.2),
     'content' : fields.String(description='리뷰 내용',required=True,  example='잭다니엘은 언제먹어도 맛있어요'),
@@ -109,30 +104,9 @@ image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", locatio
 # update_image_and_recipe.add_argument('ingredients', help='재료1\n재료2\n', location='form')
 # update_image_and_recipe.add_argument('recipe', help="레시피1\n레시피2\n", location='form')
 
-'''recipe : 칵테일 레시피 관련'''
-# recipe_detail = Cocktail.model('recipe_detail',{
-#     'author_id' : fields.Integer(description='레시피를 등록한 유저의 id', required=True, example=4),
-#     'cocktail_name': fields.String(description='Cocktail name', required=False, example='Mojito'),
-#     'cocktail_name_kor': fields.String(description='Cocktail name(Korean)', required=True, example='모히토'),
-#     'classification_id' : fields.Integer(description='칵테일이 어떤 종류인지', required=True, example=2),
-#     'level' : fields.Integer(description='난이도',required=False, example=3),
-#     'alcohol': fields.Float(description='도수', required=False, example=20),
-# 	'description': fields.String(description='Description', required=True, example='오렌지 껍질술인 트리플 섹에 파란 색소를 첨가하여 만든 리큐르. 오렌지 향에 강한 단맛.'),
-#     'ingredients': String2List(description='재료',required=True, attribute='ingredients', 
-#                     example=['3 mint leaves',
-#                     '1/2 ounce simple syrup',
-#                     '2 ounces white rum',
-#                     '3/4 ounce lime juice, freshly squeezed',
-#                     'Club soda, to top',
-#                     'Garnish: mint sprig',
-#                     'Garnish: lime wheel']),
-#     'recipe': String2List(description='레시피',required=True, attribute='recipe', 
-#                     example=["Lightly muddle the mint with the simple syrup in a shaker.",
-#                     "Add the rum, lime juice and ice, and give it a brief shake.",
-#                     "Strain into a highball glass over fresh ice.",
-#                     "Top with the club soda.",
-#                     "Garnish with a mint sprig and lime wheel."])
-# })
+check_mark_query = Liquor.parser()
+check_mark_query.add_argument('user_id', type=int, required=True)
+check_mark_query.add_argument('beverage_id', type=int, required=True)
 
 '''최종 response 형태'''
 liquor_detail_response =  Liquor.model('detail_result',{
@@ -156,3 +130,8 @@ cocktail_detail_response = Cocktail.model('cocktail_detail',{
     'recipe': String2List(description='레시피',required=True, attribute='recipe', example=["허리케인 글라스에 얼음", "쉐이커에 얼음", "화이트럼 1oz", "블루큐라소 1/2oz", "파인애플주스 1oz", "라임즙 1/3oz", "Shake", "잔에 부어준다"])
 })
 
+check_mark_respnse = Liquor.model('check_mark',{
+    'user_id': fields.Integer(description='user id', required=True, example=4),
+    'is_wish' : fields.Boolean(description='wishlist', required=True, example=False),
+    'is_done' : fields.Boolean(description='donelist', required=True, example=True)
+})

@@ -5,7 +5,7 @@ from apis.liquor.save_file_utils import save_image
 from models.liquor import Liquor, Cocktail, Review
 from models.paring import Paring
 from db_connect import db
-from models.user import User
+from models.user import Donelist_cocktail, Donelist_liquor, User, Wishlist_cocktail, Wishlist_liquor
 
 # 술 상세페이지 id로 조회
 def liquor_detail_view(liquor_id:int):
@@ -110,3 +110,31 @@ def delete_cocktail_recipe(user_id:int, cocktail_id:int):
 
     except Exception as ex:
         return ex, 500
+
+def check_mark_cocktail(user_id:int, cocktail_id:int):
+    is_wish, is_done = False, False
+
+    wishlist = Wishlist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
+    donelist = Donelist_cocktail.query.filter_by(cocktail_id=cocktail_id, user_id = user_id).first()
+    
+    if wishlist:
+        is_wish = True
+    if donelist:
+        is_done = True
+    
+    result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
+    return result
+
+def check_mark_liquor(user_id:int, liquor_id:int):
+    is_wish, is_done = False, False
+
+    wishlist = Wishlist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
+    donelist = Donelist_liquor.query.filter_by(liquor_id=liquor_id, user_id = user_id).first()
+    
+    if wishlist:
+        is_wish = True
+    if donelist:
+        is_done = True
+    
+    result = {'user_id': user_id, 'is_wish': is_wish, 'is_done': is_done}
+    return result
