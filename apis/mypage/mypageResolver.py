@@ -42,22 +42,22 @@ class create_wishlist_cocktail(Resource):
         return mypageService.create_wishlist_cocktail(user_id,cocktail_id)
 
 # liquor wishlist 삭제
-@Mypage.route('/wishlist/delete/<int:user_id>/liquor/<int:liquor_id>')
+@Mypage.route('/wishlist/delete/<int:user_id>/liquor/<int:id>')
 class delete_wishlist_liquor(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
-    def delete(self, user_id, liquor_id):
+    def delete(self, user_id, id):
         '''liquor wishlist 삭제'''
-        return mypageService.delete_wishlist_liquor(user_id,liquor_id)
+        return mypageService.delete_wishlist_liquor(user_id,id)
 
 # cocktail wishlist 삭제
-@Mypage.route('/wishlist/delete/<int:user_id>/cocktail/<int:cocktail_id>')
+@Mypage.route('/wishlist/delete/<int:user_id>/cocktail/<int:id>')
 class delete_wishlist_cocktail(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
     def delete(self, user_id, cocktail_id):
         '''cocktail wishlist 삭제'''
-        return mypageService.delete_wishlist_cocktail(user_id,cocktail_id)
+        return mypageService.delete_wishlist_cocktail(user_id,id)
 
 
 # donelist 출력
@@ -100,22 +100,22 @@ class create_donelist_cocktail(Resource):
         return mypageService.create_donelist_cocktail(user_id,cocktail_id)
 
 # liquor donelist 삭제
-@Mypage.route('/donelist/delete/<int:user_id>/liquor/<int:liquor_id>')
+@Mypage.route('/donelist/delete/<int:user_id>/liquor/<int:id>')
 class delete_donelist_liquor(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
-    def delete(self, user_id, liquor_id):
+    def delete(self, user_id, id):
         '''liquor donelist 삭제'''
-        return mypageService.delete_donelist_liquor(user_id,liquor_id)
+        return mypageService.delete_donelist_liquor(user_id,id)
 
 # cocktail donelist 삭제
-@Mypage.route('/donelist/delete/<int:user_id>/cocktail/<int:cocktail_id>')
+@Mypage.route('/donelist/delete/<int:user_id>/cocktail/<int:id>')
 class delete_donelist_cocktail(Resource):
     @Mypage.response(200,"success")
     @Mypage.response(500, "fail")
-    def delete(self, user_id, cocktail_id):
+    def delete(self, user_id, id):
         '''cocktail donelist 삭제'''
-        return mypageService.delete_donelist_cocktail(user_id,cocktail_id)
+        return mypageService.delete_donelist_cocktail(user_id,id)
 
 # 칵테일 레시피 모아보기
 @Mypage.route('/recipe/<int:user_id>')

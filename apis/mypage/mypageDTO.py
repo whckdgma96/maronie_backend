@@ -8,12 +8,14 @@ class String2List(fields.Raw):
 Mypage = Namespace(name="mypage", description="마이페이지")
 
 wishlist_liquor = Mypage.model('wishlist_liquor',{
-    'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="id"),
+    'id' : fields.Integer(description='wishlist_liquor id', required=True, example=1)
+    'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="wish_l_info.id"),
     'image_path': fields.String(description='Image Path', attribute='wish_l_info.image_path', required=False, example="https://www.berevita.com/pub/media/catalog/product/cache/image/1000x1320/e9c3970ab036de70892d86c6d221abfe/d/e/de-kuyper-blue-curacao.jpg"),
     'liquor_name_kor':fields.String(description='Liquor name(korean)', attribute='wish_l_info.liquor_name_kor', required=True, example="블루 큐라소")
 })
 wishlist_cocktail = Mypage.model('wishlist_cocktail',{
-    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="id"),
+    'id' : fields.Integer(description='wishlist_cocktail id', required=True, example=1),
+    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="wish_c_info.id"),
     'image_path': fields.String(description='Image Path', attribute='wish_c_info.image_path', required=False, example="https://w.namu.la/s/827ac58e595bb28aa551a1d18fcbcf291a3f01890eb07e4efbb8128eb7007bfdfd0ba10794d4a39194af008f5c7b72c9b6e9386da7a4a0227b19b20884c962d2e2078560c76b2e5a608c4f6dd7b203fdadd31739538aeb5af6c2e26f7b7ac14d"),
     'cocktail_name_kor': fields.String(description='Cocktail name(korean)', attribute='wish_c_info.cocktail_name_kor', required=True, example="블루 하와이"),
 })
@@ -34,12 +36,14 @@ create_wishlist_cocktail = Mypage.model('create_wishlist_cocktail',{
 
 
 donelist_liquor = Mypage.model('donelist_liquor',{
-    'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="id"),
+    'id' : fields.Integer(description='donelist_liquor id', required=True, example=1),
+    'liquor_id': fields.Integer(description='Liquor id', required=True, example=10, attribute="done_l_info.id"),
     'image_path': fields.String(description='Image Path', attribute='done_l_info.image_path', required=False, example="https://www.berevita.com/pub/media/catalog/product/cache/image/1000x1320/e9c3970ab036de70892d86c6d221abfe/d/e/de-kuyper-blue-curacao.jpg"),
     'liquor_name_kor':fields.String(description='Liquor name(korean)', attribute='done_l_info.liquor_name_kor', required=True, example="블루 큐라소")
 })
 donelist_cocktail = Mypage.model('donelist_cocktail',{
-    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="id"),
+    'id' : fields.Integer(description='donelist_cocktail id', required=True, example=1),
+    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="done_l_info.id"),
     'image_path': fields.String(description='Image Path', attribute='done_c_info.image_path', required=False, example="https://w.namu.la/s/827ac58e595bb28aa551a1d18fcbcf291a3f01890eb07e4efbb8128eb7007bfdfd0ba10794d4a39194af008f5c7b72c9b6e9386da7a4a0227b19b20884c962d2e2078560c76b2e5a608c4f6dd7b203fdadd31739538aeb5af6c2e26f7b7ac14d"),
     'cocktail_name_kor': fields.String(description='Cocktail name(korean)', attribute='done_c_info.cocktail_name_kor', required=True, example="블루 하와이"),
 })
