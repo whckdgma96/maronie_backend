@@ -70,7 +70,10 @@ def changepw(email,new_password):
 
 # 로그아웃
 def userLogout():
-    session.clear()
-    return {"message":"logout success"},200
+    if not session:
+        return {"message":"로그인 정보가 없습니다."},500
+    else:
+        session.clear()
+        return {"message":"logout success"},200
 
 

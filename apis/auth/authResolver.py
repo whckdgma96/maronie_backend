@@ -70,6 +70,8 @@ class AuthChangepw(Resource):
 # 로그아웃
 @Auth.route('/logout')
 class AuthLogout(Resource):
+    @Auth.response(200, "로그아웃")
+    @Auth.response(500, "로그인 정보가 없습니다")
     def post(self):
         '''로그아웃 기능'''
         return authService.userLogout()
