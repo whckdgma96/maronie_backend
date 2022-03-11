@@ -43,8 +43,10 @@ def userLogin(email: str, password:str):
         abort(500, "Auth Failed(Wrong password)")
     # 모두 일치
     else: 
-        session['login'] = saved_user.email
-        print(session['login'])
+        # session['login'] = saved_user.email
+        # print(session['login'])
+        session = saved_user.email
+        print(session)
         return saved_user,200
 
 #비밀번호 변경
