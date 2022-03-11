@@ -72,5 +72,9 @@ def get_review(user_id:int, review_id:int):
 
 def get_next_reviews(liquor_id:int, last_review_id:int):
     reviews = Review.query.filter(Review.id > last_review_id).filter_by(liquor_id = liquor_id).limit(10).all()
-    result = {'last_review_id' : reviews[-1].id, 'liquor_id' : reviews[-1].liquor_id, 'reviews': reviews}
-    return result
+    try:
+        result = {'last_review_id' : reviews[-1].id, 'liquor_id' : reviews[-1].liquor_id, 'reviews': reviews}
+        return result
+    except Exception as ex:
+        print(ex)
+        return 
