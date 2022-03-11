@@ -57,48 +57,45 @@ for row in df_classification.itertuples():
 
 '''liquor'''
 for row in df_liquor.itertuples():
-		cur.execute('''INSERT INTO liquor (liquor_name, liquor_name_kor, classification_id, alcohol, price, image_path, description, rating, vendor) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.liquor_name, row.liquor_name_kor, row.classification_id, row.alcohol, row.price, row.image_path, row.description, row.rating, row.vendor])
+	image_path = os.path.join("media/thumbnail_liquor", row.image_path)
+	cur.execute('''INSERT INTO liquor (liquor_name, liquor_name_kor, classification_id, alcohol, price, image_path, description, rating, vendor) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.liquor_name, row.liquor_name_kor, row.classification_id, row.alcohol, row.price, image_path, row.description, row.rating, row.vendor])
 
 '''cocktail'''
-#author_id, heart는 default value로 한다.
+# author_id는 default value로 한다.
 for row in df_cocktail.itertuples():
-		cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, alcohol, classification_id, image_path, description, level, ingredients, recipe) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.alcohol, row.classification_id, row.image_path, row.description, row.level, row.ingredients, row.recipe])
+	image_path = os.path.join("media/thumbnail_cocktail", row.image_path)
+	cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, classification_id, image_path, description, level, ingredients, recipe) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.classification_id, image_path, row.description, row.level, row.ingredients, row.recipe])
 
-'''menu'''
+# '''menu'''
 for row in df_menu.itertuples():
-		cur.execute('''INSERT INTO menu (menu_name, image_path) 
-		VALUES(%s, %s)''', [row.menu_name, row.image_path])
-
+	image_path = os.path.join("media/thumbnail_menu", row.image_path)
+	cur.execute('''INSERT INTO menu (menu_name, image_path) VALUES(%s, %s)''', [row.menu_name, image_path])
+		
 '''paring'''
 for row in df_paring.itertuples():
-		cur.execute('''INSERT INTO paring (menu_id, classification_id) 
-		VALUES(%s, %s)''', [row.menu_id, row.classification_id])
-
+	cur.execute('''INSERT INTO paring (menu_id, classification_id) VALUES(%s, %s)''', [row.menu_id, row.classification_id])
+		
 '''donelist_cocktail'''
 for row in df_donelist_cocktail.itertuples():
-		cur.execute('''INSERT INTO donelist_cocktail (cocktail_id,user_id) 
-		VALUES(%s, %s)''', [row.cocktail_id, row.user_id])
-
+	cur.execute('''INSERT INTO donelist_cocktail (cocktail_id,user_id) VALUES(%s, %s)''', [row.cocktail_id, row.user_id])
+	
 '''donelist_liquor'''
 for row in df_donelist_liquor.itertuples():
-		cur.execute('''INSERT INTO donelist_liquor (liquor_id,user_id) 
-		VALUES(%s, %s)''', [row.liquor_id, row.user_id])
-
+	cur.execute('''INSERT INTO donelist_liquor (liquor_id,user_id) VALUES(%s, %s)''', [row.liquor_id, row.user_id])
+		
 '''wishlist_cocktail'''
 for row in df_wishlist_cocktail.itertuples():
-		cur.execute('''INSERT INTO wishlist_cocktail (cocktail_id,user_id) 
-		VALUES(%s, %s)''', [row.cocktail_id, row.user_id])
+	cur.execute('''INSERT INTO wishlist_cocktail (cocktail_id,user_id) VALUES(%s, %s)''', [row.cocktail_id, row.user_id])		
 
 '''wishlist_liquor'''
 for row in df_wishlist_liquor.itertuples():
-		cur.execute('''INSERT INTO wishlist_liquor (liquor_id,user_id) 
-		VALUES(%s, %s)''', [row.liquor_id, row.user_id])
-
+	cur.execute('''INSERT INTO wishlist_liquor (liquor_id,user_id) VALUES(%s, %s)''', [row.liquor_id, row.user_id])
+		
 '''review'''
 for row in df_review.itertuples():
-		cur.execute('''INSERT INTO review (user_id, liquor_id, rating, content, review_date) 
+	cur.execute('''INSERT INTO review (user_id, liquor_id, rating, content, review_date) 
 		VALUES(%s,%s,%s,%s,%s)''', [row.user_id, row.liquor_id, row.rating, row.content, row.review_date])
 
 #Committing the changes
