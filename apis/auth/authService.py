@@ -45,6 +45,7 @@ def userLogin(email: str, password:str):
     else: 
         session['login'] = saved_user.email
         print(session['login'])
+
         return saved_user,200
 
 #비밀번호 변경
