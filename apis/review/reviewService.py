@@ -7,9 +7,8 @@ from db_connect import db
 from datetime import datetime
 
 def create_review(user_id:int,liquor_id:int,rating:float,content:str):
-    
-    # logined_user = User.query.filter_by(email=session['login']).first()
-    logined_user = User.query.filter_by(email=session).first()
+    print(session["login"])
+    logined_user = User.query.filter_by(email=session['login']).first()
     print(logined_user)
     review_date = datetime.today().strftime("%Y-%m-%d")
     # print(review_date)
