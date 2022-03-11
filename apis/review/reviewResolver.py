@@ -57,7 +57,6 @@ class delete_review(Resource):
 @Review.route("/<int:review_id>/user/<int:user_id>")
 class review(Resource):
     @Review.response(200, "Review exist",show_reviewDTO)
-    @Review.response(404, "Not found")
     @Review.response(500, "Review doesn't exist")
     @Review.marshal_with(show_reviewDTO, mask=False)
     def get(self, user_id, review_id):
@@ -67,7 +66,6 @@ class review(Resource):
 @Review.route("/liquor/<int:liquor_id>/more_reviews/<int:last_review_id>")
 class next_reviews(Resource):
     @Review.response(200, "Review exist",next_reviewsDTO)
-    @Review.response(404, "Not found")
     @Review.response(500, "Review doesn't exist")
     @Review.marshal_with(next_reviewsDTO, mask=False)
     def get(self, liquor_id, last_review_id):
