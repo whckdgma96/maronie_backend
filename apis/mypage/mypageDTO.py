@@ -83,6 +83,7 @@ my_review = Mypage.model('my_review',{
     'liquor_id' : fields.Integer(description='liquor_id',required=True,example=8,attribute='liquor_id'),
     "liquor_name": fields.String(description='liquor_name',required=True,example='Blue Curacao',attribute='reviewed_liquors.liquor_name'),
     "liquor_name_kor" :fields.String(description='liquor_name_kor',required=True,example='블루 큐라소',attribute='reviewed_liquors.liquor_name_kor'),
+    'image_path': fields.String(description='Image Path', required=False,example='media/thumbnail_liquor/0bbc5579-ede9-4c4e-b4d5-a9fb97bf1eb3.jpg',attribute='reviewed_liquors.image_path'),
     'rating' : fields.Float(description='rating',required=True,example=4.5,attribute='rating'),
     'content': fields.String(description='content',required=True,example='블루 큐라소 만의 맛이 느껴지네요',attribute='content'),
     "review_date" : fields.Date(description='review_date',required=False,example='2022-02-03')
