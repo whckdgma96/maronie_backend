@@ -14,7 +14,6 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
     # print(review_date)
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
 
-    
     # if logined_user.id != user_id:
     #     abort(500, "로그인 정보가 일치하지 않습니다.")
     if review_check: # 있는 리뷰 -> 업데이트를 해야댐
@@ -25,6 +24,8 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
         db.session.commit()
         db.session.close()
         return {"message":"리뷰등록 성공"},201
+
+        
 
 def update_review(user_id:int,review_id:int,rating:float,content:str):
     # logined_user = User.query.filter_by(email=session['login']).first()
