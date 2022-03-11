@@ -48,15 +48,11 @@ def cocktail_detail_view(cocktail_id:int):
 def create_cocktail_recipe(thumbnail, data):
     try:
         author_id = data['author_id']
-        cocktail_name = ""
-        if "cocktail_name" in data:
-            cocktail_name=data["cocktail_name"]
+        cocktail_name=data["cocktail_name"]
         cocktail_name_kor= data["cocktail_name_kor"]
         classification_id= data["classification_id"]
         level = data["level"]
-        alcohol = -1
-        if "alcohol" in data:
-            alcohol = data["alcohol"]
+        alcohol = data["alcohol"]
         description = data["description"]
         ingredients = data["ingredients"]
         recipe = data['recipe']
@@ -66,7 +62,7 @@ def create_cocktail_recipe(thumbnail, data):
                                 description=description, image_path=image_path, ingredients=ingredients, recipe=recipe)  
         db.session.add(new_cocktail)
         db.session.commit()
-
+        db.session.close()
         return {"message":"recipe successfully created"},201 #성공
 
     except Exception as ex:
@@ -94,7 +90,7 @@ def update_cocktail_recipe(user_id:int, cocktail_id:int, thumbnail, data):
         '''db 업데이트'''
         db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).update(updated_data)
         db.session.commit()
-
+        db.session.close()
         '''
         #이렇게 하면 안됨. 에러는 안나지만 데이터베이스가 업데이트가 안됨.
         cocktail = db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).first()
@@ -118,7 +114,7 @@ def delete_cocktail_recipe(user_id:int, cocktail_id:int):
         cocktail = db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).first()
         db.session.delete(cocktail)
         db.session.commit()
-        
+        db.session.close()
         return {"message":"cocktail recipe successfully deleted"}, 200
 
     except Exception as ex:

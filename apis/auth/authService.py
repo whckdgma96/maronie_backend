@@ -27,6 +27,7 @@ def userRegister(email:str, nickname:str, password:str):
         new_user = User(email=email, nickname=nickname, password=encrypted_pw) #area도 추후 추가
         db.session.add(new_user)
         db.session.commit()
+        db.session.close()
         return {"message":"User Information saved"},201 #성공
     except:
         return {"message":"Register Failed"},500 #실패
@@ -65,6 +66,7 @@ def changepw(email,new_password):
         encrypted_pw = bcrypt.hashpw(new_password.encode('utf8'),bcrypt.gensalt())
         cur.execute(sql, (encrypted_pw, saved_user.nickname))
         conn.commit()
+        conn.close()
         return {
             "message":"password changed"
         },201

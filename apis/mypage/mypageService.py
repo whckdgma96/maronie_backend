@@ -32,6 +32,8 @@ def create_wishlist_liquor(user_id:int,liquor_id:int):
         return {"message":"위시리스트 등록 성공"},201
     except:
         return {"message": "위시리스트 등록 실패"},500
+    finally:
+        db.session.close()
 
 # cocktail 위시리스트 추가
 def create_wishlist_cocktail(user_id:int,cocktail_id:int):
@@ -45,6 +47,8 @@ def create_wishlist_cocktail(user_id:int,cocktail_id:int):
         return {"message":"위시리스트 등록 성공"},201
     except:
         return {"message": "위시리스트 등록 실패"},500
+    finally:
+        db.session.close()
 
 #술 위시리스트 삭제
 def delete_wishlist_liquor(user_id:int, id:int):
@@ -62,6 +66,8 @@ def delete_wishlist_liquor(user_id:int, id:int):
         return {"message":"술 위시리스트 삭제 성공"},200
     except: 
         abort(500, "술 위시리스트 삭제 실패")
+    finally:
+        conn.close()
 
 #칵테일 위시리스트 삭제
 def delete_wishlist_cocktail(user_id:int, id:int):
@@ -79,6 +85,8 @@ def delete_wishlist_cocktail(user_id:int, id:int):
         return {"message":"술 위시리스트 삭제 성공"},200
     except: 
         abort(500, "술 위시리스트 삭제 실패")
+    finally:
+        db.session.close()
 
 
 # donelist 출력
@@ -107,6 +115,8 @@ def create_donelist_liquor(user_id:int,liquor_id:int):
         return {"message":"donelist 등록 성공"},201
     except:
         return {"message": "donelist 등록 실패"},500
+    finally:
+        db.session.close()
 
 # cocktail donelist 추가
 def create_donelist_cocktail(user_id:int,cocktail_id:int):
@@ -120,6 +130,8 @@ def create_donelist_cocktail(user_id:int,cocktail_id:int):
         return {"message":"donelist 등록 성공"},201
     except:
         return {"message": "donelist 등록 실패"},500
+    finally:
+        db.session.close()
 
 #술 donelist 삭제
 def delete_donelist_liquor(user_id:int, id:int):
@@ -137,6 +149,8 @@ def delete_donelist_liquor(user_id:int, id:int):
         return {"message":"술 donelist 삭제 성공"},200
     except: 
         abort(500, "술 donelist 삭제 실패")
+    finally:
+        conn.close()
 
 #칵테일 donelist 삭제
 def delete_donelist_cocktail(user_id:int, id:int):
@@ -154,6 +168,8 @@ def delete_donelist_cocktail(user_id:int, id:int):
         return {"message":"술 donelist 삭제 성공"},200
     except: 
         abort(500, "술 donelist 삭제 실패")
+    finally:
+        conn.close()
 
 # 칵테일 레시피 모아보기
 def my_cocktail_recipe(user_id:int):

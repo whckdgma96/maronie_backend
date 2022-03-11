@@ -23,6 +23,7 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
         new_review = Review(user_id = user_id,liquor_id=liquor_id,rating=rating,content=content,review_date=review_date)
         db.session.add(new_review)
         db.session.commit()
+        db.session.close()
         return {"message":"리뷰등록 성공"},201
 
 def update_review(user_id:int,review_id:int,rating:float,content:str):
@@ -46,6 +47,7 @@ def update_review(user_id:int,review_id:int,rating:float,content:str):
     else:
         cur.execute(sql,(rating,content,review_date,user_id,review_id))
         conn.commit()
+        conn.close()
         return {"message":"리뷰수정 성공"},200
 
 def delete_review(user_id:int, review_id:int):
@@ -66,6 +68,7 @@ def delete_review(user_id:int, review_id:int):
     else:
         cur.execute(sql,(user_id, review_id))
         conn.commit()
+        conn.close()
         return {"message":"리뷰삭제 성공"},200
 
 def get_review(user_id:int, review_id:int):
