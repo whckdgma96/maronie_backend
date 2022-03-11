@@ -65,12 +65,12 @@ for row in df_liquor.itertuples():
 # author_id는 default value로 한다.
 for row in df_cocktail.itertuples():
 	image_path = os.path.join("media/thumbnail_cocktail", row.image_path)
-	cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, classification_id, image_path, description, level, ingredients, recipe) 
-		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.classification_id, image_path, row.description, row.level, row.ingredients, row.recipe])
+	cur.execute('''INSERT INTO cocktail (cocktail_name, cocktail_name_kor, classification_id, image_path, description, alcohol, level, ingredients, recipe) 
+		VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)''', [row.cocktail_name, row.cocktail_name_kor, row.classification_id, image_path, row.description, row.alcohol, row.level, row.ingredients, row.recipe])
 
 # '''menu'''
 for row in df_menu.itertuples():
-	image_path = os.path.join("media/thumbnail_menu", row.image_path)
+	image_path = os.path.join("media/menu", row.image_path)
 	cur.execute('''INSERT INTO menu (menu_name, image_path) VALUES(%s, %s)''', [row.menu_name, image_path])
 		
 '''paring'''
