@@ -3,7 +3,9 @@ import os
 import uuid
 from flask import abort, flash
 from werkzeug.utils import secure_filename
+from glob import glob
 from config import ALLOWED_EXTENSIONS, COCKTAIL_THUMBNAIL_FOLDER, UPLOAD_FOLDER
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -31,3 +33,14 @@ def save_image(image_file, is_search=True):
         img.save(image_path)
         
         return image_path
+
+# file_path = 'C:/liquor/project-template/apis/liquor/지빠귀'
+# file_names = os.listdir(file_path)
+# print(file_names)
+
+# for name in file_names:
+#     src = os.path.join(file_path, name)
+#     u = uuid.uuid4()
+#     dst=str(u)+'.jpg'
+#     dst = os.path.join(file_path, dst)
+#     os.rename(src,dst)
