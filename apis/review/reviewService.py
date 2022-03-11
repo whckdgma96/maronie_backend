@@ -10,7 +10,7 @@ def create_review(user_id:int,liquor_id:int,rating:float,content:str):
     
     # logined_user = User.query.filter_by(email=session['login']).first()
     logined_user = User.query.filter_by(email=session).first()
-
+    print(logined_user)
     review_date = datetime.today().strftime("%Y-%m-%d")
     # print(review_date)
     review_check = Review.query.filter_by(user_id=user_id).filter_by(liquor_id=liquor_id).first()
