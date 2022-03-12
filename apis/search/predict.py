@@ -13,7 +13,7 @@ def predict_liquor(path):
     
     prediction = model.predict(img)
     print(np.max(prediction))
-    if np.max(prediction) < 0.8:
+    if np.max(prediction) < 0.7:
         return -1
     else:
         return np.argmax(prediction)+1

@@ -43,7 +43,7 @@ donelist_liquor = Mypage.model('donelist_liquor',{
 })
 donelist_cocktail = Mypage.model('donelist_cocktail',{
     'id' : fields.Integer(description='donelist_cocktail id', required=True, example=1,attribute="id"),
-    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="done_l_info.id"),
+    'cocktail_id': fields.Integer(description='Cocktail id', required=True, example=4, attribute="done_c_info.id"),
     'image_path': fields.String(description='Image Path', attribute='done_c_info.image_path', required=False, example="https://w.namu.la/s/827ac58e595bb28aa551a1d18fcbcf291a3f01890eb07e4efbb8128eb7007bfdfd0ba10794d4a39194af008f5c7b72c9b6e9386da7a4a0227b19b20884c962d2e2078560c76b2e5a608c4f6dd7b203fdadd31739538aeb5af6c2e26f7b7ac14d"),
     'cocktail_name_kor': fields.String(description='Cocktail name(korean)', attribute='done_c_info.cocktail_name_kor', required=True, example="블루 하와이"),
 })

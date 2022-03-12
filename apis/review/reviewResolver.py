@@ -18,6 +18,7 @@ class Create_review(Resource):
         if not session:
             abort(500, "로그인 해주세요")
         else:
+            print(session)
             user_id = request.json['user_id']
             liquor_id = request.json['liquor_id']
             rating = request.json['rating']
