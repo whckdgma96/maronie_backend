@@ -1,12 +1,13 @@
 #python version 3.6
 FROM  tensorflow/tensorflow:latest-gpu-py3 
 
-COPY requirements.txt /backend/
+COPY requirements.txt /backend_dev/
 EXPOSE 3000
-WORKDIR /backend
+WORKDIR /backend_dev
 
 #opencv-python을 위해 필요하다
-RUN apt-get install ffmpeg libsm6 libxext6 libgl1-mesa-glx -y
+RUN apt-get -y update && apt-get -y upgrade && apt-get install -y build-essential
+RUN apt-get install libgl1-mesa-glx -y 
 
 RUN pip install --upgrade pip \
     &&  pip install --requirement requirements.txt
