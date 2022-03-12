@@ -2,7 +2,7 @@
 FROM  tensorflow/tensorflow:latest-gpu-py3 
 
 COPY requirements.txt /backend/
-EXPOSE 5000
+EXPOSE 3000
 WORKDIR /backend
 
 #opencv-python을 위해 필요하다
