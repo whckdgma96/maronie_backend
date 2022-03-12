@@ -2,7 +2,7 @@
 FROM  tensorflow/tensorflow:latest-gpu-py3 
 
 COPY requirements.txt /backend_dev/
-EXPOSE 22
+EXPOSE 443
 WORKDIR /backend_dev
 
 #opencv-python을 위해 필요하다

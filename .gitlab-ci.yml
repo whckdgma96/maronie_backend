@@ -15,4 +15,4 @@ Deploy:
     - docker stop backend-dev || true 
     - docker system prune -af --volumes
     - docker build -t team-11-backend-dev .
-    - docker run -it -d --restart always --name backend-dev -v /home/team11/media:/backend/media -p 22:22 team-11-backend-dev
+    - docker run -it -d --restart always --name backend-dev -v /home/team11/media:/backend/media -p 443:443 team-11-backend-dev
