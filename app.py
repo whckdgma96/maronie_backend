@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restx import Api
@@ -28,7 +29,10 @@ def create_app():
     Migrate().init_app(app, db)
     
     app.secret_key = config.SECRET_KEY #.env 사용
-    app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
+    # app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
+    app.config['SESSION_PERMANENT'] = True 
+    app.config['SESSION_TYPE'] = 'filesystem' 
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
     # Create and initialize the Flask-Session object AFTER `app` has been configured
     server_session = Session(app)
     #blueprint로 한번에 묶기
