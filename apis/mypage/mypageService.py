@@ -13,12 +13,12 @@ def wishlist(user_id:int):
     # if logined_user.id != user_id:
     #     abort(500, "로그인 정보가 일치하지 않습니다.")
     # else:
-    liquors = Wishlist_liquor.query.filter_by(user_id = user_id).all()
-    cocktails = Wishlist_cocktail.query.filter_by(user_id = user_id).all()
-    
-    result = {"liquor": liquors, "cocktail":cocktails}
+        liquors = Wishlist_liquor.query.filter_by(user_id = user_id).all()
+        cocktails = Wishlist_cocktail.query.filter_by(user_id = user_id).all()
+        
+        result = {"liquor": liquors, "cocktail":cocktails}
 
-    return result,200
+        return result,200
 
 # liquor 위시리스트 추가
 def create_wishlist_liquor(user_id:int,liquor_id:int):
@@ -52,42 +52,26 @@ def create_wishlist_cocktail(user_id:int,cocktail_id:int):
 
 #술 위시리스트 삭제
 def delete_wishlist_liquor(user_id:int, id:int):
-    conn = pymysql.connect(host=os.getenv('MYSQL_HOST'),
-                           port=int(os.getenv('MYSQL_PORT')),
-                           user=os.getenv('MYSQL_USER'), 
-                           password=os.getenv('MYSQL_PASSWORD'), 
-                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
-    cur = conn.cursor()
-    sql= """DELETE from wishlist_liquor WHERE id=%s"""
-    # sql= """DELETE from wishlist_liquor WHERE user_id=%s AND liquor_id=%s"""
     try:
-        cur.execute(sql,id)
-        conn.commit()
-        return {"message":"술 위시리스트 삭제 성공"},200
-    except: 
-        abort(500, "술 위시리스트 삭제 실패")
-    finally:
-        conn.close()
-
-#칵테일 위시리스트 삭제
-def delete_wishlist_cocktail(user_id:int, id:int):
-    conn = pymysql.connect(host=os.getenv('MYSQL_HOST'), 
-                           port=int(os.getenv('MYSQL_PORT')), 
-                           user=os.getenv('MYSQL_USER'),
-                           password=os.getenv('MYSQL_PASSWORD'), 
-                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
-    cur = conn.cursor()
-    sql= """DELETE from wishlist_cocktail WHERE id=%s"""
-    # sql= """DELETE from wishlist_cocktail WHERE user_id=%s AND cocktail_id=%s"""
-    try:
-        cur.execute(sql,id)
-        conn.commit()
+        db.session.query(Wishlist_liquor).filter(Wishlist_liquor.id == id).delete()
+        db.session.commit()
         return {"message":"술 위시리스트 삭제 성공"},200
     except: 
         abort(500, "술 위시리스트 삭제 실패")
     finally:
         db.session.close()
 
+#칵테일 위시리스트 삭제
+def delete_wishlist_cocktail(user_id:int, id:int):
+    # sql= """DELETE from wishlist_cocktail WHERE user_id=%s AND cocktail_id=%s"""
+    try:
+        db.session.query(Wishlist_cocktail).filter(Wishlist_cocktail.id == id).delete()
+        db.session.commit()
+        return {"message":"술 위시리스트 삭제 성공"},200
+    except: 
+        abort(500, "술 위시리스트 삭제 실패")
+    finally:
+        db.session.close()
 
 # donelist 출력
 def donelist(user_id:int):
@@ -96,12 +80,12 @@ def donelist(user_id:int):
     # if logined_user.id != user_id:
     #     abort(500, "로그인 정보가 일치하지 않습니다.")
     # else:
-    liquors = Donelist_liquor.query.filter_by(user_id = user_id).all()
-    cocktails = Donelist_cocktail.query.filter_by(user_id = user_id).all()
-    
-    result = {"liquor": liquors, "cocktail":cocktails}
+        liquors = Donelist_liquor.query.filter_by(user_id = user_id).all()
+        cocktails = Donelist_cocktail.query.filter_by(user_id = user_id).all()
+        
+        result = {"liquor": liquors, "cocktail":cocktails}
 
-    return result,200
+        return result,200
 
 # liquor donelist 추가
 def create_donelist_liquor(user_id:int,liquor_id:int):
@@ -135,41 +119,26 @@ def create_donelist_cocktail(user_id:int,cocktail_id:int):
 
 #술 donelist 삭제
 def delete_donelist_liquor(user_id:int, id:int):
-    conn = pymysql.connect(host=os.getenv('MYSQL_HOST'), 
-                           port=int(os.getenv('MYSQL_PORT')), 
-                           user=os.getenv('MYSQL_USER'),
-                           password=os.getenv('MYSQL_PASSWORD'), 
-                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
-    cur = conn.cursor()
-    sql= """DELETE from donelist_liquor WHERE id=%s"""
-    # sql= """DELETE from donelist_liquor WHERE user_id=%s AND liquor_id=%s"""
-    try:
-        cur.execute(sql,id)
-        conn.commit()
+    try : 
+        Donelist_liquor.query.filter_by(id=id).delete()
+        db.session.commit()
         return {"message":"술 donelist 삭제 성공"},200
     except: 
         abort(500, "술 donelist 삭제 실패")
     finally:
-        conn.close()
+        db.session.close()
 
 #칵테일 donelist 삭제
 def delete_donelist_cocktail(user_id:int, id:int):
-    conn = pymysql.connect(host=os.getenv('MYSQL_HOST'), 
-                           port=int(os.getenv('MYSQL_PORT')), 
-                           user=os.getenv('MYSQL_USER'),
-                           password=os.getenv('MYSQL_PASSWORD'), 
-                           db=os.getenv('MYSQL_DATABASE'), charset='utf8')
-    cur = conn.cursor()
-    sql= """DELETE from donelist_cocktail WHERE id=%s"""
     # sql= """DELETE from donelist_cocktail WHERE user_id=%s AND cocktail_id=%s"""
     try:
-        cur.execute(sql,id)
-        conn.commit()
+        Donelist_cocktail.query.filter_by(id=id).delete()
+        db.session.commit()
         return {"message":"술 donelist 삭제 성공"},200
     except: 
         abort(500, "술 donelist 삭제 실패")
     finally:
-        conn.close()
+        db.session.close()
 
 # 칵테일 레시피 모아보기
 def my_cocktail_recipe(user_id:int):
