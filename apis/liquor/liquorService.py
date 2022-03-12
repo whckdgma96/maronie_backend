@@ -21,12 +21,16 @@ def liquor_detail_view(liquor_id:int):
     rating_distribution= dict(rating_distribution)
 
     rating_list = [5.0, 4.0, 3.0, 2.0, 1.0]
+    last_review_id = -1
     for key in rating_list:
         if key not in rating_distribution:
             rating_distribution[key] = 0
     rating_distribution = dict(sorted(rating_distribution.items(),reverse=True))
     
-    review_info ={ 'total_reviews' : liquor.liquor_reviews, 'rating_distribution':rating_distribution, 'last_review_id' : reviews[-1].id}
+    if reviews:
+        last_review_id = reviews[-1].id
+        
+    review_info ={'total_reviews' : liquor.liquor_reviews, 'rating_distribution':rating_distribution, 'last_review_id' : last_review_id}
     result = {'liquor' : liquor, 'paring' : paring, 'cocktail' : cocktail, 'review_summary':review_info, 'review' :reviews}
               
     if liquor:
@@ -77,20 +81,20 @@ def update_cocktail_recipe(user_id:int, cocktail_id:int, thumbnail, data):
     try:
         '''기존 이미지 삭제'''
         cocktail = Cocktail.query.filter_by(id = cocktail_id).first()
-        old_path=str(cocktail.image_path)
-        #조건문은 모든 테이블의 image_path 속성을 모두 not null로 바꾼후 삭제 (혹은 try로 바꾸기. remove는 없는 파일을 삭제하면 에러가 난다)
-        if os.path.isfile(str(old_path)):
-            os.remove(old_path)
-        
-        '''새로운 이미지 저장 후 주소 추가'''
-        updated_data = data.to_dict()
-        new_path = save_image(thumbnail)
-        updated_data['image_path'] = new_path
-
-        '''db 업데이트'''
-        db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).update(updated_data)
-        db.session.commit()
-        db.session.close()
+        if cocktail:
+            old_path=str(cocktail.image_path)
+            #조건문은 모든 테이블의 image_path 속성을 모두 not null로 바꾼후 삭제 (혹은 try로 바꾸기. remove는 없는 파일을 삭제하면 에러가 난다)
+            if os.path.isfile(str(old_path)):
+                os.remove(old_path)
+            
+            '''새로운 이미지 저장 후 주소 추가'''
+            updated_data = data.to_dict()
+            new_path = save_image(thumbnail, False)
+            updated_data['image_path'] = new_path
+            
+            '''db 업데이트'''
+            db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).update(updated_data)
+            db.session.close()
         '''
         #이렇게 하면 안됨. 에러는 안나지만 데이터베이스가 업데이트가 안됨.
         cocktail = db.session.query(Cocktail).filter(Cocktail.id==cocktail_id).first()
