@@ -76,7 +76,7 @@ def userLogout():
     if not session:
         return {"message":"로그인 정보가 없습니다."},500
     else:
-        session.clear()
+        session.pop('login',None)
         return {"message":"logout success"},200
 
 
