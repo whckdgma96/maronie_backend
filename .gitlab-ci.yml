@@ -10,7 +10,7 @@ Deploy:
   only:
     - deploy 
   tags:
-    - team-11-runner 
+    - GCP-team11-BE 
   script:
     - docker stop backend || true 
     - docker system prune -af --volumes
