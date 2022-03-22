@@ -29,10 +29,15 @@ def create_app():
     Migrate().init_app(app, db)
     
     app.secret_key = config.SECRET_KEY #.env 사용
-    # app.config['SESSION_TYPE'] = 'filesystem' #Redis대신 filesystem사용
+    
     app.config['SESSION_PERMANENT'] = True 
     app.config['SESSION_TYPE'] = 'filesystem' 
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
+
+    #pool 관련 설정 변경
+    app.config['SQLALCHEMY_POOL_SIZE'] = 10 #default=5
+    app.config['SQLALCHEMY_POOL_RECYCLE'] = 30 #pool에 세션을 끊지 않고 유지하는 시간(sec)
+
     # Create and initialize the Flask-Session object AFTER `app` has been configured
     server_session = Session(app)
     #blueprint로 한번에 묶기
