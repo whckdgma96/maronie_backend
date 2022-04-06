@@ -10,6 +10,9 @@
 ### `최종 배포`
 http://elice-kdt-ai-3rd-team11.elicecoding.com  
 
+### `프론트엔드`
+https://github.com/whckdgma96/maronie_backend
+
 ### `사용한 기술 스택 및 라이브러리`
 | Position | 내용 |
 | --- | --- |
