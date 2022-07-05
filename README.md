@@ -7,9 +7,6 @@
 ![Maronie_demo](https://user-images.githubusercontent.com/81983246/161063179-13ce6a53-b155-4b95-9bd9-ac153e45b777.gif)
 
 
-### `최종 배포`
-http://elice-kdt-ai-3rd-team11.elicecoding.com  
-
 ### `프론트엔드`
 https://github.com/wooneeS2/maronie
 
